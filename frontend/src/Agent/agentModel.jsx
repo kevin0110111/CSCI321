@@ -6,11 +6,13 @@ import faq from '../assets/faq.svg'
 import logout from '../assets/logout.svg'
 import previousIcon from '../assets/previous.svg';
 import nextIcon from '../assets/next.svg';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function AgentModel() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 5; // This would typically come from your API
+  const navigate = useNavigate();
 
   const modelCards = [
     { id: 1, name: "Model 1", updatedAt: "2023-10-15 14:30" },
@@ -29,8 +31,7 @@ export default function AgentModel() {
   };
 
   const handleUpdate = () => {
-    // Add your update logic here
-    console.log("Update button clicked");
+    navigate('/updateModel');
   };
 
   return (
@@ -40,10 +41,10 @@ export default function AgentModel() {
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
           <div>
-            <a href="#" className="nav-link active"><img src={model} alt="Model" className="icon"/> Model</a>
-            <a href="#" className="nav-link"><img src={comment} alt="Comment" className="icon"/> Comment</a>
-            <a href="#" className="nav-link"><img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug</a>
-            <a href="#" className="nav-link"><img src={faq} alt="FAQ" className="icon"/> FAQ</a>
+            <Link to="/agentModel" className="nav-link active"><img src={model} alt="Model" className="icon"/> Model</Link>
+            <Link to="/agentComment" className="nav-link"><img src={comment} alt="Comment" className="icon"/> Comment</Link>
+            <Link to="/agentBugReport" className="nav-link"><img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug</Link>
+            <Link to="/agentFAQ" className="nav-link"><img src={faq} alt="FAQ" className="icon"/> FAQ</Link>
           </div>
           <div className="logout-container">
             <a href="#" className="nav-link"><img src={logout} alt="Logout" className="icon"/> Logout</a>
