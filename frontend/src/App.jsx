@@ -12,6 +12,8 @@ import UpdateAgentAccount from './Agent/updateAgentAccount';
 
 import Login from './Login/login'
 
+import UserUpload from './User/userUpload';
+
 export default function App() {
   return (
     <Router>
@@ -28,6 +30,8 @@ export default function App() {
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
         <Route path="/" element={<Navigate to="/agentModel" replace />} />
+
+        <Route path="/userupload" element={<UserUpload />} />
       </Routes>
     </Router>
   );
