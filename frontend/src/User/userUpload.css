@@ -1,0 +1,148 @@
+/* Upload section styling */
+
+.upload-container {
+  padding: 2rem;
+  background-color: #fff;
+  font-size: 1.25rem; 
+  line-height: 1.6;
+  min-height: 100vh; 
+}
+
+
+
+.upload-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.upload-box {
+  border: 2px dashed #aaa;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 8px;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.upload-box.drag-active {
+  border-color: #1d4ed8;
+  background-color: #f0f8ff;
+}
+
+
+
+.upload-box > img {
+  width: 40px;
+  display: block;
+  margin: 0 auto 0.2rem auto;
+}
+
+
+
+
+.browse {
+  color: #1d4ed8;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.upload-info {
+  font-size: 1.5rem; 
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center; 
+}
+
+.image-type,
+.image-name,
+.quota {
+  margin-bottom: 0.5rem;
+}
+
+
+.image-type {
+  margin-bottom: 0.5rem;
+}
+
+.radio-selected {
+  color: #1d4ed8;
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+.image-name {
+  margin: 0.5rem 0;
+}
+
+.quota {
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center; 
+  gap: 2rem;               
+  margin-top: 1rem;
+}
+
+.reset-btn,
+.submit-btn {
+  padding: 1rem 2.5rem;    
+  font-size: 1.25rem;     
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+
+.reset-btn {
+  background-color: #eee;
+  color: #333;
+}
+
+.submit-btn {
+  background-color: #1d4ed8;
+  color: #fff;
+}
+
+.submit-btn:hover {
+  background-color: #174ec7;
+}
+
+.preview-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.preview-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 300px;
+}
+
+.preview-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.preview-filename {
+  font-size: 1.1rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+
+
+

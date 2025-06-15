@@ -9,6 +9,8 @@ import ViewComment from './Agent/viewComment';
 
 import Login from './Login/login'
 
+import UserUpload from './User/userUpload';
+
 export default function App() {
   return (
     <Router>
@@ -20,6 +22,7 @@ export default function App() {
         <Route path="/agentFAQ" element={<AgentFAQ />} />
         <Route path="/updateModel" element={<UpdateModel />} />
         <Route path="/" element={<ViewComment />} />
+        <Route path="/userupload" element={<UserUpload />} />
       </Routes>
     </Router>
   );
