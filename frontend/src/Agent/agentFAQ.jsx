@@ -6,10 +6,13 @@ import faq from '../assets/faq.svg'
 import logout from '../assets/logout.svg'
 import previousIcon from '../assets/previous.svg';
 import nextIcon from '../assets/next.svg';
-import { Link } from 'react-router-dom';
+import profile from '../assets/profile.svg';
+
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function AgentFAQ() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 5; // This would typically come from your API
 
@@ -32,6 +35,18 @@ export default function AgentFAQ() {
   const handleUpdate = () => {
     // Add your update logic here
     console.log("Update button clicked");
+  };
+
+  const handleDoubleClick = () => {
+    navigate('/viewFAQ');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/updateAgentAccount');
+  };
+
+  const handleDashboardCreate = () => {
+    navigate('/viewFAQ');
   };
 
   return (
@@ -58,14 +73,16 @@ export default function AgentFAQ() {
         <header className="header">
           <h1>Dashboard - FAQ</h1>
           <div className="profile">
-            <span>Welcome, Agent</span>
+            <button onClick={handleProfileClick} className="profile-button">
+              <img src={profile} alt="Profile" className="profile-icon" />
+            </button>  
           </div>
         </header>
 
         {/* Model Cards */}
         <main className="model-cards-container">
           {modelCards.map((model) => (
-            <div key={model.id} className="model-card">
+            <div key={model.id} className="model-card" onDoubleClick={handleDoubleClick}>
               <div className="model-info">
                 <span className="model-number">{model.id}.</span>
                 <div>
@@ -101,7 +118,7 @@ export default function AgentFAQ() {
             </button>
             
             <button 
-              onClick={handleUpdate}
+              onClick={handleDashboardCreate}
               className="update-button"
             >
               Create

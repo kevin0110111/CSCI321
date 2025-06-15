@@ -85,6 +85,24 @@
   gap: 1rem;
 }
 
+.profile-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.profile-button {
+background: none;
+border: none;
+padding: 0;
+cursor: pointer;
+display: flex;
+align-items: center;
+}
+
+.profile-button:hover {
+opacity: 0.8;
+}
+
 /* Update Model Container */
 .update-model-container {
   padding: 1rem;

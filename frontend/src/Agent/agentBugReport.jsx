@@ -6,11 +6,13 @@ import faq from '../assets/faq.svg'
 import logout from '../assets/logout.svg'
 import previousIcon from '../assets/previous.svg';
 import nextIcon from '../assets/next.svg';
+import profile from '../assets/profile.svg';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function AgentBugReport() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 5; // This would typically come from your API
 
@@ -33,6 +35,14 @@ export default function AgentBugReport() {
   const handleUpdate = () => {
     // Add your update logic here
     console.log("Update button clicked");
+  };
+
+  const handleDoubleClick = () => {
+    navigate('/viewBugReport');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/updateAgentAccount');
   };
 
   return (
@@ -59,14 +69,16 @@ export default function AgentBugReport() {
         <header className="header">
           <h1>Dashboard - Reported Bug</h1>
           <div className="profile">
-            <span>Welcome, Agent</span>
+            <button onClick={handleProfileClick} className="profile-button">
+              <img src={profile} alt="Profile" className="profile-icon" />
+            </button>
           </div>
         </header>
 
         {/* Model Cards */}
         <main className="model-cards-container">
           {modelCards.map((model) => (
-            <div key={model.id} className="model-card">
+            <div key={model.id} className="model-card" onDoubleClick={handleDoubleClick}>
               <div className="model-info">
                 <span className="model-number">{model.id}.</span>
                 <div>

@@ -5,10 +5,13 @@ import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import upload from '../assets/upload.svg';
-import { Link } from 'react-router-dom';
+import profile from '../assets/profile.svg';
+
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function UpdateModel() {
+  const navigate = useNavigate();
   const [modelName, setModelName] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -29,6 +32,10 @@ export default function UpdateModel() {
 
   const handleModelNameChange = (e) => {
     setModelName(e.target.value);
+  };
+
+  const handleProfileClick = () => {
+    navigate('/updateAgentAccount');
   };
 
   return (
@@ -65,7 +72,9 @@ export default function UpdateModel() {
         <header className="header">
           <h1>Update Model</h1>
           <div className="profile">
-            <span>Welcome, Agent</span>
+            <button onClick={handleProfileClick} className="profile-button">
+              <img src={profile} alt="Profile" className="profile-icon" />
+            </button>  
           </div>
         </header>
 

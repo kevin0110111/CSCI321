@@ -6,6 +6,7 @@ import faq from '../assets/faq.svg'
 import logout from '../assets/logout.svg'
 import previousIcon from '../assets/previous.svg';
 import nextIcon from '../assets/next.svg';
+import profile from '../assets/profile.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -30,8 +31,12 @@ export default function AgentModel() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const handleUpdate = () => {
+  const handleDashboardUpdate = () => {
     navigate('/updateModel');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/updateAgentAccount');
   };
 
   return (
@@ -58,7 +63,9 @@ export default function AgentModel() {
         <header className="header">
           <h1>Dashboard - Model</h1>
           <div className="profile">
-            <span>Welcome, Agent</span>
+            <button onClick={handleProfileClick} className="profile-button">
+              <img src={profile} alt="Profile" className="profile-icon" />
+            </button>  
           </div>
         </header>
 
@@ -101,7 +108,7 @@ export default function AgentModel() {
             </button>
             
             <button 
-              onClick={handleUpdate}
+              onClick={handleDashboardUpdate}
               className="update-button"
             >
               Update
