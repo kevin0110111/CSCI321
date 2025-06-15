@@ -17,6 +17,18 @@ export default function UserUpload() {
     setFiles(previewFiles);
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    const previewFiles = droppedFiles.map((file) => ({
+      name: file.name,
+      type: file.type,
+      previewUrl: URL.createObjectURL(file),
+    }));
+    setFiles(previewFiles);
+  };
+
   const triggerFileSelect = () => {
     fileInputRef.current.click();
   };
@@ -36,16 +48,9 @@ export default function UserUpload() {
     setDragActive(false);
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragActive(false);
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    const previewFiles = droppedFiles.map((file) => ({
-      name: file.name,
-      type: file.type,
-      previewUrl: URL.createObjectURL(file),
-    }));
-    setFiles(previewFiles);
+  const handleRemove = (indexToRemove) => {
+    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
+    setFiles(updatedFiles);
   };
 
   return (
@@ -73,6 +78,12 @@ export default function UserUpload() {
                   <div className="preview-wrapper" key={index}>
                     <img src={file.previewUrl} alt="Preview" className="preview-image" />
                     <div className="preview-filename" title={file.name}>{file.name}</div>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemove(index)}
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
@@ -80,8 +91,7 @@ export default function UserUpload() {
               <>
                 <img src={uploadIcon} alt="Upload" />
                 <p>
-                  Drag and drop your image(s)<br />
-                  or <span className="browse" onClick={triggerFileSelect}>Browse</span>
+                  Drag and drop your image(s) or <span className="browse" onClick={triggerFileSelect}>Browse</span>
                 </p>
               </>
             )}
