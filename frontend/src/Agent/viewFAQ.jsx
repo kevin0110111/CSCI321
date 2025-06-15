@@ -1,30 +1,42 @@
-import './viewComment.css';
+import './viewFAQ.css';
 import model from '../assets/model.svg';
 import comment from '../assets/comment.svg';
 import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function ViewComment() {
+export default function ViewFAQ() {
   const navigate = useNavigate();
   const [reply, setReply] = useState('');
+  const [faqTitle, setFaqTitle] = useState('How to upload images?');
 
   const handleReplyChange = (e) => {
     setReply(e.target.value);
   };
 
-  const handleReplySubmit = () => {
-    // Handle reply submission logic
-    console.log('Reply submitted:', reply);
+  const handleTitleChange = (e) => {
+    setFaqTitle(e.target.value);
+  };
+
+  const handleUpdate = () => {
+    // Handle update logic
+    console.log('FAQ updated:', reply);
+    setReply('');
+  };
+
+  const handleCreate = () => {
+    // Handle create logic
+    console.log('New FAQ created:', reply);
     setReply('');
   };
 
   const handleDelete = () => {
     // Handle delete logic
-    console.log('Comment deleted');
+    console.log('FAQ deleted');
   };
 
   const handleProfileClick = () => {
@@ -41,13 +53,13 @@ export default function ViewComment() {
             <Link to="/agentModel" className="nav-link">
               <img src={model} alt="Model" className="icon"/> Model
             </Link>
-            <Link to="/agentComment" className="nav-link active">
+            <Link to="/agentComment" className="nav-link">
               <img src={comment} alt="Comment" className="icon"/> Comment
             </Link>
             <Link to="/agentBugReport" className="nav-link">
               <img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug
             </Link>
-            <Link to="/agentFAQ" className="nav-link">
+            <Link to="/agentFAQ" className="nav-link active">
               <img src={faq} alt="FAQ" className="icon"/> FAQ
             </Link>
           </div>
@@ -63,7 +75,7 @@ export default function ViewComment() {
       <div className="main-section">
         {/* Header */}
         <header className="header">
-          <h1>View comment</h1>
+          <h1>View FAQ</h1>
           <div className="profile">
             <button onClick={handleProfileClick} className="profile-button">
               <img src={profile} alt="Profile" className="profile-icon" />
@@ -74,40 +86,27 @@ export default function ViewComment() {
         {/* Comment Section */}
         <main className="comment-container">
           <div className="user-info">
-            <h2>User name: cx033</h2>
-          </div>
-
-          <div className="comment-section">
-            <h3>Comment:</h3>
-            <div className="comment-box">
-              <p>This is the user's comment content. It can be long and should be scrollable if it exceeds the box height.
-                sfdjjngjnfjgnfjngjfngjnfjgnjfngjnfgjnj
-                sfdfgdh
-                sdgfgfhggdh
-                dgfdgfhh
-                sdgfgfhggdhfgf
-                sdfggs
-                ddffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                dgfdfewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrretg
-                gdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-                sdddddddddddd
-              </p>
-            </div>
+            <h2>FAQ Title:</h2>
+            <textarea
+              value={faqTitle}
+              onChange={handleTitleChange}
+              className="FAQTitle-box"
+            />
           </div>
 
           <div className="reply-section">
-            <h3>Reply:</h3>
+            <h3>Content:</h3>
             <textarea
               value={reply}
               onChange={handleReplyChange}
-              placeholder="Type your reply here..."
-              className="reply-box"
+              placeholder="Type your content here..."
+              className="FAQContent-box"
             />
           </div>
 
           <div className="action-buttons">
-            <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
+            <button className="reply-button" onClick={handleCreate}>Create</button>
+            <button className="reply-button" onClick={handleUpdate}>Update</button>
             <button className="delete-button" onClick={handleDelete}>Delete</button>
             <button className="back-button">Back</button>
           </div>

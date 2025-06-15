@@ -115,7 +115,7 @@ opacity: 0.8;
 .user-info h2 {
   font-size: 1.2rem;
   color: #333;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .comment-section h3,
@@ -125,12 +125,12 @@ opacity: 0.8;
   margin-bottom: 0.5rem;
 }
 
-.comment-box {
+.report-box {
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  height: 80px;
+  height: 100px;
   overflow-y: auto;
   background-color: #f9f9f9;
   resize: none;
@@ -142,56 +142,17 @@ opacity: 0.8;
   color: #333;
 }
 
-.reply-box {
-  width: 96%;
-  height: 80px; /* Same height as comment box */
-  padding: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  resize: none; /* Prevent resizing */
-  margin-bottom: 1.5rem;
-  font-family: inherit;
-  overflow-y: auto; /* Make it scrollable */
-}
-
-.reply-box:focus {
-  outline: none;
-  border-color: #1d4ed8;
-}
-
 .action-buttons {
   display: flex;
   gap: 1rem;
 }
 
-.reply-button,
-.delete-button,
 .back-button {
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 500;
-}
-
-.reply-button {
-  background-color: #1d4ed8;
-  color: white;
-  border: none;
-}
-
-.reply-button:hover {
-  background-color: #1e40af;
-}
-
-.delete-button {
-  background-color: #dc2626;
-  color: white;
-  border: none;
-}
-
-.delete-button:hover {
-  background-color: #b91c1c;
 }
 
 .back-button {

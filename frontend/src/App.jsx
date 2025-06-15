@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import AgentModel from './Agent/agentModel';
 import AgentComment from './Agent/agentComment';
@@ -6,6 +6,9 @@ import AgentBugReport from './Agent/agentBugReport';
 import AgentFAQ from './Agent/agentFAQ';
 import UpdateModel from './Agent/updateModel';
 import ViewComment from './Agent/viewComment';
+import ViewBugReport from './Agent/viewBugReport';
+import ViewFAQ from './Agent/viewFAQ';
+import UpdateAgentAccount from './Agent/updateAgentAccount';
 
 import Login from './Login/login'
 
@@ -21,7 +24,13 @@ export default function App() {
         <Route path="/agentBugReport" element={<AgentBugReport />} />
         <Route path="/agentFAQ" element={<AgentFAQ />} />
         <Route path="/updateModel" element={<UpdateModel />} />
-        <Route path="/" element={<ViewComment />} />
+        <Route path="/viewComment" element={<ViewComment />} />
+        <Route path="/viewBugReport" element={<ViewBugReport />} />
+        <Route path="/viewFAQ" element={<ViewFAQ />} />
+        <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
+
+        <Route path="/" element={<Navigate to="/agentModel" replace />} />
+
         <Route path="/userupload" element={<UserUpload />} />
       </Routes>
     </Router>

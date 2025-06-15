@@ -1,14 +1,15 @@
-import './viewComment.css';
+import './viewBugReport.css';
 import model from '../assets/model.svg';
 import comment from '../assets/comment.svg';
 import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function ViewComment() {
+export default function ViewBugReport() {
   const navigate = useNavigate();
   const [reply, setReply] = useState('');
 
@@ -41,10 +42,10 @@ export default function ViewComment() {
             <Link to="/agentModel" className="nav-link">
               <img src={model} alt="Model" className="icon"/> Model
             </Link>
-            <Link to="/agentComment" className="nav-link active">
+            <Link to="/agentComment" className="nav-link">
               <img src={comment} alt="Comment" className="icon"/> Comment
             </Link>
-            <Link to="/agentBugReport" className="nav-link">
+            <Link to="/agentBugReport" className="nav-link active">
               <img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug
             </Link>
             <Link to="/agentFAQ" className="nav-link">
@@ -63,7 +64,7 @@ export default function ViewComment() {
       <div className="main-section">
         {/* Header */}
         <header className="header">
-          <h1>View comment</h1>
+          <h1>View reported bug</h1>
           <div className="profile">
             <button onClick={handleProfileClick} className="profile-button">
               <img src={profile} alt="Profile" className="profile-icon" />
@@ -75,11 +76,13 @@ export default function ViewComment() {
         <main className="comment-container">
           <div className="user-info">
             <h2>User name: cx033</h2>
+            <h2>Title: Upload image bug</h2>
+            <h2>Reported at: 12-10-2025</h2>
           </div>
 
           <div className="comment-section">
-            <h3>Comment:</h3>
-            <div className="comment-box">
+            <h3>Reported bug:</h3>
+            <div className="report-box">
               <p>This is the user's comment content. It can be long and should be scrollable if it exceeds the box height.
                 sfdjjngjnfjgnfjngjfngjnfjgnjfngjnfgjnj
                 sfdfgdh
@@ -91,24 +94,12 @@ export default function ViewComment() {
                 dgfdfewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
                 errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrretg
                 gdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-                sdddddddddddd
+                sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
               </p>
             </div>
           </div>
 
-          <div className="reply-section">
-            <h3>Reply:</h3>
-            <textarea
-              value={reply}
-              onChange={handleReplyChange}
-              placeholder="Type your reply here..."
-              className="reply-box"
-            />
-          </div>
-
           <div className="action-buttons">
-            <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
-            <button className="delete-button" onClick={handleDelete}>Delete</button>
             <button className="back-button">Back</button>
           </div>
         </main>
