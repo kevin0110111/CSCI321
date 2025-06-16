@@ -63,7 +63,7 @@
 }
 
 /* 左侧侧边栏 */
-.sidebar {
+.usersidebar {
   position: absolute;
   top: 0;
   left: 0;
@@ -77,27 +77,27 @@
   border-width: 2px;
 }
 
-.sidebar.open {
+.usersidebar.open {
   transform: translateX(0);
 }
 
-.sidebar ul {
+.usersidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar ul li {
+.usersidebar ul li {
   margin-bottom: 20px;
 }
 
-.sidebar ul li a {
+.usersidebar ul li a {
   color: rgb(0, 0, 0);
   font-size: 25px;
   text-decoration: none;
 }
 
-.sidebar ul li a:hover {
+.usersidebar ul li a:hover {
   text-decoration: underline;
 }
 

@@ -97,7 +97,7 @@ export default function UserDashboard() {
 
         {/* 主内容区 */}
         <div className="dashboard-body">
-            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+            <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
                 <ul>
                     <li><Link to="/userDashboard">Dashboard</Link></li>
                     <li><Link to="/userupload">Upload image</Link></li>
