@@ -17,6 +17,7 @@ import UserDashboard from './User/UserDashboard';
 
 import AdminDashboard from './Admin/AdminDashBoard';
 import AdminCreateAccount from './Admin/AdminCreateAccount';
+import AdminViewAccounts from './Admin/AdminViewAccounts';
 
 
 export default function App() {
@@ -43,7 +44,7 @@ export default function App() {
         //Admin pages
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/create-account" element={<AdminCreateAccount />} />
-
+        <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
 
       </Routes>

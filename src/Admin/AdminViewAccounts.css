@@ -1,0 +1,369 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.layout {
+  display: flex;
+  flex-grow: 1;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+}
+
+/* A: Top Row */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.search-input {
+  width: 250px;
+  padding: 6px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  min-width: 250px; /* prevent shrinking */
+  flex-shrink: 0;
+}
+
+/* B: Filter and Sort Row */
+.filter-sort-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 15px;
+}
+
+.filters-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* Prevent wrapping */
+   line-height: 1;
+}
+
+.filter-label {
+  font-weight: bold;
+  font-size: 26px;
+  white-space: nowrap;
+  position: relative;
+  top: 12px; /* positive moves down, negative moves up */
+}
+
+.filter-select {
+  min-width: 100px !important; /* fixed minimum width */
+  max-width: 180px !important; /* fixed maximum width */
+  width: 180px !important;     /* fixed width */
+  flex-shrink: 0 !important;   /* prevent shrinking */
+  box-sizing: border-box;
+  font-size: 1rem;               /* change font size here */
+  
+  color: #333;                   /* text color */
+  font-family: Arial, sans-serif; /* font family */
+  padding: 6px 8px;             /* padding inside select */
+  flex-shrink: 0;
+  position: relative;
+  top: 12px;
+  vertical-align: middle;
+  border-radius: 8px; /* Adjust px as you like */
+  border: 1px solid #aaa; /* Add border if you want */
+
+}
+.divider {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #888;
+  user-select: none;
+}
+
+.filter-icon,
+.sort-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  position: relative;
+  top: -5px;
+}
+
+.all-filters {
+  color: #007bff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 1rem;
+  white-space: nowrap;
+  position: relative;
+  top: -4px;
+ 
+}
+
+.sort-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* prevent wrapping */
+}
+
+.filter-label,
+.sort-label {
+  font-weight: bold;
+  font-size: 1rem;
+  white-space: nowrap;
+  line-height: 1.5; /* Adjust to visually center text */
+  vertical-align: middle; /* Align with icons */
+  padding: 0 4px 0 0; /* slight right padding */
+  position: relative;
+  top: 12px;
+}
+
+
+.sort-select {
+  min-width: 100px !important; /* fixed minimum width */
+  max-width: 180px !important; /* fixed maximum width */
+  width: 180px !important;     /* fixed width */
+  flex-shrink: 0 !important;   /* prevent shrinking */
+  box-sizing: border-box;
+  font-size: 1rem;               /* change font size here */
+  
+  color: #333;                   /* text color */
+  font-family: Arial, sans-serif; /* font family */
+  padding: 6px 8px;             /* padding inside select */
+  flex-shrink: 0;
+  position: relative;
+  top: 12px;
+  vertical-align: middle;
+  border-radius: 8px; /* Adjust px as you like */
+  border: 1px solid #aaa; /* Add border if you want */
+}
+
+/* View buttons */
+.view-btn {
+  background-color: #6c757d;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+  white-space: nowrap;
+  position: relative;
+  top: -4px;
+}
+
+.view-btn.active {
+  background-color: #1e6601;
+}
+
+/* C: Selected filters */
+.selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px 0;
+  align-items: center;
+  font-size: 14px;
+  justify-content: space-between;
+}
+
+.selected-filters .left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-tag {
+  background-color: #ddd;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.filter-tag:hover,
+.filter-tag:focus {
+  background-color: #bbb;
+  outline: none;
+}
+
+.clear-filters {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  font-size: 16px;       /* reduce font size to match */
+  padding: 0;            /* no extra padding */
+  white-space: nowrap;
+  position: relative;   /* <-- Add this */
+  top: -13px;            /* <-- Now this will work */
+  
+}
+
+.selected-filters .right {
+  font-size: 16px;
+  color: #555;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+/* D: User list/grid */
+.user-list.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  outline: none;
+}
+
+.user-item:hover,
+.user-item:focus {
+  background-color: #eaf4fb;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-role {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.user-arrow {
+  font-size: 1.5rem;
+  color: #888;
+  margin-left: 10px;
+}
+
+/* Grid container: show items in rows, wrap with gaps */
+.user-list.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 or 3 boxes per row depending on screen size */
+  gap: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* Grid box style for user-item */
+.user-list.grid .user-item {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertical centering */
+  align-items: center;      /* horizontal centering */
+  text-align: center;       /* center text inside */
+
+  transition: box-shadow 0.2s ease;
+}
+
+.user-list.grid .user-item:hover,
+.user-list.grid .user-item:focus {
+  box-shadow: 0 0 8px rgba(30, 102, 1, 0.4);
+}
+
+/* User info styling inside the box */
+.user-list.grid .user-info {
+  margin-bottom: 15px;
+}
+
+.user-list.grid .user-info strong {
+  font-size: 1.25rem;
+  display: block;
+  width: 100%;
+}
+
+.user-list.grid .user-info span {
+  font-size: 1rem;
+  color: #555;
+  display: block;
+  width: 100%;
+}
+
+/* Role badge aligned center bottom */
+.user-list.grid .user-role {
+  font-weight: bold;
+  font-size: 2rem;
+
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+/* For list view */
+.user-list.list .user-role.role-admin {
+  color: #D32F2F; /* red */
+}
+.user-list.list .user-role.role-agent {
+  color: #6A1B9A; /* blue */
+}
+.user-list.list .user-role.role-user {
+  color: #757575; /* user */
+}
+.user-list.list .user-role.role-premium-user {
+  color: #388E3C; /* premium user */
+}
+
+/* For grid view */
+.user-list.grid .user-role.role-admin {
+  color: #d32f2f; /* red */
+}
+.user-list.grid .user-role.role-agent {
+  color: #6A1B9A; /* blue */
+}
+.user-list.grid .user-role.role-user {
+  color: #757575; /* user */
+}
+.user-list.grid .user-role.role-premium-user {
+  color: #388E3C; /* premium user */
+}
