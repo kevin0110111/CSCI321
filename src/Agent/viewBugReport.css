@@ -1,0 +1,166 @@
+/* Dashboard layout styling */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #e3eafe;
+  color: #1d4ed8;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-container {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Main */
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  height: 45px;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.profile-button {
+background: none;
+border: none;
+padding: 0;
+cursor: pointer;
+display: flex;
+align-items: center;
+}
+
+.profile-button:hover {
+opacity: 0.8;
+}
+
+/* Comment Container */
+.comment-container {
+  padding: 2rem;
+  background-color: #ffffff;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h2 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.comment-section h3,
+.reply-section h3 {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.report-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  height: 100px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  resize: none;
+}
+
+.comment-box p {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.back-button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.back-button {
+  background-color: #f4f6f8;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
