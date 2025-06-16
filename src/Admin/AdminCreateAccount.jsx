@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import AdminTopBar   from '../components/AdminTopBar';   // <- update path as needed
+import AdminSidebar from '../components/AdminSidebar';
 import './AdminCreateAccount.css';
 
 export default function AdminCreateAccount() {
@@ -32,36 +34,12 @@ export default function AdminCreateAccount() {
 
   return (
     <div className="admin-dashboard">
-      {/* Top Navbar */}
-      <header className="top-nav">
-        <div className="logo">
-          <span className="logo-icon">🌽</span>
-          Logo
-        </div>
-
-        <div className="top-center">
-          <a href="#">Account</a>
-          <span className="divider">|</span>
-          <a href="#">Profile</a>
-        </div>
-
-        <div className="icons">
-          <span>🔔</span>
-          <span>📂</span>
-          <span>👤</span>
-        </div>
-      </header>
-
-      {/* Layout container */}
-      <div className="layout">
-        {/* Sidebar */}
-        <aside className="admin-sidebar">
-          <ul>
-            <li><a href="#"><span>📝</span> Create</a></li>
-            <li><a href="#"><span>🔔</span> Notifications</a></li>
-            <li><a href="#"><span>👁️</span> View</a></li>
-          </ul>
-        </aside>
+          {/* top bar */}
+          <AdminTopBar />
+    
+          {/* main layout: sidebar + content */}
+          <div className="layout">
+            <AdminSidebar />
 
         {/* Main Content */}
         <main className="admin-create-container">
