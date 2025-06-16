@@ -34,7 +34,7 @@ export default function ViewComment() {
   return (
     <div className="dashboard-container">
       {/* Sidebar remains the same */}
-      <aside className="sidebar">
+      <aside className="agentsidebar">
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
           <div>

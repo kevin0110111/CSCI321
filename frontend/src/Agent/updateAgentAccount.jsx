@@ -54,7 +54,7 @@ export default function UpdateAgentAccount() {
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className="agentsidebar">
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
           <div>
