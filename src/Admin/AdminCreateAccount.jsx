@@ -106,8 +106,11 @@ export default function AdminCreateAccount() {
               </div>
 
               <div className="row">
-                <div className="label">Date format</div>
-                <div className="value">DD-MM-YYYY</div>
+                <div className="label">Date</div>
+                <input
+                  type="date"
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                />
               </div>
 
               <div className="row">

@@ -122,7 +122,14 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
+/* Date */
+.admin-create-container input[type="date"] {
+  width: 160px;  /* Adjust width as needed */
+  padding: 6px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
 /* Language + Date Section */
 .language-section {
   margin-top: 30px;
