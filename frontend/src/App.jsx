@@ -19,6 +19,12 @@ import UserResult from './User/UserResult';
 import DetectionResultView from './User/DetectionResultView';
 import UserSubscription from './User/UserSubscription';
 import ReportBug from './User/ReportBug';
+import LeaveComment from './User/LeaveComment';
+import SwitchLanguage from './User/SwitchLanguage';
+import UserComments from './User/UserComments';
+
+
+
 
 
 export default function App() {
@@ -45,6 +51,9 @@ export default function App() {
         <Route path="/user/resultview" element={<DetectionResultView />} />
         <Route path="/userSubscription" element={<UserSubscription />} />
         <Route path="/reportBug" element={<ReportBug />} />
+        <Route path="/leaveComment" element={<LeaveComment />} />
+        <Route path="/switchLanguage" element={<SwitchLanguage />} />
+        <Route path="/userComments" element={<UserComments />} />
       </Routes>
     </Router>
   );

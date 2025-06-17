@@ -1,0 +1,51 @@
+.comments-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  text-align: left;
+}
+
+.comments-container h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.comment-avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.comment-content p {
+  margin: 0.25rem 0;
+}
+
+.comment-time {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.load-more {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.load-more button {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.load-more button:hover {
+  background-color: #ddd;
+}

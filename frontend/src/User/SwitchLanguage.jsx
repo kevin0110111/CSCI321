@@ -1,37 +1,40 @@
-// UserSubscription.jsx
+// SwitchLanguage.jsx
 import './UserDashboard.css';
-import './userSubscription.css';
+import './switchLanguage.css';
 import avatar from '../assets/logo.png';
 import logo from '../assets/faq.svg';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function UserSubscription() {
+export default function SwitchLanguage() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState('');
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
+  const handleSelectLanguage = (langLabel) => {
+    setSelectedLang(langLabel);
+    // 可选：你可以在这里使用 i18n 切换语言
+    // i18n.changeLanguage(langCode)
+  };
+
   return (
     <div className="user-dashboard">
-      {/* 顶部导航 */}
+      {/* 顶部导航栏 */}
       <div className="dashboard-header">
         <div className="menu-icon" onClick={toggleSidebar}>&#9776;</div>
         <div className="product-logo">
           <img src={logo} alt="Logo" className="logo-img" />
           <span className="product-name">MaizeTassel AI</span>
         </div>
-        <div
-          className="avatar-box"
-          onClick={() => navigate('/updateUserAccount')}
-          style={{ cursor: 'pointer' }}
-        >
+        <div className="avatar-box" onClick={() => navigate('/updateUserAccount')} style={{ cursor: 'pointer' }}>
           <img src={avatar} alt="User Avatar" className="avatar-img" />
         </div>
       </div>
 
       <div className="dashboard-body">
-        {/* 左侧菜单栏 */}
+        {/* 侧边栏 */}
         <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li><a href="/userDashboard">Dashboard</a></li>
@@ -46,35 +49,22 @@ export default function UserSubscription() {
           </ul>
         </div>
 
-        {/* 主体内容 */}
+        {/* 内容部分 */}
         <main className="dashboard-content">
-          <div className="subscription-container">
-            <h2>Choose Your Plan</h2>
-            <div className="plan-options">
-              <div className="plan-card">
-                <h3>FREE</h3>
-                <p className="price">$0<span>/month</span></p>
-                <ul>
-                  <li>✓ Basic quota</li>
-                  <li>✓ No re-detect</li>
-                </ul>
-                <button className="current-plan" disabled>Your Plan</button>
+          <div className="language-container">
+            <h2>Switch Language</h2>
+            <p>Please select your language:</p>
+            <div className="language-options">
+              <button onClick={() => handleSelectLanguage('English')}>English</button>
+              <button onClick={() => handleSelectLanguage('中文（简体）')}>中文</button>
+              <button onClick={() => handleSelectLanguage('Español')}>Español</button>
+              <button onClick={() => handleSelectLanguage('Français')}>Français</button>
+            </div>
+            {selectedLang && (
+              <div className="lang-confirm">
+                Language changed to {selectedLang}
               </div>
-
-            <div className="plan-card premium">
-            <h3>PREMIUM</h3>
-            <p className="price">$20<span>/month</span></p>
-            <ul>
-                <li>✓ All features</li>
-                <li>✓ Re-detect</li>
-                <li>✓ Export results</li>
-            </ul>
-            <button className="upgrade-btn">Upgrade</button>
-            <button className="cancel-btn" style={{ marginTop: '0.8rem' }}>Cancel</button>
-            </div>
-
-            </div>
-            <p className="payment-note">Secure payment. Cancel anytime.</p>
+            )}
           </div>
         </main>
       </div>

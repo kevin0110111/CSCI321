@@ -57,6 +57,9 @@ export default function ReportBug() {
             <li><a href="/userResult">View result history</a></li>
             <li><a href="/userSubscription">Subscription</a></li>
             <li><a href="/reportBug">Report a Bug</a></li>
+            <li><a href="/leaveComment">Leave a Comment</a></li>
+            <li><a href="/userComments">User Comments</a></li>
+            <li><a href="/switchLanguage">Switch Language</a></li>
             <li><a href="/login">Log out</a></li>
           </ul>
         </div>

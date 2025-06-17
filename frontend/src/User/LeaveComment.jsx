@@ -1,20 +1,33 @@
-// UserSubscription.jsx
+// UserComment.jsx
 import './UserDashboard.css';
-import './userSubscription.css';
+import './LeaveComment.css';
 import avatar from '../assets/logo.png';
 import logo from '../assets/faq.svg';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function UserSubscription() {
+export default function UserComment() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [comment, setComment] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const maxLength = 250;
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Submitted Comment:', comment);
+    setSubmitted(true);
+  };
+
+  const handleCancel = () => {
+    setComment('');
+    setSubmitted(false);
+  };
+
   return (
     <div className="user-dashboard">
-      {/* 顶部导航 */}
       <div className="dashboard-header">
         <div className="menu-icon" onClick={toggleSidebar}>&#9776;</div>
         <div className="product-logo">
@@ -31,7 +44,6 @@ export default function UserSubscription() {
       </div>
 
       <div className="dashboard-body">
-        {/* 左侧菜单栏 */}
         <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li><a href="/userDashboard">Dashboard</a></li>
@@ -46,36 +58,25 @@ export default function UserSubscription() {
           </ul>
         </div>
 
-        {/* 主体内容 */}
         <main className="dashboard-content">
-          <div className="subscription-container">
-            <h2>Choose Your Plan</h2>
-            <div className="plan-options">
-              <div className="plan-card">
-                <h3>FREE</h3>
-                <p className="price">$0<span>/month</span></p>
-                <ul>
-                  <li>✓ Basic quota</li>
-                  <li>✓ No re-detect</li>
-                </ul>
-                <button className="current-plan" disabled>Your Plan</button>
-              </div>
-
-            <div className="plan-card premium">
-            <h3>PREMIUM</h3>
-            <p className="price">$20<span>/month</span></p>
-            <ul>
-                <li>✓ All features</li>
-                <li>✓ Re-detect</li>
-                <li>✓ Export results</li>
-            </ul>
-            <button className="upgrade-btn">Upgrade</button>
-            <button className="cancel-btn" style={{ marginTop: '0.8rem' }}>Cancel</button>
+          <form className="comment-form" onSubmit={handleSubmit}>
+            <h2 className="comment-title">Leave a Comment</h2>
+            <textarea
+              placeholder="Enter your comment..."
+              value={comment}
+              onChange={(e) => {
+                if (e.target.value.length <= maxLength) setComment(e.target.value);
+              }}
+            />
+            <div className="char-count">
+              {maxLength - comment.length} characters remaining
             </div>
-
+            <div className="comment-actions">
+              <button type="button" onClick={handleCancel}>Cancel</button>
+              <button type="submit">Submit Comment</button>
             </div>
-            <p className="payment-note">Secure payment. Cancel anytime.</p>
-          </div>
+            {submitted && <div className="thank-you">Thank you for your feedback!</div>}
+          </form>
         </main>
       </div>
     </div>

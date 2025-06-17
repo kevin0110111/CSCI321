@@ -85,12 +85,15 @@ export default function UserUpload() {
       <div className="dashboard-body">
         <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
-            <li><Link to="/userDashboard">Dashboard</Link></li>
-            <li><Link to="/userupload">Upload image</Link></li>
-            <li><Link to="/userResult">View result history</Link></li>
+            <li><a href="/userDashboard">Dashboard</a></li>
+            <li><a href="/userupload">Upload image</a></li>
+            <li><a href="/userResult">View result history</a></li>
             <li><a href="/userSubscription">Subscription</a></li>
             <li><a href="/reportBug">Report a Bug</a></li>
-            <li><Link to="/login">Log out</Link></li>
+            <li><a href="/leaveComment">Leave a Comment</a></li>
+            <li><a href="/userComments">User Comments</a></li>
+            <li><a href="/switchLanguage">Switch Language</a></li>
+            <li><a href="/login">Log out</a></li>
           </ul>
         </div>
 
