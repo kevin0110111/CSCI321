@@ -1,0 +1,227 @@
+/* Dashboard layout styling */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #e3eafe;
+  color: #1d4ed8;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-container {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Main */
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  height: 45px;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+/* Account Form */
+.account-form-container {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  margin-top: -1.5rem;
+}
+
+.account-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+  display: flex; /* Add this line */
+  flex-direction: column;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-field:not(:nth-last-child(-n+3)) { /* Targets "User name", "Name", "Date of birth", "Email" */
+  display: flex;
+  flex-direction: row; /* Set to row for side-by-side */
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-field:not(:nth-last-child(-n+3)) label {
+  width: 120px; /* Fixed width for labels for alignment */
+  flex-shrink: 0;
+  margin-bottom: 0; /* Remove margin for side-by-side labels */
+}
+
+.form-field:not(:nth-last-child(-n+3)) input {
+  flex-grow: 1; /* Allow input to grow */
+}
+
+.form-field input[type="password"] {
+  width: 97%; /* Adjust this percentage as needed */
+  border-radius: 4px;
+  font-size: 0.9rem;
+  height: 20px;
+  padding: 0.5rem;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  height: 20px;
+}
+
+.form-field input:read-only {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.password-requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.password-requirements p {
+  margin: 0.25rem 0;
+}
+
+.valid {
+  color: #28a745;
+}
+
+.invalid {
+  color: #dc3545;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-btn {
+  background-color: #1d4ed8;
+  color: white;
+}
+
+.edit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  background-color: #6c757d;
+  color: white;
+}
