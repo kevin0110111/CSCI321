@@ -123,7 +123,7 @@ export default function AdminViewAccounts() {
       <AdminTopBar />
       <div className="layout">
         <AdminSidebar />
-        <main className="content">
+        <main className="admin-create-container">
           {/* A */}
           <div className="top-row">
             <h1 className="page-title">Accounts</h1>

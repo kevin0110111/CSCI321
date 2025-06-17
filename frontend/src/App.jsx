@@ -27,6 +27,8 @@ import UserComments from './User/UserComments';
 import AdminDashboard from './Admin/AdminDashBoard';
 import AdminCreateAccount from './Admin/AdminCreateAccount';
 import AdminViewAccounts from './Admin/AdminViewAccounts';
+import AdminAccountDetails from './Admin/AdminAccountDetails';
+import AdminSuspendUser from './Admin/AdminSuspendUser';
 
 export default function App() {
   return (
@@ -62,6 +64,8 @@ export default function App() {
         <Route path="/admin/home" element={<AdminDashboard />} />
         <Route path="/admin/create-account" element={<AdminCreateAccount />} />
         <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
+        <Route path="/admin/user/:userId" element={<AdminAccountDetails />} />
+        <Route path="/admin/suspend-user/:userId" element={<AdminSuspendUser />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>
