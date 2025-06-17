@@ -53,6 +53,12 @@ export default function App() {
         <Route path="/leaveComment" element={<LeaveComment />} />
         <Route path="/switchLanguage" element={<SwitchLanguage />} />
         <Route path="/userComments" element={<UserComments />} />
+
+        //Admin pages
+        <Route path="/admin/home" element={<AdminDashboard />} />
+        <Route path="/admin/create-account" element={<AdminCreateAccount />} />
+        <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
+        <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>
   );
