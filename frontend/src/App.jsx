@@ -31,7 +31,7 @@ export default function App() {
         <Route path="/viewFAQ" element={<ViewFAQ />} />
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
-        <Route path="/" element={<Navigate to="/agentModel" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="/userupload" element={<UserUpload />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
