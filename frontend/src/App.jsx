@@ -11,6 +11,7 @@ import ViewFAQ from './Agent/viewFAQ';
 import UpdateAgentAccount from './Agent/updateAgentAccount';
 
 import Login from './Login/login'
+import RegisterAccount from './Login/registerAccount';
 
 import UserUpload from './User/userUpload';
 import UserDashboard from './User/UserDashboard';
@@ -21,6 +22,8 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/registerAccount" element={<RegisterAccount />} />
+
         <Route path="/agentModel" element={<AgentModel />} />
         <Route path="/agentComment" element={<AgentComment />} />
         <Route path="/agentBugReport" element={<AgentBugReport />} />
@@ -31,7 +34,7 @@ export default function App() {
         <Route path="/viewFAQ" element={<ViewFAQ />} />
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/registerAccount" replace />} />
 
         <Route path="/userupload" element={<UserUpload />} />
         <Route path="/userDashboard" element={<UserDashboard />} />

@@ -1,4 +1,5 @@
 import './login.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   return (
@@ -29,7 +30,7 @@ export default function Login() {
         <button className="login-btn">Log in</button>
 
         <div className="register-link">
-          <a href="#">Register a new account</a>
+          <Link to="/registerAccount">Register a new account</Link>
         </div>
       </form>
     </div>
