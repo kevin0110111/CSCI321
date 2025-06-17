@@ -24,6 +24,10 @@ import LeaveComment from './User/LeaveComment';
 import SwitchLanguage from './User/SwitchLanguage';
 import UserComments from './User/UserComments';
 
+import AdminDashboard from './Admin/AdminDashBoard';
+import AdminCreateAccount from './Admin/AdminCreateAccount';
+import AdminViewAccounts from './Admin/AdminViewAccounts';
+
 export default function App() {
   return (
     <Router>

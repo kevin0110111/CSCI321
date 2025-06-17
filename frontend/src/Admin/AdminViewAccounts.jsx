@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminTopBar from '../components/AdminTopBar';
-import AdminSidebar from '../components/AdminSidebar';
+import AdminTopBar   from './AdminTopBar';   // <- update path as needed
+import AdminSidebar from './AdminSidebar';
 import "./AdminViewAccounts.css";
 
 const allUsers = [
