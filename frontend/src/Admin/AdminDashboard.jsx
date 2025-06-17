@@ -14,7 +14,7 @@ export default function AdminDashboard() {
       <div className="layout">
         <AdminSidebar />
 
-        <main className="content">
+        <main className="admin-create-container">
           <h1>Welcome to Maize Tussel Admin!</h1>
           {/* add dashboard widgets here */}
         </main>

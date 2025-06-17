@@ -1,0 +1,110 @@
+.admin-update-container {
+  flex: 1;
+  padding: 50px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.section-divider {
+  border: none;
+  height: 2px;
+  background-color: #ccc;
+  margin: 30px 0;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 12px;
+  gap:10px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  max-width: 350px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  display: block;        /* ensure block layout */
+  margin-bottom: 30px;   /* more space below each input/select */
+}
+
+.password-checklist {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.password-checklist li {
+  margin: 4px 0;
+}
+
+.password-checklist .valid {
+  color: green;
+}
+
+.password-checklist .invalid {
+  color: red;
+}
+
+.buttons-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 35px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #555;
+}
+
+.btn-cancel:hover {
+  background-color: #333;
+}
+
+.btn-update {
+  background-color: #007bff;
+}
+
+.btn-update:hover {
+  background-color: #0056b3;
+}

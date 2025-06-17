@@ -1,0 +1,123 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.layout {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ccc;
+  max-width: 700px;
+  margin: 30px auto;
+}
+
+.suspend-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-details-header {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.user-id-name {
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-textarea {
+  margin-top: 8px;
+  resize: vertical;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.form-select {
+  margin-top: 8px;
+  width: 100%;
+  max-width: 300px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.form-input {
+  margin-top: 8px;
+  width: 60%;          /* 60% width relative to parent */
+  max-width: 180px;    /* 60% of 300px max-width */
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 10px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger1 {
+  background-color: #e74c3c;
+  
+}
+
+.btn-danger1:hover {
+  background-color: #c0392b;
+}
+
+.btn-success {
+  background-color: #27ae60;
+}
+
+.btn-success:hover {
+  background-color: #1e8449;
+}
