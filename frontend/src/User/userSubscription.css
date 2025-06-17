@@ -1,0 +1,97 @@
+.subscription-container {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.subscription-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.plan-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 250px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.price span {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #555;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.plan-card ul li {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+}
+
+.current-plan,
+.upgrade-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.current-plan:disabled {
+  background-color: #eee;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.upgrade-btn {
+  background-color: #999;
+  color: #fff;
+}
+
+.upgrade-btn:hover {
+  background-color: #444;
+}
+
+.payment-note {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.cancel-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #ddd;
+}

@@ -15,7 +15,14 @@ import RegisterAccount from './Login/registerAccount';
 
 import UserUpload from './User/userUpload';
 import UserDashboard from './User/UserDashboard';
-
+import UpdateUserAccount from './User/UpdateUserAccount';
+import UserResult from './User/UserResult';
+import DetectionResultView from './User/DetectionResultView';
+import UserSubscription from './User/UserSubscription';
+import ReportBug from './User/ReportBug';
+import LeaveComment from './User/LeaveComment';
+import SwitchLanguage from './User/SwitchLanguage';
+import UserComments from './User/UserComments';
 
 export default function App() {
   return (
@@ -34,10 +41,18 @@ export default function App() {
         <Route path="/viewFAQ" element={<ViewFAQ />} />
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
-        <Route path="/" element={<Navigate to="/registerAccount" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="/userupload" element={<UserUpload />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/updateUserAccount" element={<UpdateUserAccount />} />
+        <Route path="/userResult" element={<UserResult />} />
+        <Route path="/user/resultview" element={<DetectionResultView />} />
+        <Route path="/userSubscription" element={<UserSubscription />} />
+        <Route path="/reportBug" element={<ReportBug />} />
+        <Route path="/leaveComment" element={<LeaveComment />} />
+        <Route path="/switchLanguage" element={<SwitchLanguage />} />
+        <Route path="/userComments" element={<UserComments />} />
       </Routes>
     </Router>
   );

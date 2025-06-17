@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './UserUpload.css';
 import uploadIcon from '../assets/upload.svg';
 import avatar from '../assets/logo.png';
@@ -10,6 +11,7 @@ export default function UserUpload() {
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -74,7 +76,7 @@ export default function UserUpload() {
           <span className="product-name">MaizeTassel AI</span>
         </div>
 
-        <div className="avatar-box">
+        <div className="avatar-box" onClick={() => navigate('/updateUserAccount')} style={{ cursor: 'pointer' }}>
           <img src={avatar} alt="User Avatar" className="avatar-img" />
         </div>
       </div>
@@ -83,10 +85,15 @@ export default function UserUpload() {
       <div className="dashboard-body">
         <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
-            <li><Link to="/userDashboard">Dashboard</Link></li>
-            <li><Link to="/userupload">Upload image</Link></li>
-            <li><Link to="/user/history">View result history</Link></li>
-            <li><Link to="/login">Log out</Link></li>
+            <li><a href="/userDashboard">Dashboard</a></li>
+            <li><a href="/userupload">Upload image</a></li>
+            <li><a href="/userResult">View result history</a></li>
+            <li><a href="/userSubscription">Subscription</a></li>
+            <li><a href="/reportBug">Report a Bug</a></li>
+            <li><a href="/leaveComment">Leave a Comment</a></li>
+            <li><a href="/userComments">User Comments</a></li>
+            <li><a href="/switchLanguage">Switch Language</a></li>
+            <li><a href="/login">Log out</a></li>
           </ul>
         </div>
 

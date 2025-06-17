@@ -1,0 +1,61 @@
+.bug-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.bug-title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.bug-form label {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.bug-form input[type="text"],
+.bug-form textarea,
+.bug-form input[type="file"] {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.bug-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.bug-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bug-actions button {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+.bug-success {
+  margin-top: 1rem;
+  color: green;
+  text-align: center;
+  font-weight: bold;
+}
