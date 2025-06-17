@@ -13,25 +13,7 @@ const allUsers = [
   { id: 6, name: "Tom Cook", email: "tom.cook@example.com", role: "Premium User" }
 ];
 
-// Define permissions list (same for all users here)
-const permissionsList = [
-  "Update Document",
-  "Manage Accounts",
-  "Access Database",
-  "Use Systems",
-  "Update Models",
-  "Reply Comments"
-];
 
-// Simulate user permissions map
-const userPermissionsMap = {
-  1: ["Update Document", "Manage Accounts", "Access Database", "Use Systems"],
-  2: ["Access Database"],
-  3: ["Update Document", "Reply Comments"],
-  4: ["Manage Accounts", "Use Systems"],
-  5: ["Access Database", "Update Models"],
-  6: ["Access Database", "Reply Comments"]
-};
 
 export default function AdminAccountDetails() {
   const navigate = useNavigate();
@@ -53,10 +35,13 @@ export default function AdminAccountDetails() {
     );
   }
 
-  const userPermissions = userPermissionsMap[user.id] || [];
+ 
 
   const handleSuspendClick = () => {
     navigate(`/admin/suspend-user/${userId}`);
+  };
+  const handleUpdateDetailsClick=()=> {
+    navigate(`/admin/update-user/${userId}`);
   };
 
   return (
@@ -73,27 +58,15 @@ export default function AdminAccountDetails() {
             <p><strong>Role:</strong> {user.role}</p>
           </section>
 
-          <section>
-            <h3 className="permissions">Permissions</h3>
-            <ul className="permission-list">
-              {permissionsList.map(permission => (
-                <li key={permission}>
-                  <input
-                    type="checkbox"
-                    checked={userPermissions.includes(permission)}
-                    readOnly
-                  />
-                  <label>{permission}</label>
-                </li>
-              ))}
-            </ul>
-          </section>
+          
 
           <div className="buttons-container">
             <button className="btn btn-danger" onClick={handleSuspendClick}>
               Suspend User
             </button>
-            <button className="btn btn-success">Update Account</button>
+            <button className="btn btn-success" onClick={handleUpdateDetailsClick}>
+              Update Account
+            </button>
           </div>
         </main>
       </div>

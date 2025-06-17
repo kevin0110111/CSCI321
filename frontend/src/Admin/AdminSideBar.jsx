@@ -12,7 +12,7 @@ export default function AdminSidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/admin/notifications">
+          <Link to="/admin/home">
             <span role="img" aria-label="notifications">🔔</span> Notifications
           </Link>
         </li>

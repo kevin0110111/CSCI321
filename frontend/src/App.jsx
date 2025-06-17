@@ -29,6 +29,7 @@ import AdminCreateAccount from './Admin/AdminCreateAccount';
 import AdminViewAccounts from './Admin/AdminViewAccounts';
 import AdminAccountDetails from './Admin/AdminAccountDetails';
 import AdminSuspendUser from './Admin/AdminSuspendUser';
+import AdminUpdateAccountDetails from './Admin/AdminUpdateAccountDetails';
 
 export default function App() {
   return (
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
         <Route path="/admin/user/:userId" element={<AdminAccountDetails />} />
         <Route path="/admin/suspend-user/:userId" element={<AdminSuspendUser />} />
+        <Route path="/admin/update-user/:userId" element={<AdminUpdateAccountDetails />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>
