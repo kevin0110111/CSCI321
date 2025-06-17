@@ -14,6 +14,11 @@ import Login from './Login/login'
 
 import UserUpload from './User/userUpload';
 import UserDashboard from './User/UserDashboard';
+import UpdateUserAccount from './User/UpdateUserAccount';
+import UserResult from './User/UserResult';
+import DetectionResultView from './User/DetectionResultView';
+import UserSubscription from './User/UserSubscription';
+import ReportBug from './User/ReportBug';
 
 
 export default function App() {
@@ -35,6 +40,11 @@ export default function App() {
 
         <Route path="/userupload" element={<UserUpload />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/updateUserAccount" element={<UpdateUserAccount />} />
+        <Route path="/userResult" element={<UserResult />} />
+        <Route path="/user/resultview" element={<DetectionResultView />} />
+        <Route path="/userSubscription" element={<UserSubscription />} />
+        <Route path="/reportBug" element={<ReportBug />} />
       </Routes>
     </Router>
   );

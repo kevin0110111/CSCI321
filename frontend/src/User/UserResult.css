@@ -1,0 +1,132 @@
+.result-list-container {
+  padding: 2rem;
+}
+
+.result-list-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.result-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  background-color: #ddd;
+}
+
+.result-meta {
+  flex-grow: 1;
+}
+
+.result-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.result-date {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.result-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.view-btn,
+.delete-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #eee;
+}
+
+.view-btn:hover {
+  background-color: #cce0ff;
+}
+
+.delete-btn:hover {
+  background-color: #ffe0e0;
+}
+
+
+.detection-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.detection-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.detection-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.detection-image {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  background: #eee;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.detection-info {
+  text-align: left;
+  font-size: 1.2rem;
+  background: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.detection-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background: #ddd;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn.save {
+  background-color: #cbe3cb;
+}
+
+.saved-label {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #555;
+}
