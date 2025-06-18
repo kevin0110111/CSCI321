@@ -12,6 +12,7 @@ import UpdateAgentAccount from './Agent/updateAgentAccount';
 
 import Login from './Login/login'
 import RegisterAccount from './Login/registerAccount';
+import ForgotPassword from './Login/forgotPassword';
 
 import UserUpload from './User/userUpload';
 import UserDashboard from './User/UserDashboard';
@@ -38,6 +39,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/registerAccount" element={<RegisterAccount />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
 
         <Route path="/agentModel" element={<AgentModel />} />
         <Route path="/agentComment" element={<AgentComment />} />

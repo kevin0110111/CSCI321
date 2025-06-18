@@ -20,7 +20,7 @@ export default function Login() {
         />
 
         <div className="login-options">
-          <a href="#" className="forgot-link">Forget password?</a>
+          <Link to="/forgotPassword" className="forgot-link">Forget password?</Link>
         </div>
 
         <button className="google-btn">
