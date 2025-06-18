@@ -23,25 +23,27 @@ export default function UserComment() {
     }, []);
 
   return (
-        <main className="dashboard-content">
-          <form className="comment-form" onSubmit={handleSubmit}>
-            <h2 className="comment-title">Leave a Comment</h2>
-            <textarea
-              placeholder="Enter your comment..."
-              value={comment}
-              onChange={(e) => {
-                if (e.target.value.length <= maxLength) setComment(e.target.value);
-              }}
-            />
-            <div className="char-count">
-              {maxLength - comment.length} characters remaining
-            </div>
-            <div className="comment-actions">
-              <button type="button" onClick={handleCancel}>Cancel</button>
-              <button type="submit">Submit Comment</button>
-            </div>
-            {submitted && <div className="thank-you">Thank you for your feedback!</div>}
-          </form>
-        </main>
+        <div className="leave-comment-container">
+          <main className="dashboard-content">
+            <form className="comment-form" onSubmit={handleSubmit}>
+              <h2 className="comment-title">Leave a Comment</h2>
+              <textarea
+                placeholder="Enter your comment..."
+                value={comment}
+                onChange={(e) => {
+                  if (e.target.value.length <= maxLength) setComment(e.target.value);
+                }}
+              />
+              <div className="char-count">
+                {maxLength - comment.length} characters remaining
+              </div>
+              <div className="comment-actions">
+                <button type="button" onClick={handleCancel}>Cancel</button>
+                <button type="submit">Submit Comment</button>
+              </div>
+              {submitted && <div className="thank-you">Thank you for your feedback!</div>}
+            </form>
+          </main>
+        </div>
   );
 }
