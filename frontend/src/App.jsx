@@ -23,6 +23,7 @@ import ReportBug from './User/ReportBug';
 import LeaveComment from './User/LeaveComment';
 import SwitchLanguage from './User/SwitchLanguage';
 import UserComments from './User/UserComments';
+import UserDashboardlayout from './User/dashboardLayout';
 
 import AdminDashboard from './Admin/AdminDashBoard';
 import AdminCreateAccount from './Admin/AdminCreateAccount';
@@ -50,16 +51,18 @@ export default function App() {
 
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="/userupload" element={<UserUpload />} />
-        <Route path="/userDashboard" element={<UserDashboard />} />
-        <Route path="/updateUserAccount" element={<UpdateUserAccount />} />
-        <Route path="/userResult" element={<UserResult />} />
-        <Route path="/user/resultview" element={<DetectionResultView />} />
-        <Route path="/userSubscription" element={<UserSubscription />} />
-        <Route path="/reportBug" element={<ReportBug />} />
-        <Route path="/leaveComment" element={<LeaveComment />} />
-        <Route path="/switchLanguage" element={<SwitchLanguage />} />
-        <Route path="/userComments" element={<UserComments />} />
+        <Route path="/user" element={<UserDashboardlayout />}>
+          <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="upload" element={<UserUpload />} />
+          <Route path="updateUserAccount" element={<UpdateUserAccount />} />
+          <Route path="result" element={<UserResult />} />
+          <Route path="resultview" element={<DetectionResultView />} />
+          <Route path="subscription" element={<UserSubscription />} />
+          <Route path="reportBug" element={<ReportBug />} />
+          <Route path="leaveComment" element={<LeaveComment />} />
+          <Route path="switchLanguage" element={<SwitchLanguage />} />
+          <Route path="comments" element={<UserComments />} />
+        </Route>
 
         //Admin pages
         <Route path="/admin/home" element={<AdminDashboard />} />

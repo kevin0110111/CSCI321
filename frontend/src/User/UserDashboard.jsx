@@ -1,20 +1,14 @@
 import './UserDashboard.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import avatar from '../assets/logo.png';
-import logo from '../assets/faq.svg';
-import './ImageCarousel.css';
-import { useNavigate } from 'react-router-dom';
-
 
 function ImageCarousel() {
     const images = [
-        "/images/pic1.jpg",
-        "/images/pic2.jpg",
-        "/images/pic3.jpg",
-        "/images/pic4.jpg",
-        "/images/pic5.jpg",
-        "/images/pic6.jpg",
+        "/public/dbimg1.png",
+        "/public/dbimg2.png",
+        "/public/dbimg3.png",
+        "/public/dbimg1.png",
+        "/public/dbimg2.png",
+        "/public/dbimg3.png",
     ];
 
     const [current, setCurrent] = useState(0);
@@ -67,109 +61,64 @@ function ImageCarousel() {
 
 
 export default function UserDashboard() {
-    const navigate = useNavigate();
-    useEffect(() => {
-        document.title = 'Dashboard';
-    }, []);
+  useEffect(() => {
+    document.title = 'Dashboard';
+  }, []);
 
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+  return (
+    <div>
+      <ImageCarousel />
 
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
+      <h2 className="welcome-text">Welcome back! User xxx</h2>
+      <hr className="divider" />
 
-    return (
-        <div className="user-dashboard">
-            {/* 顶部栏 */}
-            <div className="dashboard-header">
-                <div className="menu-icon" onClick={toggleSidebar}>
-                    &#9776;
+      {/* Weather Forecast */}
+      <div className="weather-container">
+        <div className="weather-card-large">
+          <div className="weather-header">
+            <span className="location-icon">📍</span>
+            <span className="weather-location">Singapore</span>
+          </div>
+          <hr className="weather-header-line" />
+
+          <div className="weather-row">
+            <div className="weather-info-box">
+              <div className="weather-main-info">
+                <div className="weather-left">
+                  <div className="weather-today-label">Today</div>
+                  <img src="/sun.png" alt="Weather Icon" className="weather-icon-lg" />
                 </div>
-
-                <div className="product-logo">
-                    <img src={logo} alt="Product Logo" className="logo-img" />
-                    <span className="product-name">MaizeTassel AI</span>
+                <div className="weather-divider"></div>
+                <div className="weather-right">
+                  <div className="temp-now">32°C</div>
+                  <div className="desc">Sunny</div>
+                  <div className="wind-humidity">
+                    Wind: 5 km/h<br />
+                    Humidity: 60%
+                  </div>
                 </div>
-
-                <div className="avatar-box" onClick={() => navigate('/updateUserAccount')} style={{ cursor: 'pointer' }}>
-                    <img src={avatar} alt="User Avatar" className="avatar-img" />
-                </div>
+              </div>
             </div>
 
-
-        {/* 主内容区 */}
-        <div className="dashboard-body">
-            <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
-                <ul>
-                    <li><a href="/userDashboard">Dashboard</a></li>
-                    <li><a href="/userupload">Upload image</a></li>
-                    <li><a href="/userResult">View result history</a></li>
-                    <li><a href="/userSubscription">Subscription</a></li>
-                    <li><a href="/reportBug">Report a Bug</a></li>
-                    <li><a href="/leaveComment">Leave a Comment</a></li>
-                    <li><a href="/userComments">User Comments</a></li>
-                    <li><a href="/switchLanguage">Switch Language</a></li>
-                    <li><a href="/login">Log out</a></li>
-                        </ul>
+            <div className="weather-alert-card">
+              <span className="alert-icon">⚠️</span>
+              <p>Heavy rain expected later today</p>
             </div>
+          </div>
 
-            <main className="dashboard-content">
-                <ImageCarousel />
+          <div className="weather-forecast-row">
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, idx) => (
+              <div className="weather-forecast" key={idx}>
+                <div className="day">{day}</div>
+                <img src="/rain.png" alt="forecast" />
+                <div className="temps">30° / 24°</div>
+              </div>
+            ))}
+          </div>
 
-                <h2 className="welcome-text">Welcome back! User xxx</h2>
-                <hr className="divider" />
-
-                {/* Weather Forecast Box */}
-                <div className="weather-container">
-                    <div className="weather-card-large">
-                        <div className="weather-header">
-                            <span className="location-icon">📍</span>
-                            <span className="weather-location">Singapore</span>
-                        </div>
-                            <hr className="weather-header-line" />
-
-                        <div className="weather-row">
-                            <div className="weather-info-box">
-                            <div className="weather-main-info">
-                                <div className="weather-left">
-                                    <div className="weather-today-label">Today</div>
-                                    <img src="/sun.png" alt="Weather Icon" className="weather-icon-lg" />
-                                </div>
-                                <div className="weather-divider"></div>
-                                <div className="weather-right">
-                                    <div className="temp-now">32°C</div>
-                                    <div className="desc">Sunny</div>
-                                    <div className="wind-humidity">
-                                        Wind: 5 km/h<br />
-                                        Humidity: 60%
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-
-                            {/* 右侧：提醒框 */}
-                            <div className="weather-alert-card">
-                                <span className="alert-icon">⚠️</span>
-                                <p>Heavy rain expected later today</p>
-                            </div>
-                        </div>
-
-
-                        <div className="weather-forecast-row">
-                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun",].map((day, idx) => (
-                                <div className="weather-forecast" key={idx}>
-                                    <div className="day">{day}</div>
-                                    <img src="/rain.png" alt="forecast" />
-                                    <div className="temps">30° / 24°</div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="last-updated">Last updated 1 hour ago</div>
-                    </div>
-                </div>
-            </main>
+          <div className="last-updated">Last updated 1 hour ago</div>
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }

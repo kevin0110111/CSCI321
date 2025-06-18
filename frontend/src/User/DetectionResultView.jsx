@@ -1,16 +1,9 @@
 // DetectionResultView.jsx
 import './userResult.css';
-import './UserDashboard.css';
-import avatar from '../assets/logo.png';
-import logo from '../assets/faq.svg';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function DetectionResultView() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
 
   const result = location.state || {
     id: 1,
@@ -22,40 +15,7 @@ export default function DetectionResultView() {
     size: '1920 x 1080'
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   return (
-    <div className="user-dashboard">
-      <div className="dashboard-header">
-        <div className="menu-icon" onClick={toggleSidebar}>
-          &#9776;
-        </div>
-        <div className="product-logo">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <span className="product-name">MaizeTassel AI</span>
-        </div>
-        <div className="avatar-box" onClick={() => navigate('/updateUserAccount')} style={{ cursor: 'pointer' }}>
-          <img src={avatar} alt="User Avatar" className="avatar-img" />
-        </div>
-      </div>
-
-      <div className="dashboard-body">
-        <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <li><a href="/userDashboard">Dashboard</a></li>
-            <li><a href="/userupload">Upload image</a></li>
-            <li><a href="/userResult">View result history</a></li>
-            <li><a href="/userSubscription">Subscription</a></li>
-            <li><a href="/reportBug">Report a Bug</a></li>
-            <li><a href="/leaveComment">Leave a Comment</a></li>
-            <li><a href="/userComments">User Comments</a></li>
-            <li><a href="/switchLanguage">Switch Language</a></li>
-            <li><a href="/login">Log out</a></li>
-          </ul>
-        </div>
-
         <main className="dashboard-content">
           <div className="detection-container">
             <h2 className="detection-title">Detection Result</h2>
@@ -73,7 +33,5 @@ export default function DetectionResultView() {
             </div>
           </div>
         </main>
-      </div>
-    </div>
   );
 }

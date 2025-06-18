@@ -1,0 +1,117 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color: #b3d7c2;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.menu-icon {
+    font-size: 50px;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+}
+
+.product-logo {
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.logo-img {
+    height: 35px;
+    width: 35px;
+}
+
+.avatar-box {
+    width: 60px;
+    height: 60px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+/* Sidebar */
+.usersidebar {
+    position: fixed;
+    top: 80px;
+    /* start below header */
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 80px);
+    background-color: #e7f3f0;
+    transform: translateX(-100%);
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    z-index: 201;
+    overflow-y: auto;
+    box-shadow: 4px 0 15px rgba(182, 161, 247, 0.2);
+}
+
+.usersidebar.open {
+    transform: translateX(0);
+}
+
+.usersidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.usersidebar ul li {
+    margin-bottom: 20px;
+}
+
+.usersidebar ul li a {
+    color: #000;
+    font-size: 25px;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.usersidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    transition: opacity 0.5s ease; 
+    backdrop-filter: blur(3px);
+}
+
+/* Content */
+.dashboard-content {
+    margin-top: 75px;
+    transition: margin-left 0.7s ease;
+}
+
+.usersidebar.open~.dashboard-content {
+    margin-left: 250px;
+}

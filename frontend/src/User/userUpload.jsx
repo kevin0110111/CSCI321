@@ -1,21 +1,12 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
 import './UserUpload.css';
 import uploadIcon from '../assets/upload.svg';
-import avatar from '../assets/logo.png';
-import logo from '../assets/faq.svg';
 
 export default function UserUpload() {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -63,40 +54,11 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
+  useEffect(() => {
+        document.title = 'Upload';
+      }, []);
+
   return (
-    <div className="user-dashboard">
-      {/* 顶部栏 */}
-      <div className="dashboard-header">
-        <div className="menu-icon" onClick={toggleSidebar}>
-          &#9776;
-        </div>
-
-        <div className="product-logo">
-          <img src={logo} alt="Product Logo" className="logo-img" />
-          <span className="product-name">MaizeTassel AI</span>
-        </div>
-
-        <div className="avatar-box" onClick={() => navigate('/updateUserAccount')} style={{ cursor: 'pointer' }}>
-          <img src={avatar} alt="User Avatar" className="avatar-img" />
-        </div>
-      </div>
-
-      {/* 主体区域 */}
-      <div className="dashboard-body">
-        <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <li><a href="/userDashboard">Dashboard</a></li>
-            <li><a href="/userupload">Upload image</a></li>
-            <li><a href="/userResult">View result history</a></li>
-            <li><a href="/userSubscription">Subscription</a></li>
-            <li><a href="/reportBug">Report a Bug</a></li>
-            <li><a href="/leaveComment">Leave a Comment</a></li>
-            <li><a href="/userComments">User Comments</a></li>
-            <li><a href="/switchLanguage">Switch Language</a></li>
-            <li><a href="/login">Log out</a></li>
-          </ul>
-        </div>
-
         <main className="dashboard-content">
           <div className="upload-container">
             <h2>Upload Crop Image</h2>
@@ -154,7 +116,5 @@ export default function UserUpload() {
             </div>
           </div>
         </main>
-      </div>
-    </div>
   );
 }

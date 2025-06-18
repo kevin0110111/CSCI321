@@ -23,15 +23,15 @@
 
 .language-options button {
   padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #aaa;
+  font-size: 2rem;
+  border: 1px solid #000000;
   border-radius: 6px;
-  background-color: #eee;
+  background-color: #5c9a95;
   cursor: pointer;
 }
 
 .language-options button:hover {
-  background-color: #ddd;
+  background-color: #4e827e;
 }
 
 .lang-confirm {

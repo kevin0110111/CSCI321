@@ -1,5 +1,7 @@
 .result-list-container {
   padding: 2rem;
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .result-list-container h2 {
@@ -19,8 +21,8 @@
 }
 
 .result-thumb {
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
   border-radius: 8px;
   margin-right: 1rem;
@@ -33,37 +35,50 @@
 }
 
 .result-title {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.25rem;
 }
 
 .result-date {
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   color: #555;
 }
 
 .result-actions {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.view-btn,
-.delete-btn {
+.user-view-btn {
   padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 6px;
+  font-size: 2rem;
+  border-radius: 10px;
   cursor: pointer;
   border: 1px solid #ccc;
-  background: #eee;
+  background: #7bacf0;
 }
 
-.view-btn:hover {
-  background-color: #cce0ff;
+.user-delete-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #bd2222;
 }
 
-.delete-btn:hover {
-  background-color: #ffe0e0;
+
+
+.user-view-btn:hover {
+  background-color: #6891c9;
+}
+
+.user-delete-btn:hover {
+  background-color: #8b1a1a;
 }
 
 
@@ -88,7 +103,7 @@
 
 .detection-image {
   width: 300px;
-  height: auto;
+  height: 300px;
   object-fit: contain;
   border: 1px solid #ccc;
   background: #eee;

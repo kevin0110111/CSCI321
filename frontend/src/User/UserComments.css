@@ -42,10 +42,10 @@
   padding: 0.6rem 1.2rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #eee;
+  background-color: #5eac9b;
   cursor: pointer;
 }
 
 .load-more button:hover {
-  background-color: #ddd;
+  background-color: #4c8b7e;
 }

@@ -1,52 +1,14 @@
 // UserSubscription.jsx
-import './UserDashboard.css';
 import './userSubscription.css';
-import avatar from '../assets/logo.png';
-import logo from '../assets/faq.svg';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function UserSubscription() {
-  const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+useEffect(() => {
+      document.title = 'Subscription Plan';
+    }, []);
 
   return (
-    <div className="user-dashboard">
-      {/* 顶部导航 */}
-      <div className="dashboard-header">
-        <div className="menu-icon" onClick={toggleSidebar}>&#9776;</div>
-        <div className="product-logo">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <span className="product-name">MaizeTassel AI</span>
-        </div>
-        <div
-          className="avatar-box"
-          onClick={() => navigate('/updateUserAccount')}
-          style={{ cursor: 'pointer' }}
-        >
-          <img src={avatar} alt="User Avatar" className="avatar-img" />
-        </div>
-      </div>
-
-      <div className="dashboard-body">
-        {/* 左侧菜单栏 */}
-        <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <li><a href="/userDashboard">Dashboard</a></li>
-            <li><a href="/userupload">Upload image</a></li>
-            <li><a href="/userResult">View result history</a></li>
-            <li><a href="/userSubscription">Subscription</a></li>
-            <li><a href="/reportBug">Report a Bug</a></li>
-            <li><a href="/leaveComment">Leave a Comment</a></li>
-            <li><a href="/userComments">User Comments</a></li>
-            <li><a href="/switchLanguage">Switch Language</a></li>
-            <li><a href="/login">Log out</a></li>
-          </ul>
-        </div>
-
-        {/* 主体内容 */}
         <main className="dashboard-content">
           <div className="subscription-container">
             <h2>Choose Your Plan</h2>
@@ -77,7 +39,5 @@ export default function UserSubscription() {
             <p className="payment-note">Secure payment. Cancel anytime.</p>
           </div>
         </main>
-      </div>
-    </div>
   );
 }
