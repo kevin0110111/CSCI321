@@ -10,7 +10,7 @@ export default function ReportBug() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 这里可以添加真正的提交逻辑，比如 POST 到后端 API
+    // backend logic
     console.log({ title, description, file });
     setSubmitted(true);
   };

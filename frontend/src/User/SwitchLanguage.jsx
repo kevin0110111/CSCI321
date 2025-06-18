@@ -1,5 +1,5 @@
 // SwitchLanguage.jsx
-import './switchLanguage.css';
+import './SwitchLanguage.css';
 import { useState, useEffect } from 'react';
 
 export default function SwitchLanguage() {
@@ -7,8 +7,7 @@ export default function SwitchLanguage() {
 
   const handleSelectLanguage = (langLabel) => {
     setSelectedLang(langLabel);
-    // 可选：你可以在这里使用 i18n 切换语言
-    // i18n.changeLanguage(langCode)
+
   };
 
   useEffect(() => {
