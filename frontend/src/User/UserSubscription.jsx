@@ -20,7 +20,9 @@ useEffect(() => {
                   <li>✓ Basic quota</li>
                   <li>✓ No re-detect</li>
                 </ul>
-                <button className="current-plan" disabled>Your Plan</button>
+                <div className="button-group">
+                  <button className="current-plan" disabled>Your Plan</button>
+                </div>
               </div>
 
             <div className="plan-card premium">
@@ -31,8 +33,11 @@ useEffect(() => {
                 <li>✓ Re-detect</li>
                 <li>✓ Export results</li>
             </ul>
-            <button className="upgrade-btn">Upgrade</button>
-            <button className="cancel-btn" style={{ marginTop: '0.8rem' }}>Cancel</button>
+            <div className="button-group">
+              <button className="upgrade-btn">Upgrade</button>
+              <button className="cancel-btn">Cancel</button>
+            </div>
+
             </div>
 
             </div>
