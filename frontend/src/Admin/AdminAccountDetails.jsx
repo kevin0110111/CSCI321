@@ -44,7 +44,7 @@ export default function AdminAccountDetails() {
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
         <main className="admin-content">
           <h2 className="admin-user-details-header">User Details</h2>

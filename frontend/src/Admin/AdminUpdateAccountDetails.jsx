@@ -85,7 +85,7 @@ export default function UpdateAccount() {
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
         <main className="admin-update-container">
           <h1 className="page-title">Update Account - {user.name}</h1>
