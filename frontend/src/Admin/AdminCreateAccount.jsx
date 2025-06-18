@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AdminTopBar   from './AdminTopBar';   // <- update path as needed
+import AdminTopBar from './AdminTopBar';   // <- update path as needed
 import AdminSidebar from './AdminSidebar';
 import './AdminCreateAccount.css';
 
@@ -34,21 +34,21 @@ export default function AdminCreateAccount() {
 
   return (
     <div className="admin-dashboard">
-          {/* top bar */}
-          <AdminTopBar />
-    
-          {/* main layout: sidebar + content */}
-          <div className="layout">
-            <AdminSidebar />
+      {/* top bar */}
+      <AdminTopBar />
+
+      {/* main layout: sidebar + content */}
+      <div className="admin-layout">
+        <AdminSidebar />
 
         {/* Main Content */}
         <main className="admin-create-container">
-          <h2 className="section-title">Create a new account for a user</h2>
+          <h2 className="admin-section-title">Create a new account for user</h2>
 
           <form className="admin-create-form" onSubmit={handleSubmit}>
             <label>
               Full name
-              <input type="text" placeholder="e.g. Jane Doe" required />
+              <input type="text" placeholder="e.g. Jane Doe" required className='admin-form-select'/>
             </label>
 
             <label>
@@ -59,48 +59,56 @@ export default function AdminCreateAccount() {
                 value={email}
                 onChange={handleEmailChange}
                 required
+                className="admin-form-select"
               />
-              {emailError && <div style={{ color: 'red', marginTop: '5px' }}>{emailError}</div>}
+              {emailError && (
+                <div style={{ color: 'red', marginTop: '5px' }}>{emailError}</div>
+              )}
             </label>
 
             <label>
               Role
-              <select defaultValue="" required>
-                <option value="" disabled>--</option>
+              <select defaultValue="" required className="admin-form-select">
+                <option value="" disabled>
+                  --
+                </option>
                 <option>Agent</option>
                 <option>User</option>
                 <option>Premium User</option>
               </select>
             </label>
 
-            <hr className="section-divider" />
+            <hr className="admin-section-divider" />
 
-            <h3 className="section-title">Languages and dates</h3>
+            <h3 className="admin-section-title">Languages and dates</h3>
 
-            <div className="language-section">
-              <div className="row">
-                <div className="label">Language</div>
-                <div className="value">English</div>
+            <div className="admin-language-section">
+              <div className="admin-row">
+                <div className="admin-label">Language</div>
+                <div className="admin-value">English</div>
               </div>
 
-              <div className="row">
-                <div className="label">Date</div>
+              <div className="admin-row">
+                <div className="admin-label">Date</div>
                 <input
                   type="date"
                   defaultValue={new Date().toISOString().split('T')[0]}
+                  className="admin-form-input"
                 />
               </div>
 
-              <div className="row">
-                <div className="label">Automatic timezone</div>
-                <label className="switch">
+              <div className="admin-row">
+                <div className="admin-label">Automatic timezone</div>
+                <label className="admin-switch">
                   <input type="checkbox" defaultChecked />
-                  <span className="slider round"></span>
+                  <span className="admin-slider round"></span>
                 </label>
               </div>
             </div>
 
-            <button type="submit">Save</button>
+            <button type="submit" className="admin-save-button">
+              Save
+            </button>
           </form>
         </main>
       </div>

@@ -85,7 +85,7 @@ export default function UpdateAccount() {
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
         <main className="admin-update-container">
           <h1 className="page-title">Update Account - {user.name}</h1>
@@ -135,7 +135,7 @@ export default function UpdateAccount() {
                 {validation.number ? "✓" : "✗"} One number
               </li>
               <li style={{ color: validation.specialChar ? "green" : "red" }}>
-                {validation.specialChar ? "✓" : "✗"} One special character 
+                {validation.specialChar ? "✓" : "✗"} One special character
               </li>
               <li style={{ color: validation.passwordsMatch ? "green" : "red" }}>
                 {validation.passwordsMatch ? "✓" : "✗"} Passwords match
@@ -184,9 +184,9 @@ export default function UpdateAccount() {
             </label>
           </section>
 
-          <div className="buttons-container">
-            <button className="btn btn-cancel" onClick={handleCancel}>Cancel</button>
-            <button className="btn btn-update" disabled={!isValid} onClick={handleUpdate}>Update</button>
+          <div className="admin-update-btn-container">
+            <button className="admin-update-btn admin-update-btn-cancel" onClick={handleCancel}>Cancel</button>
+            <button className="admin-update-btn admin-update-btn-update" disabled={!isValid} onClick={handleUpdate}>Update</button>
           </div>
         </main>
       </div>

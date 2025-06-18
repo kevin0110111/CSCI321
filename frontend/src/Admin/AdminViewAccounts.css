@@ -6,32 +6,32 @@
   background-color: #f9f9f9;
 }
 
-.layout {
+.admin-layout {
   display: flex;
   flex-grow: 1;
 }
 
-.content {
+.admin-content {
   flex-grow: 1;
   padding: 30px 40px;
   overflow-y: auto;
 }
 
 /* A: Top Row */
-.top-row {
+.admin-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.page-title {
+.admin-page-title {
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0;
 }
 
-.search-input {
+.admin-search-input {
   width: 250px;
   padding: 6px 12px;
   font-size: 1rem;
@@ -43,69 +43,70 @@
 }
 
 /* B: Filter and Sort Row */
-.filter-sort-row {
+.admin-filter-sort-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
   flex-wrap: nowrap; /* Prevent wrapping */
   gap: 15px;
+  
 }
 
-.filters-left {
+.admin-filters-left {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: nowrap; /* Prevent wrapping */
-   line-height: 1;
+  line-height: 1;
 }
 
-.filter-label {
+.admin-filter-label {
   font-weight: bold;
   font-size: 26px;
   white-space: nowrap;
   position: relative;
+  margin-top: -10px;
   top: 12px; /* positive moves down, negative moves up */
 }
 
-.filter-select {
-  min-width: 100px !important; /* fixed minimum width */
-  max-width: 180px !important; /* fixed maximum width */
-  width: 180px !important;     /* fixed width */
-  flex-shrink: 0 !important;   /* prevent shrinking */
+.admin-filter-select {
+  min-width: 100px !important;
+  max-width: 180px !important;
+  width: 180px !important;
+  flex-shrink: 0 !important;
   box-sizing: border-box;
-  font-size: 1rem;               /* change font size here */
-  
-  color: #333;                   /* text color */
-  font-family: Arial, sans-serif; /* font family */
-  padding: 6px 8px;             /* padding inside select */
-  flex-shrink: 0;
+  font-size: 1rem;
+  color: #333;
+  font-family: Arial, sans-serif;
+  padding: 6px 8px;
   position: relative;
   top: 12px;
   vertical-align: middle;
-  border-radius: 8px; /* Adjust px as you like */
-  border: 1px solid #aaa; /* Add border if you want */
-
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  margin-top: -20px;
 }
-.divider {
+
+.admin-divider {
   font-weight: bold;
   font-size: 1.3rem;
   color: #888;
   user-select: none;
 }
 
-.filter-icon,
-.sort-icon {
+.admin-filter-icon,
+.admin-sort-icon {
   font-size: 1.3rem;
   cursor: pointer;
   background: none;
   border: none;
   padding: 4px 8px;
   position: relative;
-  top: -5px;
+  top: -2px;
 }
 
-.all-filters {
+.admin-all-filters {
   color: #007bff;
   background: none;
   border: none;
@@ -115,51 +116,49 @@
   font-size: 1rem;
   white-space: nowrap;
   position: relative;
-  top: -4px;
- 
+  top: -1px;
 }
 
-.sort-right {
+.admin-sort-right {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: nowrap; /* prevent wrapping */
+  flex-wrap: nowrap;
+  margin-top: -10px;
 }
 
-.filter-label,
-.sort-label {
+.admin-filter-label,
+.admin-sort-label {
   font-weight: bold;
   font-size: 1rem;
   white-space: nowrap;
-  line-height: 1.5; /* Adjust to visually center text */
-  vertical-align: middle; /* Align with icons */
-  padding: 0 4px 0 0; /* slight right padding */
+  line-height: 1.5;
+  vertical-align: middle;
+  padding: 0 4px 0 0;
   position: relative;
   top: 12px;
+  
 }
 
-
-.sort-select {
-  min-width: 100px !important; /* fixed minimum width */
-  max-width: 180px !important; /* fixed maximum width */
-  width: 180px !important;     /* fixed width */
-  flex-shrink: 0 !important;   /* prevent shrinking */
+.admin-sort-select {
+  min-width: 100px !important;
+  max-width: 180px !important;
+  width: 180px !important;
+  flex-shrink: 0 !important;
   box-sizing: border-box;
-  font-size: 1rem;               /* change font size here */
-  
-  color: #333;                   /* text color */
-  font-family: Arial, sans-serif; /* font family */
-  padding: 6px 8px;             /* padding inside select */
-  flex-shrink: 0;
+  font-size: 1rem;
+  color: #333;
+  font-family: Arial, sans-serif;
+  padding: 6px 8px;
   position: relative;
-  top: 12px;
+  top: 1px;
   vertical-align: middle;
-  border-radius: 8px; /* Adjust px as you like */
-  border: 1px solid #aaa; /* Add border if you want */
+  border-radius: 8px;
+  border: 1px solid #aaa;
 }
 
 /* View buttons */
-.view-btn {
+.admin-view-btn {
   background-color: #6c757d;
   border: none;
   border-radius: 5px;
@@ -169,15 +168,15 @@
   color: white;
   white-space: nowrap;
   position: relative;
-  top: -4px;
+  top: 1px;
 }
 
-.view-btn.active {
+.admin-view-btn.active {
   background-color: #1e6601;
 }
 
 /* C: Selected filters */
-.selected-filters {
+.admin-selected-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -185,15 +184,17 @@
   align-items: center;
   font-size: 14px;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
-.selected-filters .left {
+.admin-selected-filters .left {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 10px;
 }
 
-.filter-tag {
+.admin-filter-tag {
   background-color: #ddd;
   padding: 6px 14px;
   border-radius: 20px;
@@ -203,30 +204,30 @@
   display: flex;
   align-items: center;
   font-size: 16px;
+  
 }
 
-.filter-tag:hover,
-.filter-tag:focus {
+.admin-filter-tag:hover,
+.admin-filter-tag:focus {
   background-color: #bbb;
   outline: none;
 }
 
-.clear-filters {
+.admin-clear-filters {
   background: none;
   border: none;
   color: #007bff;
   cursor: pointer;
   font-weight: 700;
   text-decoration: underline;
-  font-size: 16px;       /* reduce font size to match */
-  padding: 0;            /* no extra padding */
+  font-size: 16px;
+  padding: 0;
   white-space: nowrap;
-  position: relative;   /* <-- Add this */
-  top: -13px;            /* <-- Now this will work */
+  position: relative;
   
 }
 
-.selected-filters .right {
+.admin-selected-filters .right {
   font-size: 16px;
   color: #555;
   white-space: nowrap;
@@ -234,7 +235,7 @@
 }
 
 /* D: User list/grid */
-.user-list.list {
+.admin-user-list.list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -245,7 +246,7 @@
   padding: 12px;
 }
 
-.user-item {
+.admin-user-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -255,34 +256,34 @@
   outline: none;
 }
 
-.user-item:hover,
-.user-item:focus {
+.admin-user-item:hover,
+.admin-user-item:focus {
   background-color: #eaf4fb;
 }
 
-.user-info {
+.admin-user-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.user-role {
+.admin-user-role {
   font-weight: bold;
   font-size: 1rem;
   margin-left: auto;
   white-space: nowrap;
 }
 
-.user-arrow {
+.admin-user-arrow {
   font-size: 1.5rem;
   color: #888;
   margin-left: 10px;
 }
 
 /* Grid container: show items in rows, wrap with gaps */
-.user-list.grid {
+.admin-user-list.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 or 3 boxes per row depending on screen size */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   max-height: 600px;
   overflow-y: auto;
@@ -292,39 +293,37 @@
 }
 
 /* Grid box style for user-item */
-.user-list.grid .user-item {
+.admin-user-list.grid .admin-user-item {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
   background-color: #f9f9f9;
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* vertical centering */
-  align-items: center;      /* horizontal centering */
-  text-align: center;       /* center text inside */
-
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   transition: box-shadow 0.2s ease;
 }
 
-.user-list.grid .user-item:hover,
-.user-list.grid .user-item:focus {
+.admin-user-list.grid .admin-user-item:hover,
+.admin-user-list.grid .admin-user-item:focus {
   box-shadow: 0 0 8px rgba(30, 102, 1, 0.4);
 }
 
 /* User info styling inside the box */
-.user-list.grid .user-info {
+.admin-user-list.grid .admin-user-info {
   margin-bottom: 15px;
 }
 
-.user-list.grid .user-info strong {
+.admin-user-list.grid .admin-user-info strong {
   font-size: 1.25rem;
   display: block;
   width: 100%;
 }
 
-.user-list.grid .user-info span {
+.admin-user-list.grid .admin-user-info span {
   font-size: 1rem;
   color: #555;
   display: block;
@@ -332,39 +331,38 @@
 }
 
 /* Role badge aligned center bottom */
-.user-list.grid .user-role {
+.admin-user-list.grid .admin-user-role {
   font-weight: bold;
   font-size: 2rem;
-
   margin-top: 10px;
   width: 100%;
   text-align: center;
 }
 
 /* For list view */
-.user-list.list .user-role.role-admin {
-  color: #D32F2F; /* red */
+.admin-user-list.list .admin-user-role.role-admin {
+  color: #D32F2F;
 }
-.user-list.list .user-role.role-agent {
-  color: #6A1B9A; /* blue */
+.admin-user-list.list .admin-user-role.role-agent {
+  color: #6A1B9A;
 }
-.user-list.list .user-role.role-user {
-  color: #757575; /* user */
+.admin-user-list.list .admin-user-role.role-user {
+  color: #757575;
 }
-.user-list.list .user-role.role-premium-user {
-  color: #388E3C; /* premium user */
+.admin-user-list.list .admin-user-role.role-premium-user {
+  color: #388E3C;
 }
 
 /* For grid view */
-.user-list.grid .user-role.role-admin {
-  color: #d32f2f; /* red */
+.admin-user-list.grid .admin-user-role.role-admin {
+  color: #d32f2f;
 }
-.user-list.grid .user-role.role-agent {
-  color: #6A1B9A; /* blue */
+.admin-user-list.grid .admin-user-role.role-agent {
+  color: #6A1B9A;
 }
-.user-list.grid .user-role.role-user {
-  color: #757575; /* user */
+.admin-user-list.grid .admin-user-role.role-user {
+  color: #757575;
 }
-.user-list.grid .user-role.role-premium-user {
-  color: #388E3C; /* premium user */
+.admin-user-list.grid .admin-user-role.role-premium-user {
+  color: #388E3C;
 }

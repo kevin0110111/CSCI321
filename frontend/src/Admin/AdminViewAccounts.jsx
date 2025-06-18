@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminTopBar   from './AdminTopBar';   // <- update path as needed
+import AdminTopBar from './AdminTopBar';
 import AdminSidebar from './AdminSidebar';
 import "./AdminViewAccounts.css";
 
@@ -89,60 +89,34 @@ export default function AdminViewAccounts() {
   const goToUserDetails = (userId) => {
     navigate(`/admin/user/${userId}`);
   };
-  const FunnelIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 5h18l-7 7v7l-4-2v-5L3 5z" />
-  </svg>
-);
-<div className={`user-list ${viewMode}`}>
-  {filteredUsers.map(user => (
-    <div
-      className="user-item"
-      key={user.id}
-      onClick={() => goToUserDetails(user.id)}
-      tabIndex={0}
-      role="button"
-      onKeyPress={e => e.key === "Enter" && goToUserDetails(user.id)}
-    >
-      <div className="user-info">
-        <strong>{user.name}</strong>
-        <span>{user.email}</span>
-      </div>
-        <div className={`user-role role-${user.role.toLowerCase().replace(/\s+/g, '-')}`}>
-          {user.role}
-        </div>
-      <div className="user-arrow">▶</div>
-    </div>
-  ))}
-</div>
 
   const uniqueNames = Array.from(new Set(filteredUsers.map(u => u.name)));
 
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
-        <main className="admin-create-container">
+        <main className="admin-content">
           {/* A */}
-          <div className="top-row">
-            <h1 className="page-title">Accounts</h1>
+          <div className="admin-top-row">
+            <h1 className="admin-page-title">Accounts</h1>
             <input
               type="search"
               placeholder="Search users..."
-              className="search-input"
+              className="admin-search-input"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
 
           {/* B */}
-          <div className="filter-sort-row">
-            <div className="filters-left">
-              <label className="filter-label">Filter:</label>
+          <div className="admin-filter-sort-row">
+            <div className="admin-filters-left">
+              <label className="admin-filter-label">Filter:</label>
 
               <select
-                className="filter-select"
+                className="admin-filter-select"
                 value={selectedName}
                 onChange={e => setSelectedName(e.target.value)}
               >
@@ -153,7 +127,7 @@ export default function AdminViewAccounts() {
               </select>
 
               <select
-                className="filter-select"
+                className="admin-filter-select"
                 onChange={onRoleChange}
                 defaultValue=""
               >
@@ -164,15 +138,15 @@ export default function AdminViewAccounts() {
                 <option value="Admin">Admin</option>
               </select>
 
-              <button className="filter-icon" aria-label="Filter icon">⚙️</button>
-              <button className="all-filters" onClick={clearFilters}>All Filters</button>
+              <button className="admin-filter-icon" aria-label="Filter icon">⚙️</button>
+              <button className="admin-all-filters" onClick={clearFilters}>All Filters</button>
             </div>
 
-            <div className="sort-right">
-              <label htmlFor="sort-select" className="sort-label">Sort:</label>
+            <div className="admin-sort-right">
+              <label htmlFor="sort-select" className="admin-filter-label">Sort:</label>
               <select
                 id="sort-select"
-                className="sort-select"
+                className="admin-sort-select"
                 value={sortOrder}
                 onChange={e => setSortOrder(e.target.value)}
               >
@@ -181,14 +155,14 @@ export default function AdminViewAccounts() {
               </select>
 
               <button
-                className={`view-btn ${viewMode === "list" ? "active" : ""}`}
+                className={`admin-view-btn ${viewMode === "list" ? "active" : ""}`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
               >
                 📋
               </button>
               <button
-                className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
+                className={`admin-view-btn ${viewMode === "grid" ? "active" : ""}`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
               >
@@ -198,11 +172,11 @@ export default function AdminViewAccounts() {
           </div>
 
           {/* C */}
-          <div className="selected-filters">
+          <div className="admin-selected-filters">
             <div className="left">
               {selectedFilters.map(filter => (
                 <div
-                  className="filter-tag"
+                  className="admin-filter-tag"
                   key={filter}
                   onClick={() => removeFilter(filter)}
                   tabIndex={0}
@@ -214,7 +188,7 @@ export default function AdminViewAccounts() {
                 </div>
               ))}
               {selectedFilters.length > 0 && (
-                <button className="clear-filters" onClick={clearFilters}>
+                <button className="admin-clear-filters" onClick={clearFilters}>
                   Clear all
                 </button>
               )}
@@ -225,24 +199,24 @@ export default function AdminViewAccounts() {
           </div>
 
           {/* D */}
-          <div className={`user-list ${viewMode}`}>
+          <div className={`admin-user-list ${viewMode}`}>
             {filteredUsers.map(user => (
               <div
-                className="user-item"
+                className="admin-user-item"
                 key={user.id}
                 onClick={() => goToUserDetails(user.id)}
                 tabIndex={0}
                 role="button"
                 onKeyPress={e => e.key === "Enter" && goToUserDetails(user.id)}
               >
-                <div className="user-info">
+                <div className="admin-user-info">
                   <strong>{user.name}</strong>
                   <span>{user.email}</span>
                 </div>
-                <div className={`user-role role-${user.role.toLowerCase().replace(/\s+/g, '-')}`}>
+                <div className={`admin-user-role role-${user.role.toLowerCase().replace(/\s+/g, '-')}`}>
                   {user.role}
                 </div>
-                <div className="user-arrow">▶</div>
+                <div className="admin-user-arrow">▶</div>
               </div>
             ))}
           </div>

@@ -13,8 +13,6 @@ const allUsers = [
   { id: 6, name: "Tom Cook", email: "tom.cook@example.com", role: "Premium User" }
 ];
 
-
-
 export default function AdminAccountDetails() {
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -27,7 +25,7 @@ export default function AdminAccountDetails() {
         <AdminTopBar />
         <div className="layout">
           <AdminSidebar />
-          <main className="content">
+          <main className="admin-content">
             <h2>User not found</h2>
           </main>
         </div>
@@ -35,36 +33,33 @@ export default function AdminAccountDetails() {
     );
   }
 
- 
-
   const handleSuspendClick = () => {
     navigate(`/admin/suspend-user/${userId}`);
   };
-  const handleUpdateDetailsClick=()=> {
+
+  const handleUpdateDetailsClick = () => {
     navigate(`/admin/update-user/${userId}`);
   };
 
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
-        <main className="admin-create-container">
-          <h2 className="user-details-header">User Details</h2>
+        <main className="admin-content">
+          <h2 className="admin-user-details-header">User Details</h2>
 
-          <section className="user-info-section">
+          <section className="admin-user-info-section">
             <p><strong>Name:</strong> {user.name}</p>
             <p><strong>User ID:</strong> {user.id}</p>
             <p><strong>Role:</strong> {user.role}</p>
           </section>
 
-          
-
-          <div className="buttons-container">
-            <button className="btn btn-danger" onClick={handleSuspendClick}>
+          <div className="admin-buttons-container">
+            <button className="admin-btn admin-btn-danger" onClick={handleSuspendClick}>
               Suspend User
             </button>
-            <button className="btn btn-success" onClick={handleUpdateDetailsClick}>
+            <button className="admin-btn admin-btn-success" onClick={handleUpdateDetailsClick}>
               Update Account
             </button>
           </div>
