@@ -38,7 +38,7 @@ label {
   display: block;
   font-weight: 600;
   margin-bottom: 12px;
-  gap:10px;
+  gap: 10px;
 }
 
 .form-input,
@@ -74,14 +74,14 @@ label {
   color: red;
 }
 
-.buttons-container {
+.admin-update-btn-container {
   margin-top: 30px;
   display: flex;
   justify-content: flex-end;
   gap: 15px;
 }
 
-.btn {
+.admin-update-btn {
   padding: 12px 35px;
   font-size: 1rem;
   font-weight: 700;
@@ -93,18 +93,19 @@ label {
   color: white;
 }
 
-.btn-cancel {
-  background-color: #555;
+.admin-update-btn-cancel {
+  background-color: #c0392b;
 }
 
-.btn-cancel:hover {
-  background-color: #333;
+.admin-update-btn-cancel:hover {
+  background-color: #f70404;
 }
 
-.btn-update {
-  background-color: #007bff;
+.admin-update-btn-update {
+  background-color: #02a340;
+  
 }
 
-.btn-update:hover {
-  background-color: #0056b3;
+.admin-update-btn-update:hover {
+  background-color: #00ff62;
 }

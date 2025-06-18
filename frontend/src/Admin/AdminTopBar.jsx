@@ -6,9 +6,9 @@ export default function AdminTopBar() {
   const navigate = useNavigate();
 
   return (
-    <header className="top-nav">
+    <header className="admin-top-nav">
       <div
-        className="logo"
+        className="admin-logo"
         role="button"
         tabIndex={0}
         onClick={() => navigate('/admin/home')}
@@ -16,17 +16,17 @@ export default function AdminTopBar() {
         style={{ cursor: 'pointer' }}
         aria-label="Go to admin home"
       >
-        <span className="logo-icon" role="img" aria-label="corn">🌽</span>
+        <span className="admin-logo-icon" role="img" aria-label="corn">🌽</span>
         Logo
       </div>
 
-      <div className="top-center">
+      <div className="admin-top-center">
         <a href="#">Account</a>
-        <span className="divider">|</span>
+        <span className="admin-divider">|</span>
         <a href="#">Profile</a>
       </div>
 
-      <div className="icons">
+      <div className="admin-icons">
         <span role="img" aria-label="moon">🌓</span>
         <span role="img" aria-label="notifications">🔔</span>
         <span role="img" aria-label="user">👤</span>

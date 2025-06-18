@@ -11,7 +11,7 @@ export default function AdminDashboard() {
       <AdminTopBar />
 
       {/* main layout: sidebar + content */}
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
 
         <main className="admin-create-container">

@@ -24,7 +24,7 @@ export default function AdminSuspendUser() {
   const [customDays, setCustomDays] = useState("");
 
   if (!user) {
-    return <div className="admin-dashboard"><p>User not found.</p></div>;
+    return <div className="admin-create-container"><p>User not found.</p></div>;
   }
 
   const handleSubmit = () => {
@@ -36,17 +36,17 @@ export default function AdminSuspendUser() {
   return (
     <div className="admin-dashboard">
       <AdminTopBar />
-      <div className="layout">
+      <div className="admin-layout">
         <AdminSidebar />
-        <main className="admin-create-container">
-          <h1 className="user-details-header">Suspend Confirmation</h1>
+        <main className="admin-content">
+          <h1 className="admin-user-details-header">Suspend Confirmation</h1>
           <p>You are trying to suspend account</p>
-          <p className="user-id-name"><strong>{user.id} ({user.name})</strong></p>
+          <p className="admin-user-id-name"><strong>{user.id} ({user.name})</strong></p>
 
-          <label className="form-label">
+          <label className="admin-form-label">
             Reason
             <textarea
-              className="form-textarea"
+              className="admin-form-textarea"
               value={reason}
               onChange={e => setReason(e.target.value)}
               placeholder="Enter reason for suspension"
@@ -54,10 +54,10 @@ export default function AdminSuspendUser() {
             />
           </label>
 
-          <label className="form-label">
+          <label className="admin-form-label">
             Suspend duration
             <select
-              className="form-select"
+              className="admin-form-select"
               value={duration}
               onChange={e => setDuration(e.target.value)}
             >
@@ -72,7 +72,7 @@ export default function AdminSuspendUser() {
           {duration === "custom" && (
             <input
               type="number"
-              className="form-input"
+              className="admin-form-input"
               value={customDays}
               onChange={e => setCustomDays(e.target.value)}
               placeholder="Enter number of days"
@@ -80,9 +80,9 @@ export default function AdminSuspendUser() {
             />
           )}
 
-          <div className="buttons-container">
-            <button className="btn btn-danger1" onClick={() => navigate(-1)}>Cancel</button>
-            <button className="btn btn-success" onClick={handleSubmit}>Confirm</button>
+          <div className="admin-buttons-container">
+            <button className="admin-btn admin-btn-danger" onClick={() => navigate(-1)}>Cancel</button>
+            <button className="admin-btn admin-btn-success" onClick={handleSubmit}>Confirm</button>
           </div>
         </main>
       </div>

@@ -7,7 +7,7 @@
 }
 
 /* Top Navigation Bar */
-.top-nav {
+.admin-top-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,7 +17,7 @@
   font-size: 18px;
 }
 
-.logo {
+.admin-logo {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -26,11 +26,11 @@
   padding-top: 28px; /* Align with icons */
 }
 
-.logo-icon {
+.admin-logo-icon {
   font-size: 30px;
 }
 
-.top-center {
+.admin-top-center {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -38,11 +38,11 @@
   font-weight: bold;
 }
 
-.divider {
+.admin-divider {
   padding: 0 10px;
 }
 
-.icons {
+.admin-icons {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -50,12 +50,12 @@
 }
 
 /* Layout wrapper */
-.layout {
+.admin-layout {
   display: flex;
   height: 100%;
 }
 
-/* SIDEBAR — renamed from .sidebar */
+/* SIDEBAR */
 .admin-sidebar {
   width: 260px;
   background-color: #ffffff;
@@ -99,7 +99,7 @@
 }
 
 /* Headers */
-.section-title {
+.admin-section-title {
   font-size: 28px;
   margin: 30px 0 20px 0;
   font-weight: bold;
@@ -113,29 +113,35 @@
 }
 
 .admin-create-form input,
-.admin-create-form select {
+.admin-create-form select,
+.admin-form-input,
+.admin-form-select {
   display: block;
-  width: 100%;
+  max-width: 150%;
+  width: 50%;
   padding: 10px;
   margin-top: 5px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
+
 /* Date */
 .admin-create-container input[type="date"] {
-  width: 160px;  /* Adjust width as needed */
+  width: 160px; /* Adjust width as needed */
   padding: 6px 10px;
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
 /* Language + Date Section */
-.language-section {
+.admin-language-section {
   margin-top: 30px;
 }
 
-.language-section .row {
+.admin-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -144,29 +150,29 @@
   border-bottom: 1px solid #ddd;
 }
 
-.language-section .label {
+.admin-label {
   font-weight: 500;
 }
 
-.language-section .value {
+.admin-value {
   color: #333;
 }
 
 /* Toggle Switch */
-.switch {
+.admin-switch {
   position: relative;
   display: inline-block;
   width: 50px;
   height: 28px;
 }
 
-.switch input {
+.admin-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.admin-slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -178,7 +184,7 @@
   border-radius: 34px;
 }
 
-.slider:before {
+.admin-slider:before {
   position: absolute;
   content: "";
   height: 20px;
@@ -190,17 +196,16 @@
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.admin-switch input:checked + .admin-slider {
   background-color: #2196f3;
 }
 
-input:checked + .slider:before {
+.admin-switch input:checked + .admin-slider:before {
   transform: translateX(22px);
 }
 
 /* Save Button */
-button {
-
+.admin-save-button {
   margin-top: 30px;
   padding: 12px 35px;
   font-size: 16px;
@@ -209,13 +214,6 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  display: block;       /* make button a block element */
-  margin-left: auto;    /* push it to the right */
-}
-
-.section-divider {
-  margin: 40px 0;
-  border: none;
-  height: 2px;
-  background-color: #ccc;
+  display: block;
+  margin-left: auto;
 }

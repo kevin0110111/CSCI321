@@ -6,17 +6,9 @@
   font-family: Arial, sans-serif;
 }
 
-/* main wrapper for sidebar + content */
-.layout {
-  display: flex;
-  width: 100%;
-  height: calc(100vh - 70px); /* 70px = .top-nav height */
-  overflow: hidden;
-}
-
-/* central content area */
-.content {
-  flex: 1;
+.admin-homepage-container{
+    flex: 1;
   padding: 50px;
   background-color: #fff;
+  overflow-y: auto;
 }
