@@ -30,6 +30,10 @@ import AdminViewAccounts from './Admin/AdminViewAccounts';
 import AdminAccountDetails from './Admin/AdminAccountDetails';
 import AdminSuspendUser from './Admin/AdminSuspendUser';
 import AdminUpdateAccountDetails from './Admin/AdminUpdateAccountDetails';
+import AdminCreateProfile from './Admin/AdminCreateprofile';
+import AdminViewProfiles from './Admin/AdminViewProfiles';
+import AdminProfileDetails from "./Admin/AdminProfileDetails";
+import AdminUpdateProfileDetails from './Admin/AdminUpdateProfileDetails';
 
 export default function App() {
   return (
@@ -68,6 +72,10 @@ export default function App() {
         <Route path="/admin/user/:userId" element={<AdminAccountDetails />} />
         <Route path="/admin/suspend-user/:userId" element={<AdminSuspendUser />} />
         <Route path="/admin/update-user/:userId" element={<AdminUpdateAccountDetails />} />
+        <Route path="/admin/create-profile" element={<AdminCreateProfile />} />
+        <Route path="/admin/view-profiles" element={<AdminViewProfiles />} />
+        <Route path="/admin/profile/:roleId" element={<AdminProfileDetails />} />
+        <Route path="/admin/update-profile/:roleId" element={<AdminUpdateProfileDetails />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>

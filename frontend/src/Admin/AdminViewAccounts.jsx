@@ -174,26 +174,43 @@ export default function AdminViewAccounts() {
           {/* C */}
           <div className="admin-selected-filters">
             <div className="left">
-              {selectedFilters.map(filter => (
-                <div
-                  className="admin-filter-tag"
-                  key={filter}
-                  onClick={() => removeFilter(filter)}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Remove filter ${filter}`}
-                  onKeyPress={e => e.key === "Enter" && removeFilter(filter)}
-                >
-                  {filter} ×
-                </div>
-              ))}
+              {selectedFilters.map(filter => {
+                // Determine if filter is a role or a name
+                const roleColors = {
+                  admin: "role-admin",
+                  agent: "role-agent",
+                  user: "role-user",
+                  "premium user": "role-premium-user",
+                };
+
+                // Check if filter is a role (case insensitive match)
+                const filterLower = filter.toLowerCase();
+                const isRole = Object.keys(roleColors).includes(filterLower);
+
+                // Compose className accordingly
+                const tagClass = isRole ? roleColors[filterLower] : "name-filter-tag";
+
+                return (
+                  <div
+                    key={filter}
+                    className={`admin-filter-tag ${tagClass}`}
+                    onClick={() => removeFilter(filter)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Remove filter ${filter}`}
+                    onKeyPress={e => e.key === "Enter" && removeFilter(filter)}
+                  >
+                    {filter} ×
+                  </div>
+                );
+              })}
               {selectedFilters.length > 0 && (
                 <button className="admin-clear-filters" onClick={clearFilters}>
                   Clear all
                 </button>
               )}
             </div>
-            <div className="right">
+            <div className="admin-account-filter-results-info">
               Showing {filteredUsers.length} results
             </div>
           </div>

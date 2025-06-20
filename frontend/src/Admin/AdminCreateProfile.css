@@ -1,0 +1,113 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.admin-layout {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Main content area */
+.admin-create-profile-container {
+  flex-grow: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.admin-page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.admin-section-divider {
+  border: none;
+  height: 2px;
+  background-color: #ccc;
+  margin: 20px 0;
+  width: 100%;   /* make it span full container width */
+  display: block; /* ensure it's a block element */
+}
+
+.admin-create-profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-form-label {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-form-input {
+  margin-top: 8px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+}
+
+.admin-permissions-fieldset {
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 20px 25px;
+  margin-bottom: 30px;
+  max-width: 400px;
+}
+
+.admin-permissions-legend {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.admin-permission-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.admin-permission-label input[type="checkbox"] {
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+}
+
+.admin-permission-text {
+  user-select: none;
+}
+
+.admin-create-btn-submit {
+  width: 120px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #1e6601;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
+  margin-left:auto;
+}
+
+.admin-btn-submit:hover {
+  background-color: #145001;
+}

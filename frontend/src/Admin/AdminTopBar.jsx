@@ -1,9 +1,39 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './AdminTopBar.css';
 
 export default function AdminTopBar() {
   const navigate = useNavigate();
+  const path = useLocation().pathname.toLowerCase();
+
+  const handleAccountClick = (e) => {
+    e.preventDefault();
+    // If currently on create-profile page, clicking Account goes to create-account
+    if (path.includes('create-profile')) {
+      navigate('/admin/create-account');
+    } else if (path.includes('account') && path.includes('create')) {
+      navigate('/admin/create-account');
+    } else {
+      navigate('/admin/view-accounts');
+    }
+  };
+
+  const handleProfileClick = (e) => {
+    e.preventDefault();
+    // If currently on create-account page, clicking Profile goes to create-profile
+    if (path.includes('create-account')) {
+      navigate('/admin/create-profile');
+    } else if (path.includes('profile') && path.includes('create')) {
+      navigate('/admin/create-profile');
+    } else if (path.includes('profile')) {
+      navigate('/admin/view-profiles');
+    } else {
+      navigate('/admin/view-profiles');
+    }
+  };
+
+  const isAccountActive = path.includes('account');
+  const isProfileActive = path.includes('profile');
 
   return (
     <header className="admin-top-nav">
@@ -21,9 +51,21 @@ export default function AdminTopBar() {
       </div>
 
       <div className="admin-top-center">
-        <a href="#">Account</a>
+        <a
+          href="/admin/view-accounts"
+          className={isAccountActive ? 'active-link' : ''}
+          onClick={handleAccountClick}
+        >
+          Account
+        </a>
         <span className="admin-divider">|</span>
-        <a href="#">Profile</a>
+        <a
+          href="/admin/view-profiles"
+          className={isProfileActive ? 'active-link' : ''}
+          onClick={handleProfileClick}
+        >
+          Profile
+        </a>
       </div>
 
       <div className="admin-icons">

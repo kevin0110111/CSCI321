@@ -1,0 +1,97 @@
+
+.admin-page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.admin-role-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.admin-form-label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.admin-form-input {
+  margin-top: 8px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+}
+
+.admin-permissions-fieldset {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px 20px;
+  max-width: 400px;
+}
+
+.admin-permissions-legend {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.admin-permission-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.admin-btn-back {
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #ad0606;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  max-width: 150px;
+  margin-right: auto;
+  
+}
+.admin-btn-back:hover {
+  background-color: #555;
+}
+.admin-btn-update {
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #01a545;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  max-width: 150px;
+}
+.admin-btn-update:hover {
+  background-color: #01f722;
+}
+.admin-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px; /* space above the button */
+}
+.admin-section-divider-profile-details {
+  border: none;
+  border-top: 4px solid #ccc;  /* thin light gray line */
+  margin: 20px 0;              /* vertical spacing */
+}
