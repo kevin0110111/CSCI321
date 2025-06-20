@@ -89,9 +89,11 @@
 .button-group {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  gap: 16px;
   margin: 0 auto;
-  width: fit-content;
+  width: 100%;
+  max-width: 800px;
 }
 
 .submit-btn {
@@ -100,7 +102,6 @@
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 100px;
 }
 
 .reset-btn {
@@ -176,3 +177,93 @@
   line-height: 1;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.close-modal {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.modal-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal-btn.save {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-btn.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-btn.reannotate {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.premium-btn {
+  background-color: #aaa;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.9;
+  margin-left: 8px;
+  min-width: 200px;
+}
+
+.premium-btn:hover {
+  opacity: 1;
+}
+
+.modal-btn.generate {
+  background-color: #007bff;
+  color: white;
+}
