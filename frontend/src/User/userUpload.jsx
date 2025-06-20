@@ -54,6 +54,11 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
+  const [showResult, setShowResult] = useState(false);
+  const [currentResult, setCurrentResult] = useState(null); // 模拟结果
+  const [showDiseaseInfo, setShowDiseaseInfo] = useState(false);
+
+  
   useEffect(() => {
         document.title = 'Upload';
       }, []);
@@ -110,11 +115,95 @@ export default function UserUpload() {
               )}
             </div>
 
-            <div className="button-group">
-              <button className="reset-btn" onClick={handleReset}>Reset</button>
-              <button className="submit-btn" disabled={files.length === 0}>Submit</button>
+        <div className="button-group">
+          <button className="reset-btn" onClick={handleReset}>Reset</button>
+
+          <button
+            className="submit-btn"
+            disabled={files.length === 0}
+            onClick={() => {
+              setCurrentResult({
+                count: Math.floor(Math.random() * 50),
+                image: files[0].previewUrl,
+              });
+              setShowResult(true);
+            }}
+          >
+            Count
+          </button>
+
+          <button
+            className="premium-btn"
+            disabled={false}
+            title="Premium only"
+            onClick={() => {
+              setCurrentResult({
+                image: files[0].previewUrl,
+                disease: 'Rust',
+              });
+              setShowDiseaseInfo(true);
+            }}
+          >
+            Check Disease (Premium)
+          </button>
+
+        </div>
+
+          </div>
+      {showResult && currentResult && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Analysis Result</h3>
+            <img src={currentResult.image} alt="Result" className="modal-image" />
+            <p><strong>Tassel Count:</strong> {currentResult.count}</p>
+
+            <div className="modal-button-group">
+              <button className="modal-btn save" onClick={() => setShowResult(false)}>
+                Save
+              </button>
+              <button className="modal-btn reannotate" onClick={() => {
+                alert('Re-annotate function to be implemented');
+                setShowResult(false);
+              }}>
+                Re-annotate
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowResult(false)}>
+                Cancel
+              </button>
+
             </div>
           </div>
+        </div>
+      )}
+
+      {showDiseaseInfo && currentResult && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Disease Detection Result</h3>
+            <img src={currentResult.image} alt="Result" className="modal-image" />
+            <p><strong>Detected Disease:</strong> {currentResult.disease}</p>
+            <p>
+              <strong>Description:</strong> This disease typically appears as reddish-brown lesions on the leaf surface and can spread under humid conditions.
+            </p>
+            <div className="modal-button-group">
+              <button
+                className="modal-btn generate"
+                onClick={() => alert("Density map generated (simulated).")}
+              >
+                Generate Density Map
+              </button>
+              <button
+                className="modal-btn cancel"
+                onClick={() => setShowDiseaseInfo(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
         </main>
   );
 }
