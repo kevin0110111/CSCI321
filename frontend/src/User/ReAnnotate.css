@@ -27,20 +27,22 @@ hr {
 .annotate-image {
   position: relative;
   display: inline-block;
-  margin-bottom: 20px;
+  margin: 0 auto;
 }
 
+
 .annotate-image img {
-  width: 360px;
-  border: 1px solid #ccc;
-  background-color: #eee;
+  width: 600px;
+  height: auto;
+  display: block;
 }
 
 .selection-rect {
   position: absolute;
   border: 2px dashed red;
   background-color: rgba(255, 0, 0, 0.1);
-  pointer-events: none;
+  pointer-events: auto;
+  z-index: 2;
 }
 
 
@@ -75,5 +77,17 @@ hr {
   color: #2e7d32;
   padding: 10px;
   border-radius: 4px;
+  font-weight: bold;
+}
+
+.box-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 12px;
+  background: white;
+  color: red;
+  padding: 0 3px;
+  border-bottom: 1px solid red;
   font-weight: bold;
 }

@@ -7,8 +7,6 @@ const ReAnnotate = () => {
   const imageUrl = location.state?.image || '/sample-image.png';
   const [updated, setUpdated] = useState(false);
   const [selecting, setSelecting] = useState(false);
-  const [start, setStart] = useState(null);
-  const [rect, setRect] = useState(null);
   const [boxes, setBoxes] = useState([]);
 
   const imageRef = useRef(null);
@@ -21,44 +19,41 @@ const ReAnnotate = () => {
     alert('Manual edit not implemented.');
   };
 
-const handleMouseDown = (e) => {
-  if (!selecting) return;
+const handleImageClick = (e) => {
   if (!imageRef.current) return;
 
   const rect = imageRef.current.getBoundingClientRect();
-  setStart({
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
-  });
-  setRect(null);
-};
+  const naturalWidth = imageRef.current.naturalWidth;
+  const naturalHeight = imageRef.current.naturalHeight;
 
-const handleMouseMove = (e) => {
-  if (!selecting || !start || !imageRef.current) return;
+  const displayedWidth = rect.width;
+  const displayedHeight = rect.height;
 
-  const rect = imageRef.current.getBoundingClientRect();
-  const current = {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
+  
+  const relativeX = (e.clientX - rect.left) / displayedWidth;
+  const relativeY = (e.clientY - rect.top) / displayedHeight;
+
+ 
+  const fixedWidth = 60;
+  const fixedHeight = 40;
+
+  const x = relativeX * displayedWidth - fixedWidth / 2;
+  const y = relativeY * displayedHeight - fixedHeight / 2;
+
+ 
+  const adjustedX = Math.max(0, Math.min(x, displayedWidth - fixedWidth));
+  const adjustedY = Math.max(0, Math.min(y, displayedHeight - fixedHeight));
+
+  const newBox = {
+    x: adjustedX,
+    y: adjustedY,
+    width: fixedWidth,
+    height: fixedHeight
   };
-  setRect({
-    x: Math.min(start.x, current.x),
-    y: Math.min(start.y, current.y),
-    width: Math.abs(current.x - start.x),
-    height: Math.abs(current.y - start.y)
-  });
+
+  setBoxes((prev) => [...prev, newBox]);
 };
 
-
-
-  const handleMouseUp = () => {
-  if (selecting && rect) {
-    setBoxes(prev => [...prev, rect]);  
-    setRect(null);                       
-    setSelecting(false);
-    setStart(null);
-  }
-};
 
 
   return (
@@ -66,43 +61,32 @@ const handleMouseMove = (e) => {
       <main className="annotate-main">
         <h1>Re-annotate Labels</h1>
         <hr />
+        <div className="annotate-image" onClick={handleImageClick}>
+      <img ref={imageRef} src={imageUrl} alt="Annotated Crop" />
+
+          {boxes.map((box, idx) => (
         <div
-          className="annotate-image"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
+          key={idx}
+          className="selection-rect"
+          style={{
+            left: `${box.x}px`,
+            top: `${box.y}px`,
+            width: `${box.width}px`,
+            height: `${box.height}px`
+          }}
+          onContextMenu={(e) => {
+            e.preventDefault(); 
+            const confirmed = window.confirm(`Delete box #${idx + 1}?`);
+            if (confirmed) {
+              setBoxes(prev => prev.filter((_, i) => i !== idx));
+            }
+          }}
         >
-          <img ref={imageRef} src={imageUrl} alt="Annotated Crop" />
-          {/* 当前正在画的临时框 */}
-            {rect && (
-              <div
-                className="selection-rect"
-                style={{
-                  left: `${rect.x}px`,
-                  top: `${rect.y}px`,
-                  width: `${rect.width}px`,
-                  height: `${rect.height}px`
-                }}
-              ></div>
-            )}
-
-            {/* 所有已完成的框 */}
-            {boxes.map((box, idx) => (
-              <div
-                key={idx}
-                className="selection-rect"
-                style={{
-                  left: `${box.x}px`,
-                  top: `${box.y}px`,
-                  width: `${box.width}px`,
-                  height: `${box.height}px`
-                }}
-              ></div>
-            ))}
-
-
-
+          <span className="box-label">{idx + 1}</span>
         </div>
+      ))}
+
+    </div>
 
         <div className="annotate-meta">
           <span>Previous Count: 47</span>
