@@ -39,15 +39,22 @@ export default function DashboardLayout() {
                 <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
                     <ul>
                         <li><Link to="/user/dashboard" onClick={() => setSidebarOpen(false)}>Dashboard</Link></li>
-                        <li><Link to="/user/upload" onClick={() => setSidebarOpen(false)}>Upload image</Link></li>
-                        <li><Link to="/user/result" onClick={() => setSidebarOpen(false)}>View result history</Link></li>
+                        <li><Link to="/user/upload" onClick={() => setSidebarOpen(false)}>Upload Image</Link></li>
+                        <li><Link to="/user/result" onClick={() => setSidebarOpen(false)}>View Result History</Link></li>
                         <li><Link to="/user/subscription" onClick={() => setSidebarOpen(false)}>Subscription</Link></li>
+                        <li><Link to="/user/diseasereport" onClick={() => setSidebarOpen(false)}>Disease Detection</Link></li>
+                        <li><Link to="/user/densitymap" onClick={() => setSidebarOpen(false)}>Density Map</Link></li>
+                        <li><Link to="/user/reannotate" onClick={() => setSidebarOpen(false)}>Re-Annotate Labels</Link></li>
+                        <li><Link to="/user/faq" onClick={() => setSidebarOpen(false)}>FAQ / Help</Link></li>
                         <li><Link to="/user/reportBug" onClick={() => setSidebarOpen(false)}>Report a Bug</Link></li>
                         <li><Link to="/user/leaveComment" onClick={() => setSidebarOpen(false)}>Leave a Comment</Link></li>
                         <li><Link to="/user/comments" onClick={() => setSidebarOpen(false)}>User Comments</Link></li>
                         <li><Link to="/user/switchLanguage" onClick={() => setSidebarOpen(false)}>Switch Language</Link></li>
+                        <li><Link to="/user/updateUserAccount" onClick={() => setSidebarOpen(false)}>Account Settings</Link></li>
+                        <li><Link to="/user/deleteAccount" onClick={() => setSidebarOpen(false)}>Delete Account</Link></li>
                         <li><Link to="/login">Log out</Link></li>
                     </ul>
+
                 </div>
                 {sidebarOpen && (
                     <div className="overlay" onClick={toggleSidebar}></div>

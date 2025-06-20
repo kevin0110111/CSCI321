@@ -26,6 +26,13 @@ import SwitchLanguage from './User/SwitchLanguage';
 import UserComments from './User/UserComments';
 import UserDashboardlayout from './User/dashboardLayout';
 
+import FAQHelp from './User/FAQHelp';
+import DiseaseReport from './User/DiseaseReport';
+import DensityMap from './User/DensityMap';
+import ReAnnotate from './User/ReAnnotate';
+import DeleteAccount from './User/DeleteAccount';
+
+
 import AdminDashboard from './Admin/AdminDashBoard';
 import AdminCreateAccount from './Admin/AdminCreateAccount';
 import AdminViewAccounts from './Admin/AdminViewAccounts';
@@ -64,6 +71,12 @@ export default function App() {
           <Route path="leaveComment" element={<LeaveComment />} />
           <Route path="switchLanguage" element={<SwitchLanguage />} />
           <Route path="comments" element={<UserComments />} />
+          
+          <Route path="faq" element={<FAQHelp />} />                
+          <Route path="diseasereport" element={<DiseaseReport />} />
+          <Route path="densitymap" element={<DensityMap />} />      
+          <Route path="reannotate" element={<ReAnnotate />} />      
+          <Route path="deleteAccount" element={<DeleteAccount />} />
         </Route>
 
         //Admin pages
