@@ -29,7 +29,6 @@ export default function DetectionResultView() {
             </div>
             <div className="detection-buttons">
               <button className="btn">Cancel</button>
-              <button className="btn save">Save</button>
             </div>
           </div>
         </main>
