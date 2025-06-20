@@ -23,7 +23,7 @@ export default function AdminAccountDetails() {
     return (
       <div className="admin-dashboard">
         <AdminTopBar />
-        <div className="layout">
+        <div className="admin-layout">
           <AdminSidebar />
           <main className="admin-content">
             <h2>User not found</h2>

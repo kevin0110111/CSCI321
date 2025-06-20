@@ -42,3 +42,16 @@
   gap: 15px;
   font-size: 22px;
 }
+.admin-top-center a {
+  color: purple; /* normal link color */
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1.75rem;
+}
+
+.admin-top-center a.active-link {
+  color: black;  /* highlighted color */
+  font-weight: bold;
+  text-decoration: underline; /* optional */
+  font-size: 1.75rem;
+}

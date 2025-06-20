@@ -1,3 +1,4 @@
+/* Base & Layout */
 .admin-dashboard {
   display: flex;
   flex-direction: column;
@@ -13,11 +14,11 @@
 
 .admin-content {
   flex-grow: 1;
-  padding: 30px 40px;
+  padding: 20px 30px;
   overflow-y: auto;
 }
 
-/* A: Top Row */
+/* Top Row */
 .admin-top-row {
   display: flex;
   justify-content: space-between;
@@ -26,84 +27,60 @@
 }
 
 .admin-page-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   margin: 0;
 }
 
 .admin-search-input {
-  width: 250px;
-  padding: 6px 12px;
+  width: 220px;
+  padding: 5px 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;
-  min-width: 250px; /* prevent shrinking */
+  min-width: 220px;
   flex-shrink: 0;
 }
 
-/* B: Filter and Sort Row */
+/* Filter and Sort Row */
 .admin-filter-sort-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  flex-wrap: nowrap; /* Prevent wrapping */
-  gap: 15px;
-  
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
 .admin-filters-left {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 15px;
+  flex-wrap: nowrap;
   line-height: 1;
 }
 
 .admin-filter-label {
   font-weight: bold;
-  font-size: 26px;
+  font-size: 1rem;
   white-space: nowrap;
-  position: relative;
-  margin-top: -10px;
-  top: 12px; /* positive moves down, negative moves up */
+  margin-bottom: 12px;
 }
 
 .admin-filter-select {
-  min-width: 100px !important;
-  max-width: 180px !important;
-  width: 180px !important;
-  flex-shrink: 0 !important;
+  min-width: 140px;
+  max-width: 180px;
+  width: 140px;
+  flex-shrink: 0;
   box-sizing: border-box;
   font-size: 1rem;
   color: #333;
   font-family: Arial, sans-serif;
-  padding: 6px 8px;
-  position: relative;
-  top: 12px;
-  vertical-align: middle;
+  padding: 5px 10px;
   border-radius: 8px;
   border: 1px solid #aaa;
-  margin-top: -20px;
-}
-
-.admin-divider {
-  font-weight: bold;
-  font-size: 1.3rem;
-  color: #888;
-  user-select: none;
-}
-
-.admin-filter-icon,
-.admin-sort-icon {
-  font-size: 1.3rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px 8px;
-  position: relative;
-  top: -2px;
+  vertical-align: middle;
 }
 
 .admin-all-filters {
@@ -115,16 +92,14 @@
   text-decoration: underline;
   font-size: 1rem;
   white-space: nowrap;
-  position: relative;
-  top: -1px;
 }
 
+/* Sort right */
 .admin-sort-right {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: nowrap;
-  margin-top: -10px;
 }
 
 .admin-filter-label,
@@ -134,25 +109,19 @@
   white-space: nowrap;
   line-height: 1.5;
   vertical-align: middle;
-  padding: 0 4px 0 0;
-  position: relative;
-  top: 12px;
-  
+  padding-right: 8px;
 }
 
 .admin-sort-select {
-  min-width: 100px !important;
-  max-width: 180px !important;
-  width: 180px !important;
-  flex-shrink: 0 !important;
+  min-width: 140px;
+  max-width: 180px;
+  width: 140px;
+  flex-shrink: 0;
   box-sizing: border-box;
   font-size: 1rem;
   color: #333;
   font-family: Arial, sans-serif;
-  padding: 6px 8px;
-  position: relative;
-  top: 1px;
-  vertical-align: middle;
+  padding: 5px 10px;
   border-radius: 8px;
   border: 1px solid #aaa;
 }
@@ -167,15 +136,14 @@
   cursor: pointer;
   color: white;
   white-space: nowrap;
-  position: relative;
-  top: 1px;
+  transition: background-color 0.3s ease;
 }
 
 .admin-view-btn.active {
   background-color: #1e6601;
 }
 
-/* C: Selected filters */
+/* Selected filters */
 .admin-selected-filters {
   display: flex;
   flex-wrap: wrap;
@@ -183,8 +151,9 @@
   margin: 12px 0 20px 0;
   align-items: center;
   font-size: 14px;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: flex-start; /* align left */
+  
+  
 }
 
 .admin-selected-filters .left {
@@ -192,10 +161,11 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
+  
+  
 }
 
 .admin-filter-tag {
-  background-color: #ddd;
   padding: 6px 14px;
   border-radius: 20px;
   font-weight: 700;
@@ -204,13 +174,54 @@
   display: flex;
   align-items: center;
   font-size: 16px;
-  
+  margin-right: 6px;
+  transition: background-color 0.3s ease;
+  color: white;
+  background-color: #000000;
+}
+/* Filter results */
+.admin-results-info {
+  font-size: 16px;
+  color: #555;
+  white-space: nowrap;
+  font-weight: bold;
+  margin-left: auto;
+  padding-left: 10px;
+}
+
+/* Colored filter tags by role */
+.admin-filter-tag.role-admin {
+  background-color: #D32F2F; /* red */
+}
+
+.admin-filter-tag.role-agent {
+  background-color: #6A1B9A; /* blue/purple */
+}
+
+.admin-filter-tag.role-user {
+  background-color: #757575; /* grey */
+}
+
+.admin-filter-tag.role-premium-user {
+  background-color: #388E3C; /* green */
+}
+/* Permission filter tags: default grey background */
+.admin-filter-tag.permission-filter-tag {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Permission filter tags selected: black background, white text */
+.admin-filter-tag.permission-filter-tag.selected {
+  background-color: black;
+  color: white;
 }
 
 .admin-filter-tag:hover,
 .admin-filter-tag:focus {
-  background-color: #bbb;
+  filter: brightness(0.85);
   outline: none;
+  
 }
 
 .admin-clear-filters {
@@ -223,29 +234,13 @@
   font-size: 16px;
   padding: 0;
   white-space: nowrap;
-  position: relative;
-  
 }
 
-.admin-selected-filters .right {
-  font-size: 16px;
-  color: #555;
-  white-space: nowrap;
-  font-weight: bold;
-}
-.admin-account-filter-results-info {
-  font-size: 16px;
-  color: #555;
-  white-space: nowrap;
-  font-weight: bold;
-  margin-left: auto;
-  padding-left: 10px;
-}
-/* D: User list/grid */
-.admin-user-list.list {
+/* Roles list/grid */
+.admin-profile-list.list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   max-height: 600px;
   overflow-y: auto;
   border: 1px solid #ddd;
@@ -253,42 +248,62 @@
   padding: 12px;
 }
 
-.admin-user-item {
+.admin-profile-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 10px 8px;
+  padding: 12px 15px;
   border-bottom: 1px solid #eee;
   outline: none;
+  background-color: white;
+  transition: background-color 0.2s ease;
 }
 
-.admin-user-item:hover,
-.admin-user-item:focus {
+.admin-profile-item:hover,
+.admin-profile-item:focus {
   background-color: #eaf4fb;
 }
 
-.admin-user-info {
+.admin-profile-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: flex-start; /* align left */
+  max-width: 85%;
+  min-width: 0;
 }
 
-.admin-user-role {
+.admin-profile-role {
   font-weight: bold;
-  font-size: 1rem;
-  margin-left: auto;
-  white-space: nowrap;
+  font-size: 1.2rem;
+  text-align: left; /* ensure left align */
+  width: 100%;
 }
 
-.admin-user-arrow {
-  font-size: 1.5rem;
+.admin-profile-permissions {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.admin-profile-permissions ul {
+  margin: 4px 0 0 16px; /* indent bullet points */
+  padding-left: 0;
+  list-style-type: disc;
+}
+
+.admin-profile-permissions li {
+  margin-bottom: 2px;
+}
+
+.admin-profile-arrow {
+  font-size: 1.6rem;
   color: #888;
-  margin-left: 10px;
+  flex-shrink: 0;
 }
 
-/* Grid container: show items in rows, wrap with gaps */
-.admin-user-list.grid {
+/* Grid container */
+.admin-profile-list.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
@@ -299,8 +314,8 @@
   border-radius: 6px;
 }
 
-/* Grid box style for user-item */
-.admin-user-list.grid .admin-user-item {
+/* Grid box style for profile-item */
+.admin-profile-list.grid .admin-profile-item {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
@@ -314,87 +329,66 @@
   transition: box-shadow 0.2s ease;
 }
 
-.admin-user-list.grid .admin-user-item:hover,
-.admin-user-list.grid .admin-user-item:focus {
+.admin-profile-list.grid .admin-profile-item:hover,
+.admin-profile-list.grid .admin-profile-item:focus {
   box-shadow: 0 0 8px rgba(30, 102, 1, 0.4);
 }
 
-/* User info styling inside the box */
-.admin-user-list.grid .admin-user-info {
+.admin-profile-list.grid .admin-profile-info {
   margin-bottom: 15px;
 }
 
-.admin-user-list.grid .admin-user-info strong {
+.admin-profile-list.grid .admin-profile-info strong {
   font-size: 1.25rem;
   display: block;
   width: 100%;
 }
 
-.admin-user-list.grid .admin-user-info span {
+.admin-profile-list.grid .admin-profile-info span {
   font-size: 1rem;
   color: #555;
   display: block;
   width: 100%;
 }
 
-/* Role badge aligned center bottom */
-.admin-user-list.grid .admin-user-role {
+.admin-profile-list.grid .admin-profile-role {
   font-weight: bold;
   font-size: 2rem;
   margin-top: 10px;
   width: 100%;
   text-align: center;
 }
-/* Role filter tags colored */
-.admin-filter-tag.role-admin {
-  background-color: #D32F2F; /* red */
-  color: white;
+
+/* Role colors for grid view */
+.admin-profile-list.grid .admin-profile-role.role-admin {
+  color: #d32f2f;
 }
 
-.admin-filter-tag.role-agent {
-  background-color: #6A1B9A; /* blue/purple */
-  color: white;
-}
-
-.admin-filter-tag.role-user {
-  background-color: #757575; /* grey */
-  color: white;
-}
-
-.admin-filter-tag.role-premium-user {
-  background-color: #388E3C; /* green */
-  color: white;
-}
-
-/* Name filter tags: black background */
-.admin-filter-tag.name-filter-tag {
-  background-color: black;
-  color: white;
-}
-/* For list view */
-.admin-user-list.list .admin-user-role.role-admin {
-  color: #D32F2F;
-}
-.admin-user-list.list .admin-user-role.role-agent {
+.admin-profile-list.grid .admin-profile-role.role-agent {
   color: #6A1B9A;
 }
-.admin-user-list.list .admin-user-role.role-user {
+
+.admin-profile-list.grid .admin-profile-role.role-user {
   color: #757575;
 }
-.admin-user-list.list .admin-user-role.role-premium-user {
+
+.admin-profile-list.grid .admin-profile-role.role-premium-user {
   color: #388E3C;
 }
 
-/* For grid view */
-.admin-user-list.grid .admin-user-role.role-admin {
-  color: #d32f2f;
+/* Role colors for list view */
+.admin-profile-list.list .admin-profile-role.role-admin {
+  color: #D32F2F;
 }
-.admin-user-list.grid .admin-user-role.role-agent {
+
+.admin-profile-list.list .admin-profile-role.role-agent {
   color: #6A1B9A;
 }
-.admin-user-list.grid .admin-user-role.role-user {
+
+.admin-profile-list.list .admin-profile-role.role-user {
   color: #757575;
 }
-.admin-user-list.grid .admin-user-role.role-premium-user {
+
+.admin-profile-list.list .admin-profile-role.role-premium-user {
   color: #388E3C;
 }

@@ -44,7 +44,7 @@ export default function AdminCreateAccount() {
         {/* Main Content */}
         <main className="admin-create-container">
           <h2 className="admin-section-title">Create a new account for user</h2>
-
+          <hr className="admin-section-divider" />
           <form className="admin-create-form" onSubmit={handleSubmit}>
             <label>
               Full name
@@ -105,7 +105,7 @@ export default function AdminCreateAccount() {
                 </label>
               </div>
             </div>
-
+            <hr className="admin-section-divider" />
             <button type="submit" className="admin-save-button">
               Save
             </button>

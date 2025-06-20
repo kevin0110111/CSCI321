@@ -1,0 +1,158 @@
+/* Base & Layout */
+.admin-update-profile-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.admin-update-profile-layout {
+  display: flex;
+  flex-grow: 1;
+}
+
+.admin-update-profile-content {
+  flex-grow: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgb(0 0 0 / 0.1);
+}
+
+/* Title and warning */
+.admin-update-profile-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #222;
+}
+
+.admin-update-profile-warning {
+  color: #b22222;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Divider */
+.admin-update-profile-divider {
+  border: none;
+  border-top: 4px solid #ccc;
+  margin: 20px 0;
+}
+
+/* Sections */
+.admin-update-profile-section {
+  margin-bottom: 20px;
+}
+
+.admin-update-profile-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* Form inputs */
+.admin-update-profile-label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #444;
+}
+
+.admin-update-profile-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+  margin-top: 6px;
+}
+
+/* Permissions */
+.admin-update-profile-permissions-fieldset {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 20px 20px 20px;
+  margin-top: 25px;
+}
+
+.admin-update-profile-permissions-legend {
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0 5px;
+}
+
+/* Permission checkbox labels */
+.admin-update-profile-permission-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.admin-update-profile-permission-label input {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.admin-update-profile-permission-text {
+  user-select: none;
+}
+
+/* Buttons container */
+.admin-update-profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Cancel button */
+.admin-update-profile-btn-cancel {
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #9e0101;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  max-width: 150px;
+  margin-right:auto;
+}
+
+.admin-update-profile-btn-cancel:hover {
+  background-color: #f80101;
+}
+
+/* Update button */
+.admin-update-profile-btn-update {
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #01a545;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  max-width: 150px;
+}
+
+.admin-update-profile-btn-update:disabled {
+  background-color: #a3d9a5;
+  cursor: not-allowed;
+}
+
+.admin-update-profile-btn-update:hover:not(:disabled) {
+  background-color: #2a6a2a;
+}
