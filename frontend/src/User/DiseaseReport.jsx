@@ -19,7 +19,7 @@ const DiseaseReport = () => {
           <div className="report-content">
             <div className="report-summary">
               <p><strong>Date analyzed:</strong> 2024-06-10</p>
-              <p><strong>Model used:</strong> PlantNet v3.2</p>
+              <p><strong>Model used:</strong> Yolov9</p>
               <p><strong>Detections found:</strong> 7</p>
             </div>
             <div className="report-details">
