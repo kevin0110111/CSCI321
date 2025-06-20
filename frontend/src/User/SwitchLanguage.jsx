@@ -22,8 +22,6 @@ export default function SwitchLanguage() {
             <div className="language-options">
               <button onClick={() => handleSelectLanguage('English')}>English</button>
               <button onClick={() => handleSelectLanguage('中文（简体）')}>中文</button>
-              <button onClick={() => handleSelectLanguage('Español')}>Español</button>
-              <button onClick={() => handleSelectLanguage('Français')}>Français</button>
             </div>
             {selectedLang && (
               <div className="lang-confirm">
