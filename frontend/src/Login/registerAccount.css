@@ -4,13 +4,14 @@
   align-items: center;
   height: 100vh;
   background-color: #f4f4f4;
+  overflow-y: auto;
 }
 
 .register-box {
   background-color: #fff;
   padding: 2rem;
   width: 350px;
-  border-radius: 10px;
+  border-radius: 50px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
 }

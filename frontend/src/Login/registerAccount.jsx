@@ -8,6 +8,7 @@ export default function RegisterAccount() {
   const [formData, setFormData] = useState({
     name: '',
     username: '',
+    email: '',
     dob: '',
     password: ''
   });
@@ -68,6 +69,15 @@ export default function RegisterAccount() {
             placeholder="User name"
             className="register-input"
             value={formData.username}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            className="register-input"
+            value={formData.email}
             onChange={handleChange}
             required
           />
