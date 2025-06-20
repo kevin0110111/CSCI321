@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from 'react';
 import './UserUpload.css';
 import uploadIcon from '../assets/upload.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserUpload() {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
+  const navigate = useNavigate();
 
 
   const handleFileChange = (event) => {
@@ -161,12 +163,21 @@ export default function UserUpload() {
               <button className="modal-btn save" onClick={() => setShowResult(false)}>
                 Save
               </button>
-              <button className="modal-btn reannotate" onClick={() => {
-                alert('Re-annotate function to be implemented');
-                setShowResult(false);
-              }}>
+              <button
+                className="modal-btn reannotate"
+                onClick={() => {
+                  setShowResult(false);
+                  navigate('/user/reannotate', {
+                    state: {
+                      image: currentResult.image // 或者 files[0].previewUrl
+                    }
+                  });
+                }}
+              >
                 Re-annotate
               </button>
+
+
               <button className="modal-btn cancel" onClick={() => setShowResult(false)}>
                 Cancel
               </button>
@@ -187,11 +198,15 @@ export default function UserUpload() {
             </p>
             <div className="modal-button-group">
               <button
-                className="modal-btn generate"
-                onClick={() => alert("Density map generated (simulated).")}
-              >
-                Generate Density Map
-              </button>
+              className="modal-btn generate"
+              onClick={() => {
+                setShowDiseaseInfo(false); 
+                navigate('/user/densitymap'); 
+              }}
+            >
+              Generate Density Map
+            </button>
+
               <button
                 className="modal-btn cancel"
                 onClick={() => setShowDiseaseInfo(false)}

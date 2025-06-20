@@ -74,9 +74,10 @@ export default function App() {
           
           <Route path="faq" element={<FAQHelp />} />                
           <Route path="diseasereport" element={<DiseaseReport />} />
-          <Route path="densitymap" element={<DensityMap />} />      
-          <Route path="reannotate" element={<ReAnnotate />} />      
+          <Route path="densitymap" element={<DensityMap />} />           
           <Route path="deleteAccount" element={<DeleteAccount />} />
+          <Route path="/user/reannotate" element={<ReAnnotate />} />
+
         </Route>
 
         //Admin pages

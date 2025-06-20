@@ -43,8 +43,6 @@ export default function DashboardLayout() {
                         <li><Link to="/user/result" onClick={() => setSidebarOpen(false)}>View Result History</Link></li>
                         <li><Link to="/user/subscription" onClick={() => setSidebarOpen(false)}>Subscription</Link></li>
                         <li><Link to="/user/diseasereport" onClick={() => setSidebarOpen(false)}>Disease Detection</Link></li>
-                        <li><Link to="/user/densitymap" onClick={() => setSidebarOpen(false)}>Density Map</Link></li>
-                        <li><Link to="/user/reannotate" onClick={() => setSidebarOpen(false)}>Re-Annotate Labels</Link></li>
                         <li><Link to="/user/faq" onClick={() => setSidebarOpen(false)}>FAQ / Help</Link></li>
                         <li><Link to="/user/reportBug" onClick={() => setSidebarOpen(false)}>Report a Bug</Link></li>
                         <li><Link to="/user/leaveComment" onClick={() => setSidebarOpen(false)}>Leave a Comment</Link></li>
