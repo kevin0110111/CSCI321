@@ -153,43 +153,39 @@ export default function UserUpload() {
 
           </div>
       {showResult && currentResult && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="result-modal-overlay">
+          <div className="result-modal-content">
             <h3>Analysis Result</h3>
             <img src={currentResult.image} alt="Result" className="modal-image" />
             <p><strong>Tassel Count:</strong> {currentResult.count}</p>
 
             <div className="modal-button-group">
-              <button className="modal-btn save" onClick={() => setShowResult(false)}>
+              <button className="count-btn-save" onClick={() => setShowResult(false)}>
                 Save
               </button>
               <button
-                className="modal-btn reannotate"
+                className="count-btn-reannotate"
                 onClick={() => {
                   setShowResult(false);
                   navigate('/user/reannotate', {
-                    state: {
-                      image: currentResult.image // 或者 files[0].previewUrl
-                    }
+                    state: { image: currentResult.image }
                   });
                 }}
               >
                 Re-annotate
               </button>
-
-
-              <button className="modal-btn cancel" onClick={() => setShowResult(false)}>
+              <button className="count-btn-cancel" onClick={() => setShowResult(false)}>
                 Cancel
               </button>
-
             </div>
           </div>
         </div>
       )}
 
+
       {showDiseaseInfo && currentResult && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="disease-modal-overlay">
+          <div className="disease-modal-content">
             <h3>Disease Detection Result</h3>
             <img src={currentResult.image} alt="Result" className="modal-image" />
             <p><strong>Detected Disease:</strong> {currentResult.disease}</p>
@@ -197,18 +193,20 @@ export default function UserUpload() {
               <strong>Description:</strong> This disease typically appears as reddish-brown lesions on the leaf surface and can spread under humid conditions.
             </p>
             <div className="modal-button-group">
+              <button className="disease-btn-save" onClick={() => setShowDiseaseInfo(false)}>
+                Save
+              </button>
               <button
-              className="modal-btn generate"
-              onClick={() => {
-                setShowDiseaseInfo(false); 
-                navigate('/user/densitymap'); 
-              }}
-            >
-              Generate Density Map
-            </button>
-
+                className="disease-btn-generate"
+                onClick={() => {
+                  setShowDiseaseInfo(false);
+                  navigate('/user/densitymap');
+                }}
+              >
+                Generate Density Map
+              </button>
               <button
-                className="modal-btn cancel"
+                className="disease-btn-cancel"
                 onClick={() => setShowDiseaseInfo(false)}
               >
                 Close
@@ -217,6 +215,7 @@ export default function UserUpload() {
           </div>
         </div>
       )}
+
 
 
         </main>

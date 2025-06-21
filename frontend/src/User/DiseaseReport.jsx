@@ -12,7 +12,7 @@ const DiseaseReport = () => {
         <div className="report-body">
           {/* Left: Image */}
           <div className="report-image">
-            <img src="/placeholder-report.png" alt="Detected Crop" />
+            <img src="/public/greyleaf.jpg" alt="Detected Crop" />
           </div>
 
           {/* Right: Text Content */}

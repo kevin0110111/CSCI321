@@ -177,7 +177,8 @@
   line-height: 1;
 }
 
-.modal-overlay {
+.result-modal-overlay,
+.disease-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -188,13 +189,15 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  font-size: 2rem;
 }
 
-.modal-content {
+.result-modal-content,
+.disease-modal-content {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  width: 300px;
+  width: 600px;
   text-align: center;
 }
 
@@ -222,27 +225,38 @@
   flex-wrap: wrap;
 }
 
-.modal-btn {
+
+.count-btn-save {
+  background-color: #28a745;
+  color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1.5rem;
 }
 
-.modal-btn.save {
-  background-color: #28a745;
-  color: white;
-}
-
-.modal-btn.cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-.modal-btn.reannotate {
+.count-btn-reannotate {
   background-color: #ffc107;
   color: #212529;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.count-btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .premium-btn {
@@ -259,11 +273,35 @@
   min-width: 200px;
 }
 
-.premium-btn:hover {
-  opacity: 1;
+.disease-btn-save {
+  background-color: #219559;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
-.modal-btn.generate {
+.disease-btn-generate {
   background-color: #007bff;
   color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.disease-btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
