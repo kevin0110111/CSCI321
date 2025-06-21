@@ -12,15 +12,15 @@ import { useState } from 'react';
 
 export default function AgentModel() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5; // This would typically come from your API
+  const totalPages = 1; // This would typically come from your API
   const navigate = useNavigate();
 
   const modelCards = [
-    { id: 1, name: "Model 1", updatedAt: "2023-10-15 14:30" },
-    { id: 2, name: "Model 2", updatedAt: "2023-10-14 09:15" },
-    { id: 3, name: "Model 3", updatedAt: "2023-10-13 16:45" },
-    { id: 4, name: "Model 4", updatedAt: "2023-10-12 11:20" },
-    { id: 5, name: "Model 5", updatedAt: "2023-10-11 13:10" },
+    { id: 1, name: "TasselNet", updatedAt: "2024-10-15 14:30" },
+    { id: 2, name: "YOLOv9", updatedAt: "2024-10-14 09:15" },
+    { id: 3,  },
+    { id: 4,  },
+    { id: 5,  },
   ];
 
   const handlePrevious = () => {

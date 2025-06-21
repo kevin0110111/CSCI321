@@ -6,11 +6,14 @@ import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function ViewFAQ() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isCreating = location.state?.isCreating || false;
+
   const [reply, setReply] = useState('');
   const [faqTitle, setFaqTitle] = useState('How to upload images?');
 
@@ -75,7 +78,7 @@ export default function ViewFAQ() {
       <div className="main-section">
         {/* Header */}
         <header className="header">
-          <h1>View FAQ</h1>
+          <h1>{isCreating ? 'Create FAQ' : 'View FAQ'}</h1>
           <div className="profile">
             <button onClick={handleProfileClick} className="profile-button">
               <img src={profile} alt="Profile" className="profile-icon" />
@@ -105,10 +108,15 @@ export default function ViewFAQ() {
           </div>
 
           <div className="action-buttons">
-            <button className="reply-button" onClick={handleCreate}>Create</button>
-            <button className="reply-button" onClick={handleUpdate}>Update</button>
-            <button className="delete-button" onClick={handleDelete}>Delete</button>
-            <button className="back-button">Back</button>
+            {isCreating ? (
+              <button className="reply-button" onClick={handleCreate}>Create</button>
+            ) : (
+              <>
+                <button className="reply-button" onClick={handleUpdate}>Update</button>
+                <button className="delete-button" onClick={handleDelete}>Delete</button>
+              </>
+            )}
+            <button className="back-button" onClick={() => navigate(-1)}>Back</button>
           </div>
         </main>
       </div>

@@ -80,18 +80,8 @@ export default function ViewComment() {
           <div className="comment-section">
             <h3>Comment:</h3>
             <div className="comment-box">
-              <p>This is the user's comment content. It can be long and should be scrollable if it exceeds the box height.
-                sfdjjngjnfjgnfjngjfngjnfjgnjfngjnfgjnj
-                sfdfgdh
-                sdgfgfhggdh
-                dgfdgfhh
-                sdgfgfhggdhfgf
-                sdfggs
-                ddffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                dgfdfewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrretg
-                gdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-                sdddddddddddd
+              <p>The maize tassel count system is realiable and working fast even at processing batch images.
+                 Weather forecast features is really useful for our farmer.
               </p>
             </div>
           </div>

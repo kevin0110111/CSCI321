@@ -17,11 +17,11 @@ export default function AgentBugReport() {
   const totalPages = 5; // This would typically come from your API
 
   const modelCards = [
-    { id: 1, name: "Model 1", updatedAt: "2023-10-15 14:30" },
-    { id: 2, name: "Model 2", updatedAt: "2023-10-14 09:15" },
-    { id: 3, name: "Model 3", updatedAt: "2023-10-13 16:45" },
-    { id: 4, name: "Model 4", updatedAt: "2023-10-12 11:20" },
-    { id: 5, name: "Model 5", updatedAt: "2023-10-11 13:10" },
+    { id: 1, name: "Upload image bug", updatedAt: "2023-10-15 14:30" },
+    { id: 2, name: "Error while changing password", updatedAt: "2023-10-14 09:15" },
+    { id: 3, name: "Weather forecast not showing properly", updatedAt: "2023-10-13 16:45" },
+    { id: 4, name: "Register new account failed", updatedAt: "2023-10-12 11:20" },
+    { id: 5, name: "Unable to view count history", updatedAt: "2023-10-11 13:10" },
   ];
 
   const handlePrevious = () => {

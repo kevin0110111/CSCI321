@@ -17,11 +17,11 @@ export default function AgentComment() {
   const navigate = useNavigate();
 
   const modelCards = [
-    { id: 1, name: "Model 1", updatedAt: "2023-10-15 14:30" },
-    { id: 2, name: "Model 2", updatedAt: "2023-10-14 09:15" },
-    { id: 3, name: "Model 3", updatedAt: "2023-10-13 16:45" },
-    { id: 4, name: "Model 4", updatedAt: "2023-10-12 11:20" },
-    { id: 5, name: "Model 5", updatedAt: "2023-10-11 13:10" },
+    { id: 1, name: "cx033", updatedAt: "2023-10-15 14:30" },
+    { id: 2, name: "Jhon", updatedAt: "2023-10-14 09:15" },
+    { id: 3, name: "Mavrict", updatedAt: "2023-10-13 16:45" },
+    { id: 4, name: "Hendrix", updatedAt: "2023-10-12 11:20" },
+    { id: 5, name: "Erry99", updatedAt: "2023-10-11 13:10" },
   ];
 
   const handlePrevious = () => {

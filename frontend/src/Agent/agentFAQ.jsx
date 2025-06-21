@@ -17,11 +17,11 @@ export default function AgentFAQ() {
   const totalPages = 5; // This would typically come from your API
 
   const modelCards = [
-    { id: 1, name: "Model 1", updatedAt: "2023-10-15 14:30" },
-    { id: 2, name: "Model 2", updatedAt: "2023-10-14 09:15" },
-    { id: 3, name: "Model 3", updatedAt: "2023-10-13 16:45" },
-    { id: 4, name: "Model 4", updatedAt: "2023-10-12 11:20" },
-    { id: 5, name: "Model 5", updatedAt: "2023-10-11 13:10" },
+    { id: 1, name: "How to upload images?", updatedAt: "2025-10-15 14:30" },
+    { id: 2, name: "How to change password?", updatedAt: "2025-10-14 09:15" },
+    { id: 3, name: "How to view weather forecast?", updatedAt: "2025-10-13 16:45" },
+    { id: 4, name: "How to change account password?", updatedAt: "2025-10-12 11:20" },
+    { id: 5, name: "How to view count history?", updatedAt: "2025-10-11 13:10" },
   ];
 
   const handlePrevious = () => {
@@ -37,8 +37,8 @@ export default function AgentFAQ() {
     console.log("Update button clicked");
   };
 
-  const handleDoubleClick = () => {
-    navigate('/viewFAQ');
+  const handleDoubleClick = (modelId) => {
+    navigate('/viewFAQ', { state: { isCreating: false, modelId } });
   };
 
   const handleProfileClick = () => {
@@ -46,7 +46,7 @@ export default function AgentFAQ() {
   };
 
   const handleDashboardCreate = () => {
-    navigate('/viewFAQ');
+    navigate('/viewFAQ', { state: { isCreating: true } });
   };
 
   return (
@@ -82,7 +82,7 @@ export default function AgentFAQ() {
         {/* Model Cards */}
         <main className="model-cards-container">
           {modelCards.map((model) => (
-            <div key={model.id} className="model-card" onDoubleClick={handleDoubleClick}>
+            <div key={model.id} className="model-card" onDoubleClick={() => handleDoubleClick(model.id)}>
               <div className="model-info">
                 <span className="model-number">{model.id}.</span>
                 <div>

@@ -77,24 +77,14 @@ export default function ViewBugReport() {
           <div className="user-info">
             <h2>User name: cx033</h2>
             <h2>Title: Upload image bug</h2>
-            <h2>Reported at: 12-10-2025</h2>
+            <h2>Reported at: 2023-10-15</h2>
           </div>
 
           <div className="comment-section">
             <h3>Reported bug:</h3>
             <div className="report-box">
-              <p>This is the user's comment content. It can be long and should be scrollable if it exceeds the box height.
-                sfdjjngjnfjgnfjngjfngjnfjgnjfngjnfgjnj
-                sfdfgdh
-                sdgfgfhggdh
-                dgfdgfhh
-                sdgfgfhggdhfgf
-                sdfggs
-                ddffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                dgfdfewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrretg
-                gdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-                sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+              <p>Recently when I am uploading the images to the website as usual, I found that a lot of images are failed to be upload. 
+                 Hope it can be fix as fast as possible.                
               </p>
             </div>
           </div>
