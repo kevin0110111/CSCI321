@@ -79,7 +79,7 @@ export default function Login() {
       localStorage.setItem('authToken', 'authenticated');
 
       // Get profile information
-      const profileResponse = await fetch(`/api/Profiles/${data.account.profile_id}`);
+      const profileResponse = await fetch(`http://localhost:8000/api/Profiles/${data.account.profile_id}`);
       
       if (!profileResponse.ok) {
         throw new Error('Failed to fetch profile information');
