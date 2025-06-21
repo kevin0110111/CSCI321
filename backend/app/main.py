@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routes import users
+
 from app.routes import Accounts
 from app.routes import Profiles
 
@@ -26,7 +26,6 @@ async def shutdown_db_client():
     await close_mongo_connection()
 
 # Include routes
-app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(Accounts.router, prefix="/api/Accounts", tags=["Accounts"])
 app.include_router(Profiles.router, prefix="/api/Profiles", tags=["Profiles"])
 
