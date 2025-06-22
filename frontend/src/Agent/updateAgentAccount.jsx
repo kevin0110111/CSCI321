@@ -51,6 +51,10 @@ export default function UpdateAgentAccount() {
     setIsEditing(false);
   };
 
+  const AgentLogout = () => {
+    navigate('/login');
+  }
+
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -64,7 +68,9 @@ export default function UpdateAgentAccount() {
             <Link to="/agentFAQ" className="nav-link"><img src={faq} alt="FAQ" className="icon"/> FAQ</Link>
           </div>
           <div className="logout-container">
-            <a href="#" className="nav-link"><img src={logout} alt="Logout" className="icon"/> Logout</a>
+            <button onClick={AgentLogout} className="nav-link agent-logout-button">
+              <img src={logout} alt="Logout" className="icon"/> Logout
+            </button>
           </div>
         </nav>
       </aside>

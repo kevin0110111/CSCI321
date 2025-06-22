@@ -32,6 +32,10 @@ export default function ViewBugReport() {
     navigate('/updateAgentAccount');
   };
 
+  const AgentLogout = () => {
+    navigate('/login');
+  }
+
   return (
     <div className="dashboard-container">
       {/* Sidebar remains the same */}
@@ -53,9 +57,9 @@ export default function ViewBugReport() {
             </Link>
           </div>
           <div className="logout-container">
-            <a href="#" className="nav-link">
+            <button onClick={AgentLogout} className="nav-link agent-logout-button">
               <img src={logout} alt="Logout" className="icon"/> Logout
-            </a>
+            </button>
           </div>
         </nav>
       </aside>

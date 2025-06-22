@@ -223,3 +223,21 @@ opacity: 0.8;
 .editable-title:hover {
   background-color: #e3eafe;
 }
+
+.agent-logout-button {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agent-logout-button:hover {
+  opacity: 0.8;
+}

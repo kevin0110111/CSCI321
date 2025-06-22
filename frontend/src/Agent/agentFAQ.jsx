@@ -49,6 +49,10 @@ export default function AgentFAQ() {
     navigate('/viewFAQ', { state: { isCreating: true } });
   };
 
+  const AgentLogout = () => {
+    navigate('/login');
+  }
+
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -62,7 +66,9 @@ export default function AgentFAQ() {
             <Link to="/agentFAQ" className="nav-link active"><img src={faq} alt="FAQ" className="icon"/> FAQ</Link>
           </div>
           <div className="logout-container">
-            <a href="#" className="nav-link"><img src={logout} alt="Logout" className="icon"/> Logout</a>
+            <button onClick={AgentLogout} className="nav-link agent-logout-button">
+              <img src={logout} alt="Logout" className="icon"/> Logout
+            </button>
           </div>
         </nav>
       </aside>
