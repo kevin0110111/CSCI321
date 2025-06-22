@@ -7,9 +7,19 @@ import './dashboardLayout.css';
 export default function DashboardLayout() {
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
+    };
+
+    const handleLogout = () => {
+        setShowLogoutModal(true);
+    };
+
+    const confirmLogout = () => {
+        setShowLogoutModal(false);
+        navigate('/login');
     };
 
     return (
@@ -50,7 +60,10 @@ export default function DashboardLayout() {
                         <li><Link to="/user/switchLanguage" onClick={() => setSidebarOpen(false)}>Switch Language</Link></li>
                         <li><Link to="/user/updateUserAccount" onClick={() => setSidebarOpen(false)}>Account Settings</Link></li>
                         <li><Link to="/user/deleteAccount" onClick={() => setSidebarOpen(false)}>Delete Account</Link></li>
-                        <li><Link to="/login">Log out</Link></li>
+                        <li onClick={handleLogout}>
+                            <a style={{ cursor: 'pointer' }}>Log out</a>
+                        </li>
+
                     </ul>
 
                 </div>
@@ -60,6 +73,19 @@ export default function DashboardLayout() {
                 <div className="dashboard-content">
                     <Outlet />
                 </div>
+
+                {/* Logout Confirmation Modal */}
+                {showLogoutModal && (
+                    <div className="logout-modal">
+                        <div className="modal-box">
+                            <p>Are you sure you want to log out?</p>
+                            <div className="modal-actions">
+                                <button onClick={confirmLogout}>Yes</button>
+                                <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

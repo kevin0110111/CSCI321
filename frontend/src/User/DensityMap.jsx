@@ -5,6 +5,10 @@ import './DensityMap.css';
 const DensityMap = () => {
   const [selectedLevel, setSelectedLevel] = useState('LOW');
 
+  const handleDownload = () => {
+    alert('Map downloaded successfully.');
+  };
+
   return (
     <div className="density-layout">
       <main className="density-main">
@@ -49,8 +53,8 @@ const DensityMap = () => {
 
         {/* Action buttons */}
         <div className="density-actions">
-          <button className="btn download">Download Map</button>
-          <button className="btn back">Back to Dashboard</button>
+          <button className="btn download" onClick={handleDownload}>Download Map</button>
+          <button className="btn back" onClick={() => window.history.back()}>Back</button>
         </div>
       </main>
     </div>

@@ -56,9 +56,9 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
-  const [showResult, setShowResult] = useState(false);
-  const [currentResult, setCurrentResult] = useState(null); // 模拟结果
-  const [showDiseaseInfo, setShowDiseaseInfo] = useState(false);
+  const [results, setResults] = useState([]);
+  const [diseaseResults, setDiseaseResults] = useState([]);
+
 
   
   useEffect(() => {
@@ -124,12 +124,14 @@ export default function UserUpload() {
             className="submit-btn"
             disabled={files.length === 0}
             onClick={() => {
-              setCurrentResult({
+              const newResults = files.map((file) => ({
+                image: file.previewUrl,
                 count: Math.floor(Math.random() * 50),
-                image: files[0].previewUrl,
-              });
-              setShowResult(true);
+                show: true,
+              }));
+              setResults(newResults);
             }}
+            
           >
             Count
           </button>
@@ -139,12 +141,14 @@ export default function UserUpload() {
             disabled={false}
             title="Premium only"
             onClick={() => {
-              setCurrentResult({
-                image: files[0].previewUrl,
+              const newDiseaseResults = files.map((file) => ({
+                image: file.previewUrl,
                 disease: 'Rust',
-              });
-              setShowDiseaseInfo(true);
+                show: true,
+              }));
+              setDiseaseResults(newDiseaseResults);
             }}
+            
           >
             Check Disease (Premium)
           </button>
@@ -152,72 +156,100 @@ export default function UserUpload() {
         </div>
 
           </div>
-      {showResult && currentResult && (
+      {results.some(r => r.show) && (
         <div className="result-modal-overlay">
-          <div className="result-modal-content">
-            <h3>Analysis Result</h3>
-            <img src={currentResult.image} alt="Result" className="modal-image" />
-            <p><strong>Tassel Count:</strong> {currentResult.count}</p>
-
-            <div className="modal-button-group">
-              <button className="count-btn-save" onClick={() => setShowResult(false)}>
-                Save
-              </button>
-              <button
-                className="count-btn-reannotate"
-                onClick={() => {
-                  setShowResult(false);
-                  navigate('/user/reannotate', {
-                    state: { image: currentResult.image }
-                  });
-                }}
-              >
-                Re-annotate
-              </button>
-              <button className="count-btn-cancel" onClick={() => setShowResult(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
+          {results.map((res, index) =>
+            res.show ? (
+              <div className="result-modal-content" key={index}>
+                <h3>Analysis Result</h3>
+                <img src={res.image} alt={`Result ${index}`} className="modal-image" />
+                <p><strong>Tassel Count:</strong> {res.count}</p>
+                <div className="modal-button-group">
+                  <button
+                    className="count-btn-save"
+                    onClick={() => {
+                      const updated = [...results];
+                      updated[index].show = false;
+                      setResults(updated);
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="count-btn-reannotate"
+                    onClick={() => {
+                      navigate('/user/reannotate', {
+                        state: { image: res.image },
+                      });
+                    }}
+                  >
+                    Re-annotate
+                  </button>
+                  <button
+                    className="count-btn-cancel"
+                    onClick={() => {
+                      const updated = [...results];
+                      updated[index].show = false;
+                      setResults(updated);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : null
+          )}
         </div>
       )}
 
 
-      {showDiseaseInfo && currentResult && (
+
+      {diseaseResults.some(r => r.show) && (
         <div className="disease-modal-overlay">
-          <div className="disease-modal-content">
-            <h3>Disease Detection Result</h3>
-            <img src={currentResult.image} alt="Result" className="modal-image" />
-            <p><strong>Detected Disease:</strong> {currentResult.disease}</p>
-            <p>
-              <strong>Description:</strong> This disease typically appears as reddish-brown lesions on the leaf surface and can spread under humid conditions.
-            </p>
-            <div className="modal-button-group">
-              <button className="disease-btn-save" onClick={() => setShowDiseaseInfo(false)}>
-                Save
-              </button>
-              <button
-                className="disease-btn-generate"
-                onClick={() => {
-                  setShowDiseaseInfo(false);
-                  navigate('/user/densitymap');
-                }}
-              >
-                Generate Density Map
-              </button>
-              <button
-                className="disease-btn-cancel"
-                onClick={() => setShowDiseaseInfo(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
+          {diseaseResults.map((res, index) =>
+            res.show ? (
+              <div className="disease-modal-content" key={index}>
+                <h3>Disease Detection Result</h3>
+                <img src={res.image} alt={`Disease Result ${index}`} className="modal-image" />
+                <p><strong>Detected Disease:</strong> {res.disease}</p>
+                <p>
+                  <strong>Description:</strong> This disease typically appears as reddish-brown lesions on the leaf surface and can spread under humid conditions.
+                </p>
+                <div className="modal-button-group">
+                  <button
+                    className="disease-btn-save"
+                    onClick={() => {
+                      const updated = [...diseaseResults];
+                      updated[index].show = false;
+                      setDiseaseResults(updated);
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="disease-btn-generate"
+                    onClick={() => {
+                      navigate('/user/densitymap');
+                    }}
+                  >
+                    Generate Density Map
+                  </button>
+                  <button
+                    className="disease-btn-cancel"
+                    onClick={() => {
+                      const updated = [...diseaseResults];
+                      updated[index].show = false;
+                      setDiseaseResults(updated);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            ) : null
+          )}
         </div>
       )}
-
-
-
         </main>
   );
 }

@@ -15,8 +15,8 @@ const ReAnnotate = () => {
     setUpdated(true);
   };
 
-  const handleManualEdit = () => {
-    alert('Manual edit not implemented.');
+  const handleSave = () => {
+    alert('Saved successfully.');
   };
 
 const handleImageClick = (e) => {
@@ -90,13 +90,13 @@ const handleImageClick = (e) => {
 
         <div className="annotate-meta">
           <span>Previous Count: 47</span>
-          <span>Last Annotated: June 2, 2024</span>
+          <span>Last Annotated: June 2, 2025</span>
         </div>
 
         <div className="annotate-buttons">
           <button onClick={handleReannotate}>Re-annotate</button>
-          <button onClick={handleManualEdit}>Manual Edit</button>
-          <button onClick={() => setSelecting(true)}>Select Region</button>
+          <button onClick={handleSave}>Save</button>
+          <button onClick={() => window.history.back()}>Back</button>
         </div>
 
         {updated && (
