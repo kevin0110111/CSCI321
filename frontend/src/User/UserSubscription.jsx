@@ -8,6 +8,8 @@ useEffect(() => {
       document.title = 'Subscription Plan';
     }, []);
 
+const [showModal, setShowModal] = useState(false);
+
   return (
         <main className="dashboard-content">
           <div className="subscription-container">
@@ -34,9 +36,21 @@ useEffect(() => {
                 <li>✓ Export results</li>
             </ul>
             <div className="button-group">
-              <button className="upgrade-btn">Upgrade</button>
-              <button className="cancel-btn">Cancel</button>
+              <button className="upgrade-btn" onClick={() => setShowModal(true)}>Upgrade</button>
             </div>
+            {showModal && (
+              <div className="payment-modal">
+                <div className="payment-box">
+                  <h3>Scan to Pay</h3>
+                  <div className="qr-placeholder">[ QR Code Placeholder ]</div>
+                  <button className="confirm-btn" onClick={() => alert('Payment not implemented yet.')}>
+                    Confirm Payment
+                  </button>
+                  <button className="close-btn" onClick={() => setShowModal(false)}>Close</button>
+                </div>
+              </div>
+            )}
+
 
             </div>
 
@@ -44,5 +58,6 @@ useEffect(() => {
             <p className="payment-note">Secure payment. Cancel anytime.</p>
           </div>
         </main>
+
   );
 }

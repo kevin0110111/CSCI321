@@ -28,7 +28,22 @@ export default function DetectionResultView() {
               </div>
             </div>
             <div className="detection-buttons">
-              <button className="btn">Cancel</button>
+          <button
+            onClick={() => window.history.back()}
+            style={{
+              backgroundColor: '#4caf50',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 20px',
+              fontSize: '16px',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginTop: '20px'
+            }}
+          >
+            Back
+          </button>
+
             </div>
           </div>
         </main>
