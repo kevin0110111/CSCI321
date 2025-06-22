@@ -122,8 +122,11 @@ export default function UserUpload() {
 
           <button
             className="submit-btn"
-            disabled={files.length === 0}
             onClick={() => {
+              if (files.length === 0) {
+                alert('Please upload at least one image before counting.');
+                return;
+              }
               const newResults = files.map((file) => ({
                 image: file.previewUrl,
                 count: Math.floor(Math.random() * 50),
@@ -131,16 +134,18 @@ export default function UserUpload() {
               }));
               setResults(newResults);
             }}
-            
           >
             Count
           </button>
 
+
           <button
             className="premium-btn"
-            disabled={false}
-            title="Premium only"
             onClick={() => {
+              if (files.length === 0) {
+                alert('Please upload at least one image before checking for disease.');
+                return;
+              }
               const newDiseaseResults = files.map((file) => ({
                 image: file.previewUrl,
                 disease: 'Rust',
@@ -148,7 +153,6 @@ export default function UserUpload() {
               }));
               setDiseaseResults(newDiseaseResults);
             }}
-            
           >
             Check Disease (Premium)
           </button>
