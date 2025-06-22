@@ -9,9 +9,14 @@ export default function UserComment() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (comment.trim() === '') {
+      alert('Comment cannot be empty.');
+      return;
+    }
     console.log('Submitted Comment:', comment);
     setSubmitted(true);
   };
+  
 
   const handleCancel = () => {
     setComment('');

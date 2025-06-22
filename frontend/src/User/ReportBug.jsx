@@ -1,12 +1,13 @@
 // ReportBug.jsx
 import './reportBug.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function ReportBug() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +21,11 @@ export default function ReportBug() {
     setDescription('');
     setFile(null);
     setSubmitted(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
   };
+  
 
    useEffect(() => {
         document.title = 'Report BUG';
@@ -50,6 +55,7 @@ export default function ReportBug() {
             <input
               type="file"
               accept="image/*"
+              ref={fileInputRef}
               onChange={(e) => setFile(e.target.files[0])}
             />
 
