@@ -58,7 +58,6 @@ export default function DashboardLayout() {
                         <li><Link to="/user/leaveComment" onClick={() => setSidebarOpen(false)}>Leave a Comment</Link></li>
                         <li><Link to="/user/comments" onClick={() => setSidebarOpen(false)}>User Comments</Link></li>
                         <li><Link to="/user/switchLanguage" onClick={() => setSidebarOpen(false)}>Switch Language</Link></li>
-                        <li><Link to="/user/updateUserAccount" onClick={() => setSidebarOpen(false)}>Account Settings</Link></li>
                         <li><Link to="/user/deleteAccount" onClick={() => setSidebarOpen(false)}>Delete Account</Link></li>
                         <li onClick={handleLogout}>
                             <a style={{ cursor: 'pointer' }}>Log out</a>
