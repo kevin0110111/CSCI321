@@ -94,7 +94,7 @@ export default function Login() {
       const profileName = profileData.profile_name.toLowerCase();
       
       if (profileName === 'user' || profileName.includes('user')) {
-        navigate('/user');
+        navigate('/user/dashboard');
       } else if (profileName === 'agent' || profileName.includes('agent')) {
         navigate('/agentModel');
       } else if (profileName === 'admin' || profileName.includes('admin')) {
