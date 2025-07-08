@@ -26,3 +26,4 @@ class Account(Base):
     # Relationship
     profile = relationship("Profile", back_populates="account", uselist=False)
     role = relationship("Role", secondary=account_roles, back_populates="account")
+    created_faqs = relationship("FAQ", back_populates="agent")

@@ -13,5 +13,5 @@ class FAQ(Base):
     created_at = Column(Date, default=func.current_date())
     last_updated = Column(Date, onupdate=func.current_date())
 
-    # Relationship (assuming you want to link to the Role model)
-    agent = relationship("Role", back_populates="faqs")
+    # Relationship
+    agent = relationship("Account", back_populates="created_faqs")

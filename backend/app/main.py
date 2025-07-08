@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import accounts, profiles, roles, account_roles
+from .routers import accounts, profiles, roles, account_roles, faqs
 from .database import engine
 from . import models
 
@@ -23,6 +23,7 @@ app.include_router(accounts.router, prefix="/api")
 app.include_router(profiles.router, prefix="/api")
 app.include_router(roles.router, prefix="/api")
 app.include_router(account_roles.router, prefix="/api")
+app.include_router(faqs.router, prefix="/api")
 
 @app.get("/")
 def read_root():
