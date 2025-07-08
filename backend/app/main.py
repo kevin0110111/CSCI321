@@ -1,38 +1,33 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import connect_to_mongo, close_mongo_connection
+from .routers import accounts, profiles, roles, account_roles
+from .database import engine
+from . import models
 
-from app.routes import Accounts
-from app.routes import Profiles
+# Create tables
+models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="My API", version="1.0.0")
+app = FastAPI(title="Your API", version="1.0.0")
 
-# CORS middleware for React frontend
+# CORS middleware for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_origins=["http://localhost:5173"],  # React default port
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Database events
-@app.on_event("startup")
-async def startup_db_client():
-    await connect_to_mongo()
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    await close_mongo_connection()
-
-# Include routes
-app.include_router(Accounts.router, prefix="/api/Accounts", tags=["Accounts"])
-app.include_router(Profiles.router, prefix="/api/Profiles", tags=["Profiles"])
+# Include routers
+app.include_router(accounts.router, prefix="/api")
+app.include_router(profiles.router, prefix="/api")
+app.include_router(roles.router, prefix="/api")
+app.include_router(account_roles.router, prefix="/api")
 
 @app.get("/")
-async def root():
-    return {"message": "Welcome to FastAPI with MongoDB!"}
+def read_root():
+    return {"message": "Welcome to your FastAPI backend!"}
 
 @app.get("/health")
-async def health_check():
+def health_check():
     return {"status": "healthy"}
