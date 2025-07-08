@@ -2,6 +2,7 @@ from ..database import Base
 from .Account import Account
 from .Profile import Profile
 from .Role import Role
+from .FAQ import FAQ
 
 # Export Base and all models
-__all__ = ["Base", "Account", "Profile", "Role"]
+__all__ = ["Base", "Account", "Profile", "Role", "FAQ"]
