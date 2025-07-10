@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import accounts, profiles, roles, account_roles, faqs, comments, bugreports, images, results, Models
+from .routers import accounts, profiles, roles, faqs, comments, bugreports, images, results, Models, suspendinfos
 from .database import engine
 from . import models
 
@@ -22,13 +22,13 @@ app.add_middleware(
 app.include_router(accounts.router, prefix="/api")
 app.include_router(profiles.router, prefix="/api")
 app.include_router(roles.router, prefix="/api")
-app.include_router(account_roles.router, prefix="/api")
 app.include_router(faqs.router, prefix="/api")
 app.include_router(comments.router, prefix="/api")
 app.include_router(bugreports.router, prefix="/api")
 app.include_router(images.router, prefix="/api")
 app.include_router(results.router, prefix="/api")
 app.include_router(Models.router, prefix="/api")
+app.include_router(suspendinfos.router, prefix="/api")
 
 @app.get("/")
 def read_root():

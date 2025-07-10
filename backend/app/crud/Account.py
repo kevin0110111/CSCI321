@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from passlib.context import CryptContext
 from ..models.Account import Account
 from ..models.Profile import Profile
@@ -83,3 +83,37 @@ def delete_account(db: Session, account_id: int):
         db.delete(db_account)
         db.commit()
     return db_account
+
+def assign_role_to_account(db: Session, account_id: int, role_id: int):
+    """
+    Assigns a role to an account.
+    Returns the updated account if successful, None if account not found.
+    """
+    account = db.query(Account).filter(Account.account_id == account_id).first()
+    if account:
+        account.role_id = role_id
+        db.commit()
+        db.refresh(account)
+    return account
+
+def remove_role_from_account(db: Session, account_id: int):
+    """
+    Removes role assignment from an account.
+    Returns the updated account if successful, None if account not found.
+    """
+    account = db.query(Account).filter(Account.account_id == account_id).first()
+    if account:
+        account.role_id = None
+        db.commit()
+        db.refresh(account)
+    return account
+
+def get_account_with_role(db: Session, account_id: int):
+    return db.query(Account).options(joinedload(Account.role)).filter(Account.account_id == account_id).first()
+
+def update_account_role(db: Session, account_id: int, role_id: int):
+    account = db.query(Account).filter(Account.account_id == account_id).first()
+    if account:
+        account.role_id = role_id
+        db.commit()
+    return account

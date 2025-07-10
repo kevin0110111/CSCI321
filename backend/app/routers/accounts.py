@@ -105,3 +105,31 @@ def delete_account(account_id: int, db: Session = Depends(get_db)):
     if db_account is None:
         raise HTTPException(status_code=404, detail="Account not found")
     return {"message": "Account deleted successfully"}
+
+@router.put("/{account_id}/assign-role/{role_id}", response_model=AccountResponse)
+def assign_role_to_account(account_id: int, role_id: int, db: Session = Depends(get_db)):
+    db_account = crud.assign_role_to_account(db, account_id=account_id, role_id=role_id)
+    if db_account is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return db_account
+
+@router.put("/{account_id}/remove-role", response_model=AccountResponse)
+def remove_role_from_account(account_id: int, db: Session = Depends(get_db)):
+    db_account = crud.remove_role_from_account(db, account_id=account_id)
+    if db_account is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return db_account
+
+@router.put("/{account_id}/update-role/{role_id}", response_model=AccountResponse)
+def update_account_role(account_id: int, role_id: int, db: Session = Depends(get_db)):
+    db_account = crud.update_account_role(db, account_id=account_id, role_id=role_id)
+    if db_account is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return db_account
+
+@router.get("/{account_id}/with-role", response_model=AccountResponse)
+def read_account_with_role(account_id: int, db: Session = Depends(get_db)):
+    db_account = crud.get_account_with_role(db, account_id=account_id)
+    if db_account is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return db_account

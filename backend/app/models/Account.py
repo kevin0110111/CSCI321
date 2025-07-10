@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, Enum, ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from .AccountRole import account_roles
 from ..database import Base
 import enum
 
@@ -22,10 +21,11 @@ class Account(Base):
     is_premium = Column(Boolean, default=False)
     subscription_expiry = Column(Date)
     createDate = Column(Date, default=func.current_date())
+    role_id = Column(Integer, ForeignKey("roles.role_id"))
 
     # Relationship
     profile = relationship("Profile", back_populates="account", uselist=False)
-    role = relationship("Role", secondary=account_roles, back_populates="account")
+    role = relationship("Role", back_populates="account")
     created_faqs = relationship("FAQ", back_populates="agent")
     user_comments = relationship("Comment", foreign_keys="Comment.user_id", back_populates="user")
     agent_replies = relationship("Comment", foreign_keys="Comment.replied_agent_id", back_populates="replied_agent")
@@ -34,3 +34,4 @@ class Account(Base):
     user_images = relationship("Image", back_populates="user")
     user_results = relationship("Result", back_populates="user")
     uploaded_models = relationship("Model", back_populates="uploader")
+    suspend_info = relationship("SuspendInfo", back_populates="account", uselist=False)
