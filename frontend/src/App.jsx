@@ -1,10 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import AgentModel from './Agent/agentModel';
 import AgentComment from './Agent/agentComment';
 import AgentBugReport from './Agent/agentBugReport';
 import AgentFAQ from './Agent/agentFAQ';
-import UpdateModel from './Agent/updateModel';
 import ViewComment from './Agent/viewComment';
 import ViewBugReport from './Agent/viewBugReport';
 import ViewFAQ from './Agent/viewFAQ';
@@ -52,17 +50,15 @@ export default function App() {
         <Route path="/registerAccount" element={<RegisterAccount />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-        <Route path="/agentModel" element={<AgentModel />} />
         <Route path="/agentComment" element={<AgentComment />} />
         <Route path="/agentBugReport" element={<AgentBugReport />} />
         <Route path="/agentFAQ" element={<AgentFAQ />} />
-        <Route path="/updateModel" element={<UpdateModel />} />
         <Route path="/viewComment" element={<ViewComment />} />
         <Route path="/viewBugReport" element={<ViewBugReport />} />
         <Route path="/viewFAQ" element={<ViewFAQ />} />
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/agentComment" replace />} />
 
         <Route path="/user" element={<UserDashboardlayout />}>
           <Route path="dashboard" element={<UserDashboard />} />

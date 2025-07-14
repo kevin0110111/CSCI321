@@ -60,7 +60,6 @@ export default function AgentFAQ() {
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
           <div>
-            <Link to="/agentModel" className="nav-link"><img src={model} alt="Model" className="icon"/> Model</Link>
             <Link to="/agentComment" className="nav-link"><img src={comment} alt="Comment" className="icon"/> Comment</Link>
             <Link to="/agentBugReport" className="nav-link"><img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug</Link>
             <Link to="/agentFAQ" className="nav-link active"><img src={faq} alt="FAQ" className="icon"/> FAQ</Link>

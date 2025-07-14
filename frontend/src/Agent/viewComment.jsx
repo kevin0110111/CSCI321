@@ -42,9 +42,6 @@ export default function ViewComment() {
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
           <div>
-            <Link to="/agentModel" className="nav-link">
-              <img src={model} alt="Model" className="icon"/> Model
-            </Link>
             <Link to="/agentComment" className="nav-link active">
               <img src={comment} alt="Comment" className="icon"/> Comment
             </Link>
