@@ -117,3 +117,21 @@ def update_account_role(db: Session, account_id: int, role_id: int):
         account.role_id = role_id
         db.commit()
     return account
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verify a plain password against a hashed password.
+    """
+    return pwd_context.verify(plain_password, hashed_password)
+
+def authenticate_account(db: Session, username: str, password: str):
+    """
+    Authenticate an account by username and password.
+    Returns the account if authentication is successful, None otherwise.
+    """
+    account = get_account_by_username(db, username=username)
+    if not account:
+        return None
+    if not verify_password(password, account.password):
+        return None
+    return account

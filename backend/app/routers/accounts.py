@@ -1,12 +1,52 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from pydantic import BaseModel
 
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate
 from ..database import get_db
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
+
+# Login request model
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+# Login response model
+class LoginResponse(BaseModel):
+    message: str
+    account: AccountResponse
+
+@router.post("/login", response_model=LoginResponse)
+def login(login_data: LoginRequest, db: Session = Depends(get_db)):
+    """
+    Authenticate user login with username and password.
+    """
+    # First authenticate with basic credentials
+    authenticated_account = crud.authenticate_account(db, username=login_data.username, password=login_data.password)
+    
+    if not authenticated_account:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password"
+        )
+    
+    # Check if account is suspended
+    if authenticated_account.state.value == "suspended":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account is suspended"
+        )
+    
+    # Get account with role information for better response
+    account_with_role = crud.get_account_with_role(db, account_id=authenticated_account.account_id)
+    
+    return LoginResponse(
+        message="Login successful",
+        account=account_with_role
+    )
 
 @router.post("/", response_model=AccountResponse)
 def create_account(account: AccountCreate, db: Session = Depends(get_db)):
@@ -133,3 +173,4 @@ def read_account_with_role(account_id: int, db: Session = Depends(get_db)):
     if db_account is None:
         raise HTTPException(status_code=404, detail="Account not found")
     return db_account
+

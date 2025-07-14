@@ -5,6 +5,7 @@ from enum import Enum
 
 # Forward reference to avoid circular imports
 ProfileResponse = ForwardRef('ProfileResponse')
+RoleResponse = ForwardRef('RoleResponse')
 
 class AccountStateEnum(str, Enum):
     active = "active"
@@ -34,7 +35,9 @@ class AccountUpdate(BaseModel):
 class AccountResponse(AccountBase):
     account_id: int
     createDate: date
+    role_id: Optional[int] = None
     profile: Optional['ProfileResponse'] = None
+    role: Optional['RoleResponse'] = None
 
     class Config:
         from_attributes = True
@@ -59,5 +62,6 @@ class AccountWithProfileCreate(BaseModel):
 
 # Import ProfileResponse after AccountResponse is defined
 from .Profile import ProfileResponse, ProfileLanguageEnum
+from .Role import RoleResponse
 AccountResponse.model_rebuild()
 AccountWithProfileCreate.model_rebuild()

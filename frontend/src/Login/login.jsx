@@ -37,7 +37,7 @@ export default function Login() {
 
     try {
       // Call login API
-      const response = await fetch('http://localhost:8000/api/Accounts/login', {
+      const response = await fetch('http://localhost:8000/api/accounts/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,30 +78,28 @@ export default function Login() {
       localStorage.setItem('account', JSON.stringify(data.account));
       localStorage.setItem('authToken', 'authenticated');
 
-      // Get profile information
-      const profileResponse = await fetch(`http://localhost:8000/api/Profiles/${data.account.profile_id}`);
-      
-      if (!profileResponse.ok) {
-        throw new Error('Failed to fetch profile information');
+      // Check if account has a role assigned
+      if (data.account.role_id && data.account.role) {
+        // Store role info (it's already included in the account response)
+        localStorage.setItem('role', JSON.stringify(data.account.role));
+
+        // Route based on role name/type
+        const profileName = data.account.role.role_name.toLowerCase();
+        
+        if (profileName === 'user' || profileName.includes('user')) {
+          navigate('/user/dashboard');
+          return;
+        } else if (profileName === 'agent' || profileName.includes('agent')) {
+          navigate('/agentModel');
+          return;
+        } else if (profileName === 'admin' || profileName.includes('admin')) {
+          navigate('/admin/home');
+          return;
+        }
       }
 
-      const profileData = await profileResponse.json();
-      
-      // Store profile info
-      localStorage.setItem('profile', JSON.stringify(profileData));
-
-      // Route based on profile name/type
-      const profileName = profileData.profile_name.toLowerCase();
-      
-      if (profileName === 'user' || profileName.includes('user')) {
-        navigate('/user/dashboard');
-      } else if (profileName === 'agent' || profileName.includes('agent')) {
-        navigate('/agentModel');
-      } else if (profileName === 'admin' || profileName.includes('admin')) {
-        navigate('/admin/home');
-      } else {
-        navigate('/dashboard');
-      }
+      // Default navigation if no role is assigned
+      navigate('/dashboard');
 
     } catch (err) {
       console.error('Login error:', err);
