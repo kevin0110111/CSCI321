@@ -1,30 +1,103 @@
 import './viewComment.css';
-import model from '../assets/model.svg';
-import comment from '../assets/comment.svg';
+import commentt from '../assets/comment.svg';
 import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function ViewComment() {
+  const { comment_id } = useParams();
   const navigate = useNavigate();
   const [reply, setReply] = useState('');
+  const [comment, setComment] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Get the logged-in agent's ID
+  const agentId = localStorage.getItem('accountId');
+
+  useEffect(() => {
+    const fetchComment = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(`http://localhost:8000/api/comments/${comment_id}`);
+        setComment(response.data);
+      } catch (err) {
+        setError(err.response?.data?.detail || 'Failed to fetch comment');
+        console.error('Error fetching comment:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchComment();
+  }, [comment_id]);
 
   const handleReplyChange = (e) => {
     setReply(e.target.value);
   };
 
-  const handleReplySubmit = () => {
-    // Handle reply submission logic
-    console.log('Reply submitted:', reply);
-    setReply('');
+  const handleReplySubmit = async () => {
+    try {
+      if (!reply.trim()) {
+        alert('Please enter a reply');
+        return;
+      }
+
+      const agentId = localStorage.getItem('accountId');
+      if (!agentId) {
+        alert('Session expired. Please login again.');
+        navigate('/login');
+        return;
+      }
+
+      setIsLoading(true);
+      const response = await axios.post(`http://localhost:8000/api/comments/${comment_id}/reply`, {
+        reply_content: reply,
+        replied_agent_id: parseInt(agentId)
+      });
+
+      setComment(response.data);
+      setReply('');
+      alert('Reply submitted successfully!');
+    } catch (err) {
+      console.error('Reply error:', err);
+      alert(err.response?.data?.detail || 'Failed to submit reply');
+      if (err.response?.status === 401) {
+        navigate('/login');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDelete = () => {
-    // Handle delete logic
-    console.log('Comment deleted');
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8000/api/comments/${comment_id}`);
+      alert('Comment deleted successfully!');
+      navigate('/agentComment');
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+      alert('Failed to delete comment');
+    } finally {
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+
+  const handleBack = () => {
+    navigate('/agentComment');
   };
 
   const handleProfileClick = () => {
@@ -33,6 +106,32 @@ export default function ViewComment() {
 
   const AgentLogout = () => {
     navigate('/login');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="dashboard-container">
+        <div className="loading">Loading comment...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard-container">
+        <div className="error">{error}</div>
+        <button onClick={handleBack} className="back-button">Back to Comments</button>
+      </div>
+    );
+  }
+
+  if (!comment) {
+    return (
+      <div className="dashboard-container">
+        <div className="error">Comment not found</div>
+        <button onClick={handleBack} className="back-button">Back to Comments</button>
+      </div>
+    );
   }
 
   return (
@@ -43,7 +142,7 @@ export default function ViewComment() {
         <nav className="sidebar-nav">
           <div>
             <Link to="/agentComment" className="nav-link active">
-              <img src={comment} alt="Comment" className="icon"/> Comment
+              <img src={commentt} alt="Comment" className="icon"/> Comment
             </Link>
             <Link to="/agentBugReport" className="nav-link">
               <img src={reportBug} alt="ReportedBug" className="icon"/> Reported Bug
@@ -75,20 +174,26 @@ export default function ViewComment() {
         {/* Comment Section */}
         <main className="comment-container">
           <div className="user-info">
-            <h2>User name: cx033</h2>
+            <h2>User: {comment.user?.username || `User ${comment.user_id}`}</h2>
           </div>
 
           <div className="comment-section">
             <h3>Comment:</h3>
             <div className="comment-box">
-              <p>The maize tassel count system is realiable and working fast even at processing batch images.
-                 Weather forecast features is really useful for our farmer.
-              </p>
+              <p>{comment.content}</p>
             </div>
+            <h3>Current reply:</h3>
           </div>
 
+          {comment.reply_content && (
+            <div className="comment-box">
+              <p>{comment.reply_content}</p>
+              <p>Replied by Agent {comment.replied_agent_id} on {new Date(comment.replied_at).toLocaleString()}</p>
+            </div>
+          )}
+
           <div className="reply-section">
-            <h3>Reply:</h3>
+            <h3>Add Reply:</h3>
             <textarea
               value={reply}
               onChange={handleReplyChange}
@@ -99,9 +204,19 @@ export default function ViewComment() {
 
           <div className="action-buttons">
             <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
-            <button className="delete-button" onClick={handleDelete}>Delete</button>
-            <button className="back-button">Back</button>
+            <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
+            <button className="back-button" onClick={handleBack}>Back</button>
           </div>
+
+          {showDeleteConfirm && (
+            <div className="delcom-confirmation-overlay">
+              <div className="delcom-confirmation-box">
+                <p>Are you sure you want to delete this comment?</p>
+                <button onClick={confirmDelete} className="delcom-yes-button">Yes</button>
+                <button onClick={cancelDelete} className="delcom-no-button">No</button>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -1,4 +1,6 @@
+from app.models import Comment
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -26,6 +28,11 @@ def create_comment(comment: CommentCreate, db: Session = Depends(get_db)):
         )
     
     return crud.create_comment(db=db, comment=comment)
+
+@router.get("/count")
+def get_comments_count(db: Session = Depends(get_db)):
+    count = db.query(func.count(Comment.comment_id)).scalar()
+    return {"total": count}
 
 @router.get("/", response_model=List[CommentResponse])
 def read_comments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

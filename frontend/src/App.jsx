@@ -53,12 +53,12 @@ export default function App() {
         <Route path="/agentComment" element={<AgentComment />} />
         <Route path="/agentBugReport" element={<AgentBugReport />} />
         <Route path="/agentFAQ" element={<AgentFAQ />} />
-        <Route path="/viewComment" element={<ViewComment />} />
-        <Route path="/viewBugReport" element={<ViewBugReport />} />
+        <Route path="/viewComment/:comment_id" element={<ViewComment />} />
+        <Route path="/viewBugReport/:bug_id" element={<ViewBugReport />} />
         <Route path="/viewFAQ" element={<ViewFAQ />} />
         <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
 
-        <Route path="/" element={<Navigate to="/agentComment" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="/user" element={<UserDashboardlayout />}>
           <Route path="dashboard" element={<UserDashboard />} />

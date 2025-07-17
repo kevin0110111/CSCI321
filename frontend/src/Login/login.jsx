@@ -77,6 +77,7 @@ export default function Login() {
       // Store account info in localStorage or context
       localStorage.setItem('account', JSON.stringify(data.account));
       localStorage.setItem('authToken', 'authenticated');
+      localStorage.setItem('accountId', data.account.account_id);
 
       // Check if account has a role assigned
       if (data.account.role_id && data.account.role) {
@@ -90,7 +91,7 @@ export default function Login() {
           navigate('/user/dashboard');
           return;
         } else if (profileName === 'agent' || profileName.includes('agent')) {
-          navigate('/agentModel');
+          navigate('/agentComment');
           return;
         } else if (profileName === 'admin' || profileName.includes('admin')) {
           navigate('/admin/home');

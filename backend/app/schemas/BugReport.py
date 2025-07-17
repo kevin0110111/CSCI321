@@ -27,6 +27,9 @@ class BugReportResolve(BaseModel):
 class BugReportStatusUpdate(BaseModel):
     status: BugReportStatusEnum
 
+class UserInfo(BaseModel):
+    username: str
+
 class BugReportResponse(BugReportBase):
     bug_id: int
     user_id: int
@@ -35,6 +38,7 @@ class BugReportResponse(BugReportBase):
     resolved_by_agent_id: Optional[int] = None
     resolved_at: Optional[date] = None
     resolution_note: Optional[str] = None
+    user: Optional[UserInfo] = None
 
     class Config:
         from_attributes = True

@@ -19,6 +19,9 @@ class CommentReply(BaseModel):
     reply_content: str
     replied_agent_id: int
 
+class UserInfo(BaseModel):
+    username: str
+
 class CommentResponse(CommentBase):
     comment_id: int
     user_id: int
@@ -26,6 +29,7 @@ class CommentResponse(CommentBase):
     reply_content: Optional[str] = None
     replied_agent_id: Optional[int] = None
     replied_at: Optional[date] = None
+    user: Optional[UserInfo] = None
 
     class Config:
         from_attributes = True

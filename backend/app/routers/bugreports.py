@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
 
+from app.models import BugReport
 from .. import crud
 from app.schemas.BugReport import (
     BugReportCreate, 
@@ -26,6 +28,11 @@ def create_bug_report(bug_report: BugReportCreate, db: Session = Depends(get_db)
         )
     
     return crud.create_bug_report(db=db, bug_report=bug_report)
+
+@router.get("/count")
+def get_comments_count(db: Session = Depends(get_db)):
+    count = db.query(func.count(BugReport.bug_id)).scalar()
+    return {"total": count}
 
 @router.get("/", response_model=List[BugReportResponse])
 def read_bug_reports(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.sql import func
 from ..models.Comment import Comment
 from ..schemas.Comment import CommentCreate, CommentUpdate, CommentReply
