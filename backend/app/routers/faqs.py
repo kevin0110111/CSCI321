@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
+
+from app.models import FAQ
 from ..schemas.FAQ import FAQCreate, FAQUpdate, FAQResponse
 from ..crud.FAQ import get_faq, get_faqs, create_faq, update_faq, delete_faq
 from ..database import get_db
@@ -10,6 +13,11 @@ router = APIRouter(prefix="/faqs", tags=["faqs"])
 @router.post("/", response_model=FAQResponse)
 def create_faq_endpoint(faq: FAQCreate, db: Session = Depends(get_db)):
     return create_faq(db=db, faq=faq)
+
+@router.get("/count")
+def get_faqs_count(db: Session = Depends(get_db)):
+    count = db.query(func.count(FAQ.faq_id)).scalar()
+    return {"total": count}
 
 @router.get("/", response_model=List[FAQResponse])
 def read_faqs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

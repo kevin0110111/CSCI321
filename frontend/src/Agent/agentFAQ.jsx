@@ -1,28 +1,65 @@
 import './agentFAQ.css';
-import model from '../assets/model.svg';
-import comment from '../assets/comment.svg'
-import reportBug from '../assets/bug.svg'
-import faq from '../assets/faq.svg'
-import logout from '../assets/logout.svg'
+import comment from '../assets/comment.svg';
+import reportBug from '../assets/bug.svg';
+import faq from '../assets/faq.svg';
+import logout from '../assets/logout.svg';
 import previousIcon from '../assets/previous.svg';
 import nextIcon from '../assets/next.svg';
 import profile from '../assets/profile.svg';
 
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function AgentFAQ() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5; // This would typically come from your API
+  const [totalPages, setTotalPages] = useState(1);
+  const [faqs, setFaqs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const faqsPerPage = 5;
 
-  const modelCards = [
-    { id: 1, name: "How to upload images?", updatedAt: "2025-10-15 14:30" },
-    { id: 2, name: "How to change password?", updatedAt: "2025-10-14 09:15" },
-    { id: 3, name: "How to view weather forecast?", updatedAt: "2025-10-13 16:45" },
-    { id: 4, name: "How to change account password?", updatedAt: "2025-10-12 11:20" },
-    { id: 5, name: "How to view count history?", updatedAt: "2025-10-11 13:10" },
-  ];
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(`http://localhost:8000/api/faqs/`, {
+          params: {
+            skip: (currentPage - 1) * faqsPerPage,
+            limit: faqsPerPage
+          }
+        });
+
+        // Format the date and prepare FAQs data
+        const formattedFAQs = response.data.map(faq => ({
+          ...faq,
+          created_at: formatDate(faq.created_at),
+          last_updated: faq.last_updated ? formatDate(faq.last_updated) : formatDate(faq.created_at)
+        }));
+
+        setFaqs(formattedFAQs);
+        
+        // Get total count for pagination
+        const countResponse = await axios.get('http://localhost:8000/api/faqs/count');
+        setTotalPages(Math.ceil(countResponse.data.total / faqsPerPage));
+      } catch (error) {
+        console.error('Error fetching FAQs:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFAQs();
+  }, [currentPage]);
+
+  // Format date to display as DD/MM/YYYY
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -32,13 +69,8 @@ export default function AgentFAQ() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const handleUpdate = () => {
-    // Add your update logic here
-    console.log("Update button clicked");
-  };
-
-  const handleDoubleClick = (modelId) => {
-    navigate('/viewFAQ', { state: { isCreating: false, modelId } });
+  const handleDoubleClick = (faqId) => {
+    navigate('/viewFAQ', { state: { isCreating: false, faqId } });
   };
 
   const handleProfileClick = () => {
@@ -51,7 +83,7 @@ export default function AgentFAQ() {
 
   const AgentLogout = () => {
     navigate('/login');
-  }
+  };
 
   return (
     <div className="dashboard-container">
@@ -84,25 +116,37 @@ export default function AgentFAQ() {
           </div>
         </header>
 
-        {/* Model Cards */}
+        {/* FAQ Cards */}
         <main className="model-cards-container">
-          {modelCards.map((model) => (
-            <div key={model.id} className="model-card" onDoubleClick={() => handleDoubleClick(model.id)}>
-              <div className="model-info">
-                <span className="model-number">{model.id}.</span>
-                <div>
-                  <div className="model-name">FAQ Title: {model.name}</div>
-                  <div className="model-updated">Updated at: {model.updatedAt}</div>
+          {isLoading ? (
+            <div className="loading">Loading FAQs...</div>
+          ) : faqs.length === 0 ? (
+            <div className="no-faqs">No FAQs found</div>
+          ) : (
+            faqs.map((faq) => (
+              <div 
+                key={faq.faq_id} 
+                className="model-card" 
+                onDoubleClick={() => handleDoubleClick(faq.faq_id)}
+              >
+                <div className="model-info">
+                  <span className="model-number">{faq.faq_id}.</span>
+                  <div>
+                    <div className="model-name">FAQ Title: {faq.title}</div>
+                    <div className="model-updated">
+                      Updated at: {faq.last_updated}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
 
           {/* Pagination Controls */}
           <div className="pagination-controls">
             <button 
               onClick={handlePrevious} 
-              disabled={currentPage === 1}
+              disabled={currentPage === 1 || isLoading}
               className="pagination-button"
               aria-label="Previous"
             >
@@ -115,7 +159,7 @@ export default function AgentFAQ() {
             
             <button 
               onClick={handleNext} 
-              disabled={currentPage === totalPages}
+              disabled={currentPage === totalPages || isLoading}
               className="pagination-button"
               aria-label="Next"
             >

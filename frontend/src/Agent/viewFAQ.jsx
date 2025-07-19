@@ -1,5 +1,4 @@
 import './viewFAQ.css';
-import model from '../assets/model.svg';
 import comment from '../assets/comment.svg';
 import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
@@ -7,40 +6,108 @@ import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function ViewFAQ() {
   const navigate = useNavigate();
   const location = useLocation();
   const isCreating = location.state?.isCreating || false;
+  const faqId = location.state?.faqId;
+  const agentId = localStorage.getItem('accountId');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const [reply, setReply] = useState('');
-  const [faqTitle, setFaqTitle] = useState('How to upload images?');
 
-  const handleReplyChange = (e) => {
-    setReply(e.target.value);
+  const [faqData, setFaqData] = useState({
+    title: '',
+    content: '',
+    created_agent_id: null
+  });
+
+  // Fetch FAQ data if in edit mode
+  useEffect(() => {
+    if (!isCreating && faqId) {
+      const fetchFAQ = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8000/api/faqs/${faqId}`);
+          setFaqData({
+            title: response.data.title,
+            content: response.data.content,
+            created_agent_id: response.data.created_agent_id
+          });
+        } catch (error) {
+          console.error('Error fetching FAQ:', error);
+        }
+      };
+      fetchFAQ();
+    }
+  }, [faqId, isCreating]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFaqData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleTitleChange = (e) => {
-    setFaqTitle(e.target.value);
+  const handleCreate = async () => {
+    if (!faqData.title || !faqData.content) {
+      alert('Title and content are required');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:8000/api/faqs/', {
+        title: faqData.title,
+        content: faqData.content,
+        created_agent_id: agentId
+      });
+      alert('FAQ created successfully');
+      navigate('/agentFAQ');
+    } catch (error) {
+      console.error('Error creating FAQ:', error);
+      alert('Failed to create FAQ');
+    }
   };
 
-  const handleUpdate = () => {
-    // Handle update logic
-    console.log('FAQ updated:', reply);
-    setReply('');
+  const handleUpdate = async () => {
+    if (!faqData.title || !faqData.content) {
+      alert('Title and content are required');
+      return;
+    }
+
+    try {
+      await axios.put(`http://localhost:8000/api/faqs/${faqId}`, {
+        title: faqData.title,
+        content: faqData.content
+      });
+      alert('FAQ updated successfully');
+      navigate('/agentFAQ');
+    } catch (error) {
+      console.error('Error updating FAQ:', error);
+      alert('Failed to update FAQ');
+    }
   };
 
-  const handleCreate = () => {
-    // Handle create logic
-    console.log('New FAQ created:', reply);
-    setReply('');
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
   };
 
-  const handleDelete = () => {
-    // Handle delete logic
-    console.log('FAQ deleted');
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8000/api/faqs/${faqId}`);
+      alert('FAQ deleted successfully!');
+      navigate('/agentFAQ');
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+      alert('Failed to delete comment');
+    } finally {
+      setShowDeleteConfirm(false);
+    }
   };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+
 
   const handleProfileClick = () => {
     navigate('/updateAgentAccount');
@@ -48,11 +115,11 @@ export default function ViewFAQ() {
 
   const AgentLogout = () => {
     navigate('/login');
-  }
+  };
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar remains the same */}
+      {/* Sidebar */}
       <aside className="agentsidebar">
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
@@ -87,13 +154,15 @@ export default function ViewFAQ() {
           </div>
         </header>
 
-        {/* Comment Section */}
+        {/* FAQ Form */}
         <main className="comment-container">
           <div className="user-info">
             <h2>FAQ Title:</h2>
             <textarea
-              value={faqTitle}
-              onChange={handleTitleChange}
+              name="title"
+              value={faqData.title}
+              onChange={handleInputChange}
+              placeholder="Type your title here..."
               className="FAQTitle-box"
             />
           </div>
@@ -101,8 +170,9 @@ export default function ViewFAQ() {
           <div className="reply-section">
             <h3>Content:</h3>
             <textarea
-              value={reply}
-              onChange={handleReplyChange}
+              name="content"
+              value={faqData.content}
+              onChange={handleInputChange}
               placeholder="Type your content here..."
               className="FAQContent-box"
             />
@@ -114,11 +184,21 @@ export default function ViewFAQ() {
             ) : (
               <>
                 <button className="reply-button" onClick={handleUpdate}>Update</button>
-                <button className="delete-button" onClick={handleDelete}>Delete</button>
+                <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
               </>
             )}
             <button className="back-button" onClick={() => navigate(-1)}>Back</button>
           </div>
+
+          {showDeleteConfirm && (
+            <div className="delfaq-confirmation-overlay">
+              <div className="delfaq-confirmation-box">
+                <p>Are you sure you want to delete this FAQ?</p>
+                <button onClick={confirmDelete} className="delfaq-yes-button">Yes</button>
+                <button onClick={cancelDelete} className="delfaq-no-button">No</button>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
