@@ -24,7 +24,7 @@ class Account(Base):
     role_id = Column(Integer, ForeignKey("roles.role_id"))
 
     # Relationship
-    profile = relationship("Profile", back_populates="account", uselist=False)
+    profile = relationship("Profile", back_populates="account", uselist=False, cascade="all, delete-orphan")
     role = relationship("Role", back_populates="account")
     created_faqs = relationship("FAQ", back_populates="agent")
     user_comments = relationship("Comment", foreign_keys="Comment.user_id", back_populates="user")

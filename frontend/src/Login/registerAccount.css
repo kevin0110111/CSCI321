@@ -73,3 +73,22 @@
   color: #3b82f6;
   text-decoration: none;
 }
+
+.dob-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dob-input {
+  width: 100%;
+  padding-right: 40px; /* space for icon */
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
