@@ -135,3 +135,49 @@ def authenticate_account(db: Session, username: str, password: str):
     if not verify_password(password, account.password):
         return None
     return account
+
+def update_password(db: Session, account_id: int, new_password: str):
+    """
+    Update account password with a new hashed password.
+    Returns the updated account if successful, None if account not found.
+    """
+    account = db.query(Account).filter(Account.account_id == account_id).first()
+    if account:
+        hashed_password = pwd_context.hash(new_password)
+        account.password = hashed_password
+        db.commit()
+        db.refresh(account)
+    return account
+
+def reset_password_by_email(db: Session, email: str, new_password: str):
+    """
+    Reset password for an account using email.
+    Returns the updated account if successful, None if account not found.
+    """
+    account = db.query(Account).filter(Account.email == email).first()
+    if account:
+        hashed_password = pwd_context.hash(new_password)
+        account.password = hashed_password
+        db.commit()
+        db.refresh(account)
+    return account
+
+def change_password(db: Session, account_id: int, current_password: str, new_password: str):
+    """
+    Change password after verifying current password.
+    Returns the updated account if successful, None if verification fails.
+    """
+    account = db.query(Account).filter(Account.account_id == account_id).first()
+    if not account:
+        return None
+    
+    # Verify current password
+    if not verify_password(current_password, account.password):
+        return False  # Return False to indicate wrong current password
+    
+    # Update with new password
+    hashed_password = pwd_context.hash(new_password)
+    account.password = hashed_password
+    db.commit()
+    db.refresh(account)
+    return account

@@ -32,6 +32,18 @@ class AccountUpdate(BaseModel):
     is_premium: Optional[bool] = None
     subscription_expiry: Optional[date] = None
 
+class PasswordChangeRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+    new_password: str
+
+class PasswordResetResponse(BaseModel):
+    message: str
+    success: bool
+
 class AccountResponse(AccountBase):
     account_id: int
     createDate: date

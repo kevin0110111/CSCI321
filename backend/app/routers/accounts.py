@@ -4,7 +4,7 @@ from typing import List
 from pydantic import BaseModel
 
 from .. import crud
-from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate
+from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse
 from ..database import get_db
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
@@ -174,3 +174,70 @@ def read_account_with_role(account_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Account not found")
     return db_account
 
+@router.put("/{account_id}/change-password", response_model=PasswordResetResponse)
+def change_password(
+    account_id: int, 
+    password_data: PasswordChangeRequest, 
+    db: Session = Depends(get_db)
+):
+    """
+    Change password for an account after verifying current password.
+    """
+    result = crud.change_password(
+        db, 
+        account_id=account_id, 
+        current_password=password_data.current_password,
+        new_password=password_data.new_password
+    )
+    
+    if result is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+    elif result is False:
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    return PasswordResetResponse(
+        message="Password changed successfully",
+        success=True
+    )
+
+@router.post("/reset-password", response_model=PasswordResetResponse)
+def reset_password(
+    reset_data: PasswordResetRequest, 
+    db: Session = Depends(get_db)
+):
+    """
+    Reset password using email (for forgot password scenarios).
+    Note: In production, this should be protected with email verification/tokens.
+    """
+    account = crud.reset_password_by_email(
+        db, 
+        email=reset_data.email, 
+        new_password=reset_data.new_password
+    )
+    
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+    
+    return PasswordResetResponse(
+        message="Password reset successfully",
+        success=True
+    )
+
+@router.put("/{account_id}/update-password", response_model=PasswordResetResponse)
+def update_password(
+    account_id: int, 
+    new_password: str, 
+    db: Session = Depends(get_db)
+):
+    """
+    Update password directly (admin function).
+    """
+    account = crud.update_password(db, account_id=account_id, new_password=new_password)
+    
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+    
+    return PasswordResetResponse(
+        message="Password updated successfully",
+        success=True
+    )
