@@ -253,10 +253,12 @@ opacity: 0.8;
   background-color: #e74c3c;
   color: white;
   border: none;
+  border-radius: 4px;
 }
 
 .delcom-no-button {
   background-color: #95a5a6;
   color: white;
   border: none;
+  border-radius: 4px;
 }

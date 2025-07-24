@@ -123,14 +123,14 @@ export default function AgentFAQ() {
           ) : faqs.length === 0 ? (
             <div className="no-faqs">No FAQs found</div>
           ) : (
-            faqs.map((faq) => (
+            faqs.map((faq, index) => (
               <div 
                 key={faq.faq_id} 
                 className="model-card" 
                 onDoubleClick={() => handleDoubleClick(faq.faq_id)}
               >
                 <div className="model-info">
-                  <span className="model-number">{faq.faq_id}.</span>
+                  <span className="model-number">{index + 1}.</span>
                   <div>
                     <div className="model-name">FAQ Title: {faq.title}</div>
                     <div className="model-updated">

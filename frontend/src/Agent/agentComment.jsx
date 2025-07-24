@@ -120,14 +120,14 @@ export default function AgentComment() {
           ) : comments.length === 0 ? (
             <div className="no-comments">No comments found</div>
           ) : (
-            comments.map((comment) => (
+            comments.map((comment, index) => (
               <div 
                 key={comment.comment_id} 
                 className="model-card" 
                 onDoubleClick={() => handleDoubleClick(comment.comment_id)}
               >
                 <div className="model-info">
-                  <span className="model-number">{comment.comment_id}.</span>
+                  <span className="model-number">{index + 1}.</span>
                   <div>
                     <div className="model-name">
                       User: {comment.username}

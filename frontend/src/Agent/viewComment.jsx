@@ -16,6 +16,7 @@ export default function ViewComment() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' });
 
   // Get the logged-in agent's ID
   const agentId = localStorage.getItem('accountId');
@@ -82,10 +83,9 @@ export default function ViewComment() {
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:8000/api/comments/${comment_id}`);
-      alert('Comment deleted successfully!');
-      navigate('/agentComment');
+      setResponseBox({ show: true, message: 'Comment deleted successfully!' });
     } catch (err) {
-      console.error('Error deleting comment:', err);
+      setResponseBox({ show: true, message: 'Failed to delete comment' });
       alert('Failed to delete comment');
     } finally {
       setShowDeleteConfirm(false);
@@ -94,6 +94,13 @@ export default function ViewComment() {
 
   const cancelDelete = () => {
     setShowDeleteConfirm(false);
+  };
+
+  const closeResponseBox = () => {
+    setResponseBox({ show: false, message: '' });
+    if (responseBox.message === 'Comment deleted successfully!') {
+      navigate('/agentComment');
+    }
   };
 
   const handleBack = () => {
@@ -217,6 +224,16 @@ export default function ViewComment() {
               </div>
             </div>
           )}
+
+          {responseBox.show && (
+            <div className="delcom-confirmation-overlay">
+              <div className="delcom-confirmation-box">
+                <p>{responseBox.message}</p>
+                <button onClick={closeResponseBox} className="delcom-yes-button">Ok</button>
+              </div>
+            </div>
+          )}
+
         </main>
       </div>
     </div>

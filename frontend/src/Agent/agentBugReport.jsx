@@ -120,14 +120,14 @@ export default function AgentBugReport() {
           ) : bugReports.length === 0 ? (
             <div className="no-reports">No bug reports found</div>
           ) : (
-            bugReports.map((report) => (
+            bugReports.map((report, index) => (
               <div 
                 key={report.bug_id} 
                 className="model-card" 
                 onDoubleClick={() => handleDoubleClick(report.bug_id)}
               >
                 <div className="model-info">
-                  <span className="model-number">{report.bug_id}.</span>
+                  <span className="model-number">{index + 1}.</span>
                   <div>
                     <div className="model-name">
                       Title: {report.title}
