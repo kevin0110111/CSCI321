@@ -16,7 +16,7 @@ export default function ViewFAQ() {
   const faqId = location.state?.faqId;
   const agentId = localStorage.getItem('accountId');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' });
 
   const [faqData, setFaqData] = useState({
     title: '',
@@ -50,7 +50,7 @@ export default function ViewFAQ() {
 
   const handleCreate = async () => {
     if (!faqData.title || !faqData.content) {
-      alert('Title and content are required');
+      setResponseBox({ show: true, message: 'Title and content are required!' });
       return;
     }
 
@@ -60,17 +60,16 @@ export default function ViewFAQ() {
         content: faqData.content,
         created_agent_id: agentId
       });
-      alert('FAQ created successfully');
-      navigate('/agentFAQ');
+      setResponseBox({ show: true, message: 'FAQ created successfully!' });
     } catch (error) {
       console.error('Error creating FAQ:', error);
-      alert('Failed to create FAQ');
+      setResponseBox({ show: true, message: 'Failed to create FAQ' });
     }
   };
 
   const handleUpdate = async () => {
     if (!faqData.title || !faqData.content) {
-      alert('Title and content are required');
+      setResponseBox({ show: true, message: 'Title and content are required!' });
       return;
     }
 
@@ -79,11 +78,10 @@ export default function ViewFAQ() {
         title: faqData.title,
         content: faqData.content
       });
-      alert('FAQ updated successfully');
-      navigate('/agentFAQ');
+      setResponseBox({ show: true, message: 'FAQ updated successfully!' });
     } catch (error) {
       console.error('Error updating FAQ:', error);
-      alert('Failed to update FAQ');
+      setResponseBox({ show: true, message: 'Failed to update FAQ' });
     }
   };
 
@@ -94,20 +92,25 @@ export default function ViewFAQ() {
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:8000/api/faqs/${faqId}`);
-      alert('FAQ deleted successfully!');
-      navigate('/agentFAQ');
+      setResponseBox({ show: true, message: 'FAQ deleted successfully!' });
     } catch (err) {
       console.error('Error deleting comment:', err);
-      alert('Failed to delete comment');
+      setResponseBox({ show: true, message: 'Failed to delete FAQ' });
     } finally {
       setShowDeleteConfirm(false);
+    }
+  };
+
+  const closeResponseBox = () => {
+    setResponseBox({ show: false, message: '' });
+    if (responseBox.message === 'FAQ created successfully!' || responseBox.message === 'FAQ updated successfully!' || responseBox.message === 'FAQ deleted successfully!') {
+      navigate('/agentFAQ');
     }
   };
 
   const cancelDelete = () => {
     setShowDeleteConfirm(false);
   };
-
 
   const handleProfileClick = () => {
     navigate('/updateAgentAccount');
@@ -196,6 +199,15 @@ export default function ViewFAQ() {
                 <p>Are you sure you want to delete this FAQ?</p>
                 <button onClick={confirmDelete} className="delfaq-yes-button">Yes</button>
                 <button onClick={cancelDelete} className="delfaq-no-button">No</button>
+              </div>
+            </div>
+          )}
+
+          {responseBox.show && (
+            <div className="delfaq-confirmation-overlay">
+              <div className="delfaq-confirmation-box">
+                <p>{responseBox.message}</p>
+                <button onClick={closeResponseBox} className="delfaq-yes-button">Ok</button>
               </div>
             </div>
           )}

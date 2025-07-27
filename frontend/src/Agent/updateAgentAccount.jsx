@@ -28,6 +28,7 @@ export default function UpdateAgentAccount() {
 
   const [currentAccountId, setCurrentAccountId] = useState(null);
   const [currentProfileId, setCurrentProfileId] = useState(null);
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' });
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem('accountId');
@@ -74,11 +75,11 @@ export default function UpdateAgentAccount() {
           }));
         } else {
           console.error('Failed to fetch account or profile data.');
-          alert('Failed to load account or profile data.');
+          setResponseBox({ show: true, message: 'Failed to load account or profile data!' });
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        alert('An error occurred while fetching data.');
+        setResponseBox({ show: true, message: 'An error occured while fetching data!' });
       }
     };
 
@@ -106,18 +107,18 @@ export default function UpdateAgentAccount() {
 
   const handleSave = async () => {
     if (!currentAccountId || !currentProfileId) {
-        alert('Account or Profile ID not available. Please log in again.');
+        setResponseBox({ show: true, message: 'Account ID not available, please login again!' });
         return;
     }
 
     // Handle password change separately if newPassword is provided
     if (formData.newPassword) {
       if (!formData.currentPassword) {
-        alert('Please enter your current password to change it.');
+        setResponseBox({ show: true, message: 'Please enter your current password to change it.' });
         return;
       }
       if (!passwordValidations.length || !passwordValidations.number || !passwordValidations.uppercase || !passwordValidations.specialChar || !passwordValidations.lowercase) {
-        alert('New password does not meet all requirements.');
+        setResponseBox({ show: true, message: 'New password does not meet all requirements!' });
         return;
       }
 
@@ -138,17 +139,20 @@ export default function UpdateAgentAccount() {
         const passwordData = await passwordResponse.json();
 
         if (!passwordResponse.ok) {
-          alert(`Failed to change password: ${passwordData.detail || 'Something went wrong.'}`);
+          setResponseBox({
+            show: true,
+            message: `Failed to change password: ${passwordData.detail || 'Something went wrong.'}`
+          });
           return; // Stop if password change failed
         } else {
-            alert('Password changed successfully!');
+            setResponseBox({ show: true, message: 'Password changed successfully!' });
             // Clear password fields after successful change
             setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '' }));
         }
 
       } catch (error) {
         console.error('Error changing password:', error);
-        alert('An error occurred during password change. Please try again.');
+        setResponseBox({ show: true, message: 'An error occurred during password change. Please try again.' });
         return; // Stop if there's an error
       }
     }
@@ -188,16 +192,26 @@ export default function UpdateAgentAccount() {
       });
 
       if (accountResponse.ok && profileResponse.ok) {
-        alert('Account and Profile updated successfully!');
+        setResponseBox({ show: true, message: 'Account and profile details updated successfully!' });
         setIsEditing(false);
       } else {
         const accountError = await accountResponse.json();
         const profileError = await profileResponse.json();
-        alert(`Failed to update: Account - ${accountError.detail || 'Error'}, Profile - ${profileError.detail || 'Error'}`);
+        setResponseBox({
+          show: true,
+          message: `Failed to update: Account - ${accountError.detail || 'Error'}, Profile - ${profileError.detail || 'Error'}`
+        });
       }
     } catch (error) {
       console.error('Error updating data:', error);
-      alert('An error occurred during update. Please try again.');
+      setResponseBox({ show: true, message: 'An error occurred during update. Please try again.' });
+    }
+  };
+
+  const closeResponseBox = () => {
+    setResponseBox({ show: false, message: '' });
+    if (responseBox.message === 'Comment deleted successfully!') {
+      navigate('/agentComment');
     }
   };
 
@@ -332,6 +346,16 @@ export default function UpdateAgentAccount() {
               </button>
             </div>
           </div>
+
+          {responseBox.show && (
+            <div className="agentUp-confirmation-overlay">
+              <div className="agentUp-confirmation-box">
+                <p>{responseBox.message}</p>
+                <button onClick={closeResponseBox} className="agentUp-yes-button">Ok</button>
+              </div>
+            </div>
+          )}
+
         </main>
       </div>
     </div>

@@ -45,13 +45,13 @@ export default function ViewComment() {
   const handleReplySubmit = async () => {
     try {
       if (!reply.trim()) {
-        alert('Please enter a reply');
+        setResponseBox({ show: true, message: 'Please enter a reply!' });
         return;
       }
 
       const agentId = localStorage.getItem('accountId');
       if (!agentId) {
-        alert('Session expired. Please login again.');
+        setResponseBox({ show: true, message: 'Session expired. Please login again.' });
         navigate('/login');
         return;
       }
@@ -64,10 +64,10 @@ export default function ViewComment() {
 
       setComment(response.data);
       setReply('');
-      alert('Reply submitted successfully!');
+      setResponseBox({ show: true, message: 'Reply submitted successfully!' });
     } catch (err) {
       console.error('Reply error:', err);
-      alert(err.response?.data?.detail || 'Failed to submit reply');
+      setResponseBox({ show: true, message: err.response?.data?.detail || 'Failed to submit reply' });
       if (err.response?.status === 401) {
         navigate('/login');
       }
