@@ -86,7 +86,6 @@ export default function ViewComment() {
       setResponseBox({ show: true, message: 'Comment deleted successfully!' });
     } catch (err) {
       setResponseBox({ show: true, message: 'Failed to delete comment' });
-      alert('Failed to delete comment');
     } finally {
       setShowDeleteConfirm(false);
     }

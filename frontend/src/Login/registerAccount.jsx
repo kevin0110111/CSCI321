@@ -5,7 +5,7 @@ import calendar from '../assets/calendar.svg';
 
 export default function RegisterAccount() {
   const navigate = useNavigate();
-
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' });
   const [showDOBPicker, setShowDOBPicker] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -54,7 +54,7 @@ export default function RegisterAccount() {
   const handleNext = (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match.');
+      setResponseBox({ show: true, message: 'Password do not match!' });
       return;
     }
     setStep(2);
@@ -107,21 +107,20 @@ export default function RegisterAccount() {
         });
 
         if (assignRoleResponse.ok) {
-          alert('Registration successful and role assigned!');
-          navigate('/login'); // Redirect to login page on success
+          setResponseBox({ show: true, message: 'Registration successful and role assigned!' });
         } else {
           const assignRoleErrorData = await assignRoleResponse.json();
-          alert(`Registration successful, but failed to assign role: ${assignRoleErrorData.detail || 'Something went wrong.'}`);
+          setResponseBox({ show: true, message: `Registration successful, but failed to assign role: ${assignRoleErrorData.detail || 'Something went wrong.'}` });
           // You might still want to navigate to login even if role assignment fails,
           // or handle this error more gracefully based on your application's needs.
           navigate('/login');
         }
       } else {
-        alert(`Registration failed: ${registeredAccountData.detail || 'Something went wrong.'}`);
+        setResponseBox({ show: true, message: `Registration failed: ${registeredAccountData.detail || 'Something went wrong.'}` });
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      alert('An error occurred during registration. Please try again.');
+      setResponseBox({ show: true, message: 'An error occurred during registration. Please try again.' });
     }
   };
 
@@ -141,6 +140,13 @@ export default function RegisterAccount() {
 
     if (newDay && newMonth && newYear) {
         setShowDOBPicker(false);
+    }
+  };
+
+  const closeResponseBox = () => {
+    setResponseBox({ show: false, message: '' });
+    if (responseBox.message === 'Registration successful and role assigned!') {
+      navigate('/login');
     }
   };
 
@@ -295,6 +301,16 @@ export default function RegisterAccount() {
         <div className="login-link">
           Have an account? <Link to="/login">Sign in</Link>
         </div>
+
+        {responseBox.show && (
+          <div className="regAcc-confirmation-overlay">
+            <div className="regAcc-confirmation-box">
+              <p>{responseBox.message}</p>
+              <button onClick={closeResponseBox} className="regAcc-yes-button">Ok</button>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
