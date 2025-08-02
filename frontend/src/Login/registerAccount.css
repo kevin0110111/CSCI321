@@ -76,21 +76,23 @@
 
 .dob-input-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  width: 100%;
 }
 
-.dob-input {
-  width: 100%;
+.date-picker-input {
+  width: 117%;
   padding-right: 40px; /* space for icon */
 }
 
 .calendar-icon {
   position: absolute;
   right: 10px;
-  width: 20px;
+  top: 38%;
+  transform: translateY(-50%);
   height: 20px;
+  width: 20px;
   cursor: pointer;
+  opacity: 0.8;
 }
 
 .regAcc-confirmation-overlay {

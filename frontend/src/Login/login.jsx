@@ -151,7 +151,7 @@ export default function Login() {
         <input
           type="password"
           name="password"
-          placeholder="Pick a password"
+          placeholder="Enter your password"
           className="login-input"
           value={formData.password}
           onChange={handleInputChange}

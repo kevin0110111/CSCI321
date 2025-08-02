@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './registerAccount.css';
 import calendar from '../assets/calendar.svg';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function RegisterAccount() {
   const navigate = useNavigate();
@@ -72,8 +74,7 @@ export default function RegisterAccount() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const [day, month, year] = formData.dob.split('/').map(Number);
-    const formattedDob = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const formattedDob = formData.dob;
 
     const payload = {
       username: formData.username,
@@ -185,15 +186,6 @@ export default function RegisterAccount() {
                 required
               />
               <input
-                type="text"
-                name="region"
-                placeholder="Region"
-                className="register-input"
-                value={formData.region}
-                onChange={handleChange}
-                required
-              />
-              <input
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -234,47 +226,30 @@ export default function RegisterAccount() {
                 onChange={handleChange}
                 required
               />
-              <div className="dob-block">
-                <div className="dob-input-wrapper">
-                  <input
-                    type="text"
-                    name="dob"
-                    placeholder="Date of Birth (DD/MM/YYYY)"
-                    className="register-input dob-input"
-                    value={formData.dob}
-                    onChange={handleChange}
-                    readOnly
-                  />
-                  <img
-                    src={calendar}
-                    alt="Calendar"
-                    className="calendar-icon"
-                    onClick={() => setShowDOBPicker(prev => !prev)}
-                  />
-                </div>
-
-                {showDOBPicker && (
-                  <div className="dob-picker">
-                    <select name="dob-day" onChange={e => updateDOB(e, 'day')} value={formData.dob.split('/')[0] || ''}>
-                      <option value="">Day</option>
-                      {[...Array(31)].map((_, i) => (
-                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                      ))}
-                    </select>
-                    <select name="dob-month" onChange={e => updateDOB(e, 'month')} value={formData.dob.split('/')[1] || ''}>
-                      <option value="">Month</option>
-                      {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((month, i) => (
-                        <option key={i + 1} value={i + 1}>{month}</option>
-                      ))}
-                    </select>
-                    <select name="dob-year" onChange={e => updateDOB(e, 'year')} value={formData.dob.split('/')[2] || ''}>
-                      <option value="">Year</option>
-                      {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                        <option key={year} value={year}>{year}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+              <div className="dob-input-wrapper">
+                <DatePicker
+                  selected={formData.dob ? new Date(formData.dob) : null}
+                  onChange={(date) => {
+                    const isoDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+                    setFormData(prev => ({
+                      ...prev,
+                      dob: isoDate
+                    }));
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Date of birth"
+                  className="register-input date-picker-input"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  id="dob-datepicker"
+                />
+                <img
+                  src={calendar}
+                  alt="Calendar"
+                  className="calendar-icon"
+                  onClick={() => document.getElementById('dob-datepicker')?.focus()}
+                />
               </div>
               <input
                 type="text"
@@ -282,6 +257,15 @@ export default function RegisterAccount() {
                 placeholder="Job"
                 className="register-input"
                 value={formData.job}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="region"
+                placeholder="Region"
+                className="register-input"
+                value={formData.region}
                 onChange={handleChange}
                 required
               />
