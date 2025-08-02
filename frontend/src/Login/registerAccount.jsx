@@ -53,10 +53,19 @@ export default function RegisterAccount() {
 
   const handleNext = (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setResponseBox({ show: true, message: 'Password do not match!' });
+    // Check if all password requirements are met
+    const allRequirementsMet = Object.values(passwordRequirements).every(Boolean);
+
+    if (!allRequirementsMet) {
+      setResponseBox({ show: true, message: 'Password does not meet the requirements. Please enter a proper password.' });
       return;
     }
+
+    if (formData.password !== formData.confirmPassword) {
+      setResponseBox({ show: true, message: 'Passwords do not match!' });
+      return;
+    }
+
     setStep(2);
   };
 
