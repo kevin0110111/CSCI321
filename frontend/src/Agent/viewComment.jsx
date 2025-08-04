@@ -194,22 +194,30 @@ export default function ViewComment() {
           {comment.reply_content && (
             <div className="comment-box">
               <p>{comment.reply_content}</p>
-              <p>Replied by Agent {comment.replied_agent_id} on {new Date(comment.replied_at).toLocaleString()}</p>
+              <br />
+              <p>Replied by Agent {comment.replied_agent_id} on {new Date(comment.replied_at).toLocaleDateString()}</p>
             </div>
           )}
 
-          <div className="reply-section">
-            <h3>Add Reply:</h3>
-            <textarea
-              value={reply}
-              onChange={handleReplyChange}
-              placeholder="Type your reply here..."
-              className="reply-box"
-            />
-          </div>
+          {!comment.reply_content && (
+            <>
+              <div className="reply-section">
+                <h3>Add Reply:</h3>
+                <textarea
+                  value={reply}
+                  onChange={handleReplyChange}
+                  placeholder="Type your reply here..."
+                  className="reply-box"
+                />
+              </div>
+
+              <div className="action-buttons">
+                <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
+              </div>
+            </>
+          )}
 
           <div className="action-buttons">
-            <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
             <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
             <button className="back-button" onClick={handleBack}>Back</button>
           </div>
