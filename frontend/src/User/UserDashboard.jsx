@@ -57,12 +57,85 @@ function ImageCarousel() {
             <button className="arrow right" onClick={next}>&#10095;</button>
         </div>
     );
-    }
-
+}
 
 export default function UserDashboard() {
+  const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState([]);
+  const [location, setLocation] = useState('Loading...');
+  const [lastUpdated, setLastUpdated] = useState('');
+  const [alert, setAlert] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Replace with your actual OpenWeatherMap API key
+  const API_KEY = '24988f54a3eb7d5e5a4b1a4240a6394e'; // Get free key from https://openweathermap.org/api
+
   useEffect(() => {
     document.title = 'Dashboard';
+
+    const fetchWeather = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Step 1: Get user's IP address
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+
+        // Step 2: Get location from IP (using ipapi.co - free for basic use)
+        const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+        const geoData = await geoResponse.json();
+        if (geoData.error) {
+          throw new Error('Failed to get location from IP');
+        }
+        const { city, latitude: lat, longitude: lon } = geoData;
+        setLocation(city || 'Unknown Location');
+
+        // Step 3: Get weather data using OpenWeatherMap One Call API (includes current, forecast, and alerts)
+        const weatherResponse = await fetch(
+          `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&units=metric&appid=${API_KEY}`
+        );
+        const weatherJson = await weatherResponse.json();
+        if (weatherJson.cod && weatherJson.cod !== 200) {
+          throw new Error(weatherJson.message || 'Weather API error');
+        }
+
+        // Current weather
+        setWeatherData({
+          temp: Math.round(weatherJson.current.temp),
+          description: weatherJson.current.weather[0].main,
+          icon: `https://openweathermap.org/img/wn/${weatherJson.current.weather[0].icon}@2x.png`,
+          wind: weatherJson.current.wind_speed,
+          humidity: weatherJson.current.humidity,
+        });
+
+        // 7-day forecast (daily)
+        const forecast = weatherJson.daily.slice(1, 8).map((day) => ({
+          day: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' }),
+          high: Math.round(day.temp.max),
+          low: Math.round(day.temp.min),
+          icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`,
+        }));
+        setForecastData(forecast);
+
+        // Alerts (if any)
+        if (weatherJson.alerts && weatherJson.alerts.length > 0) {
+          setAlert(weatherJson.alerts[0].description);
+        }
+
+        // Last updated
+        setLastUpdated(new Date(weatherJson.current.dt * 1000).toLocaleTimeString());
+
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch weather data. Please try again later.');
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
   }, []);
 
   return (
@@ -77,46 +150,58 @@ export default function UserDashboard() {
         <div className="weather-card-large">
           <div className="weather-header">
             <span className="location-icon">📍</span>
-            <span className="weather-location">Singapore</span>
+            <span className="weather-location">{location}</span>
           </div>
           <hr className="weather-header-line" />
 
           <div className="weather-row">
             <div className="weather-info-box">
-              <div className="weather-main-info">
-                <div className="weather-left">
-                  <div className="weather-today-label">Today</div>
-                  <img src="/sun.png" alt="Weather Icon" className="weather-icon-lg" />
-                </div>
-                <div className="weather-divider"></div>
-                <div className="weather-right">
-                  <div className="temp-now">32°C</div>
-                  <div className="desc">Sunny</div>
-                  <div className="wind-humidity">
-                    Wind: 5 km/h<br />
-                    Humidity: 60%
+              {loading ? (
+                <p>Loading weather...</p>
+              ) : error ? (
+                <p className="error">{error}</p>
+              ) : weatherData ? (
+                <div className="weather-main-info">
+                  <div className="weather-left">
+                    <div className="weather-today-label">Today</div>
+                    <img src={weatherData.icon} alt="Weather Icon" className="weather-icon-lg" />
+                  </div>
+                  <div className="weather-divider"></div>
+                  <div className="weather-right">
+                    <div className="temp-now">{weatherData.temp}°C</div>
+                    <div className="desc">{weatherData.description}</div>
+                    <div className="wind-humidity">
+                      Wind: {weatherData.wind} km/h<br />
+                      Humidity: {weatherData.humidity}%
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </div>
 
-            <div className="weather-alert-card">
-              <span className="alert-icon">⚠️</span>
-              <p>Heavy rain expected later today</p>
-            </div>
+            {alert && (
+              <div className="weather-alert-card">
+                <span className="alert-icon">⚠️</span>
+                <p>{alert}</p>
+              </div>
+            )}
           </div>
 
           <div className="weather-forecast-row">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, idx) => (
-              <div className="weather-forecast" key={idx}>
-                <div className="day">{day}</div>
-                <img src="/rain.png" alt="forecast" />
-                <div className="temps">30° / 24°</div>
-              </div>
-            ))}
+            {loading ? (
+              <p>Loading forecast...</p>
+            ) : error ? null : (
+              forecastData.map((day, idx) => (
+                <div className="weather-forecast" key={idx}>
+                  <div className="day">{day.day}</div>
+                  <img src={day.icon} alt="forecast" />
+                  <div className="temps">{day.high}° / {day.low}°</div>
+                </div>
+              ))
+            )}
           </div>
 
-          <div className="last-updated">Last updated 1 hour ago</div>
+          <div className="last-updated">Last updated: {lastUpdated}</div>
         </div>
       </div>
     </div>
