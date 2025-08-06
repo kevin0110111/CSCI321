@@ -68,7 +68,7 @@ export default function UserUpload() {
   return (
         <main className="dashboard-content">
           <div className="upload-container">
-            <h2>Upload Crop Image</h2>
+            <h2>Upload Your Maize Images</h2>
 
             <div
               className={`upload-box ${dragActive ? 'drag-active' : ''}`}
@@ -86,7 +86,7 @@ export default function UserUpload() {
                         className="remove-btn"
                         onClick={() => handleRemove(index)}
                       >
-                        ×
+                        Remove
                       </button>
                     </div>
                   ))}
