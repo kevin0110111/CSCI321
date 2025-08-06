@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import './UserUpload.css';
-import uploadIcon from '../assets/upload.svg';
+import uploadIcon from '../assets/upload.svg'; // Upload icon
+import JSZip from 'jszip'; // For extracting zip files
 import { useNavigate } from 'react-router-dom';
 
 export default function UserUpload() {
@@ -9,27 +10,51 @@ export default function UserUpload() {
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
-
-  const handleFileChange = (event) => {
+  // Handle file selection or zip extraction
+  const handleFileChange = async (event) => {
     const selectedFiles = Array.from(event.target.files);
-    const previewFiles = selectedFiles.map((file) => ({
-      name: file.name,
-      type: file.type,
-      previewUrl: URL.createObjectURL(file),
-    }));
-    setFiles(previewFiles);
+    const newPreviewFiles = [];
+
+    for (const file of selectedFiles) {
+      // Handle zip files
+      if (file.name.endsWith('.zip')) {
+        const zip = new JSZip();
+        const content = await zip.loadAsync(file);
+
+        for (const filename of Object.keys(content.files)) {
+          const zipEntry = content.files[filename];
+          // Only extract images (skip folders or unsupported files)
+          if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(filename)) {
+            const blob = await zipEntry.async('blob');
+            const previewUrl = URL.createObjectURL(blob);
+            newPreviewFiles.push({
+              name: filename,
+              type: blob.type,
+              previewUrl,
+            });
+          }
+        }
+      }
+      // Handle single image files
+      else if (file.type.startsWith('image/')) {
+        newPreviewFiles.push({
+          name: file.name,
+          type: file.type,
+          previewUrl: URL.createObjectURL(file),
+        });
+      }
+    }
+
+    setFiles((prev) => [...prev, ...newPreviewFiles]);
   };
 
-  const handleDrop = (e) => {
+  // Drag & drop support
+  const handleDrop = async (e) => {
     e.preventDefault();
     setDragActive(false);
     const droppedFiles = Array.from(e.dataTransfer.files);
-    const previewFiles = droppedFiles.map((file) => ({
-      name: file.name,
-      type: file.type,
-      previewUrl: URL.createObjectURL(file),
-    }));
-    setFiles(previewFiles);
+    const eventLike = { target: { files: droppedFiles } };
+    await handleFileChange(eventLike);
   };
 
   const triggerFileSelect = () => {
@@ -56,67 +81,68 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
-  const [results, setResults] = useState([]);
-  const [diseaseResults, setDiseaseResults] = useState([]);
-
-
-  
   useEffect(() => {
-        document.title = 'Upload';
-      }, []);
+    document.title = 'Upload';
+  }, []);
 
   return (
-        <main className="dashboard-content">
-          <div className="upload-container">
-            <h2>Upload Your Maize Images</h2>
+    <main className="dashboard-content">
+      <div className="upload-container">
+        <h2>Upload Maize Images</h2>
 
-            <div
-              className={`upload-box ${dragActive ? 'drag-active' : ''}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              {files.length > 0 ? (
-                <div className="preview-gallery">
-                  {files.map((file, index) => (
-                    <div className="preview-wrapper" key={index}>
-                      <img src={file.previewUrl} alt="Preview" className="preview-image" />
-                      <div className="preview-filename" title={file.name}>{file.name}</div>
-                      <button
-                        className="remove-btn"
-                        onClick={() => handleRemove(index)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
+        {/* Upload box with drag/drop and preview area */}
+        <div
+          className={`upload-box ${dragActive ? 'drag-active' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          {files.length > 0 ? (
+            <div className="preview-gallery">
+              {files.map((file, index) => (
+                <div className="preview-wrapper" key={index}>
+                  <img src={file.previewUrl} alt="Preview" className="preview-image" />
+                  <div className="preview-filename" title={file.name}>{file.name}</div>
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemove(index)}
+                  >
+                    Remove
+                  </button>
                 </div>
-              ) : (
-                <>
-                  <img src={uploadIcon} alt="Upload" />
-                  <p>
-                    Drag and drop your image(s) or <span className="browse" onClick={triggerFileSelect}>Browse</span>
-                  </p>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
+              ))}
             </div>
+          ) : (
+            <>
+              <img src={uploadIcon} alt="Upload" />
+              <p>
+                Drag and drop your image(s) or{' '}
+                <span className="browse" onClick={triggerFileSelect}>Browse</span>
+              </p>
+              <p>Support ZIP, png, jpg, jpeg</p>
 
-            <div className="upload-info">
-              {files.length > 0 && (
-                <div className="image-type">
-                  Image count: <span className="radio-selected">{files.length}</span>
-                </div>
-              )}
+            </>
+          )}
+          <input
+            type="file"
+            accept=".zip,image/*"
+            multiple
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+        </div>
+
+        {/* Show image count if uploaded */}
+        <div className="upload-info">
+          {files.length > 0 && (
+            <div className="image-type">
+              Image count: <span className="radio-selected">{files.length}</span>
             </div>
+          )}
+        </div>
 
+        {/* Action buttons (logic simplified) */}
         <div className="button-group">
           <button className="reset-btn" onClick={handleReset}>Reset</button>
 
@@ -127,17 +153,11 @@ export default function UserUpload() {
                 alert('Please upload at least one image before counting.');
                 return;
               }
-              const newResults = files.map((file) => ({
-                image: file.previewUrl,
-                count: Math.floor(Math.random() * 50),
-                show: true,
-              }));
-              setResults(newResults);
+              alert('Count requested.');
             }}
           >
             Count
           </button>
-
 
           <button
             className="premium-btn"
@@ -146,114 +166,13 @@ export default function UserUpload() {
                 alert('Please upload at least one image before checking for disease.');
                 return;
               }
-              const newDiseaseResults = files.map((file) => ({
-                image: file.previewUrl,
-                disease: 'Rust',
-                show: true,
-              }));
-              setDiseaseResults(newDiseaseResults);
+              alert('Disease check requested.');
             }}
           >
             Check Disease (Premium)
           </button>
-
         </div>
-
-          </div>
-      {results.some(r => r.show) && (
-        <div className="result-modal-overlay">
-          {results.map((res, index) =>
-            res.show ? (
-              <div className="result-modal-content" key={index}>
-                <h3>Analysis Result</h3>
-                <img src={res.image} alt={`Result ${index}`} className="modal-image" />
-                <p><strong>Tassel Count:</strong> {res.count}</p>
-                <div className="modal-button-group">
-                  <button
-                    className="count-btn-save"
-                    onClick={() => {
-                      const updated = [...results];
-                      updated[index].show = false;
-                      setResults(updated);
-                    }}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="count-btn-reannotate"
-                    onClick={() => {
-                      navigate('/user/reannotate', {
-                        state: { image: res.image },
-                      });
-                    }}
-                  >
-                    Re-annotate
-                  </button>
-                  <button
-                    className="count-btn-cancel"
-                    onClick={() => {
-                      const updated = [...results];
-                      updated[index].show = false;
-                      setResults(updated);
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : null
-          )}
-        </div>
-      )}
-
-
-
-      {diseaseResults.some(r => r.show) && (
-        <div className="disease-modal-overlay">
-          {diseaseResults.map((res, index) =>
-            res.show ? (
-              <div className="disease-modal-content" key={index}>
-                <h3>Disease Detection Result</h3>
-                <img src={res.image} alt={`Disease Result ${index}`} className="modal-image" />
-                <p><strong>Detected Disease:</strong> {res.disease}</p>
-                <p>
-                  <strong>Description:</strong> This disease typically appears as reddish-brown lesions on the leaf surface and can spread under humid conditions.
-                </p>
-                <div className="modal-button-group">
-                  <button
-                    className="disease-btn-save"
-                    onClick={() => {
-                      const updated = [...diseaseResults];
-                      updated[index].show = false;
-                      setDiseaseResults(updated);
-                    }}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="disease-btn-generate"
-                    onClick={() => {
-                      navigate('/user/densitymap');
-                    }}
-                  >
-                    Generate Density Map
-                  </button>
-                  <button
-                    className="disease-btn-cancel"
-                    onClick={() => {
-                      const updated = [...diseaseResults];
-                      updated[index].show = false;
-                      setDiseaseResults(updated);
-                    }}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            ) : null
-          )}
-        </div>
-      )}
-        </main>
+      </div>
+    </main>
   );
 }
