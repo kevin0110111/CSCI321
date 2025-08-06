@@ -4,13 +4,6 @@ import AdminTopBar from './AdminTopBar';
 import AdminSidebar from './AdminSidebar';
 import "./AdminViewProfiles.css";
 
-const roles = [
-  { id: 1, role: "Admin", description: "Able to manage all the accounts and permissions.", permissions: ["Update Account", "Manage Accounts", "Access Database", "Use System", "Update Models", "Reply Comments"] },
-  { id: 2, role: "Agent", description: "Responsible for maintaining the operation of the application and communicating with users.", permissions: ["Update Account", "Manage Accounts", "Reply Comments"] },
-  { id: 3, role: "User", description: "Allowed to use the system.", permissions: ["Use System"] },
-  { id: 4, role: "Premium User", description: "Has more features than normal users.", permissions: ["Use System", "Update Models"] }
-];
-
 const allPermissions = [
   "Update Account",
   "Manage Accounts",
@@ -23,13 +16,52 @@ const allPermissions = [
 export default function AdminViewProfiles() {
   const navigate = useNavigate();
 
-  const [filteredRoles, setFilteredRoles] = useState(roles);
+  const [roles, setRoles] = useState([]);
+  const [filteredRoles, setFilteredRoles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("Newest");
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Fetch roles from API
+  useEffect(() => {
+    const fetchRoles = async () => {
+      setIsLoading(true);
+      setError("");
+      
+      try {
+        const response = await fetch('http://localhost:8000/api/roles/');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch roles');
+        }
+        
+        const rolesData = await response.json();
+        
+        // Transform API data to match component expectations
+        const transformedRoles = rolesData.map(role => ({
+          id: role.role_id,
+          role: role.role_name,
+          description: role.description || "",
+          permissions: role.description ? role.description.split(", ").filter(p => p.trim()) : [],
+          state: role.state
+        }));
+        
+        setRoles(transformedRoles);
+      } catch (err) {
+        setError(err.message || 'An error occurred while fetching roles');
+        console.error('Error fetching roles:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRoles();
+  }, []);
 
   useEffect(() => {
     let filtered = [...roles];
@@ -60,7 +92,7 @@ export default function AdminViewProfiles() {
     setFilteredRoles(filtered);
 
     setSelectedFilters([...selectedRoles, ...selectedPermissions]);
-  }, [searchTerm, selectedRoles, selectedPermissions, sortOrder]);
+  }, [searchTerm, selectedRoles, selectedPermissions, sortOrder, roles]);
 
   const onRoleChange = (e) => {
     const role = e.target.value;

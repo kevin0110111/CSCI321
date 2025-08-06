@@ -37,10 +37,13 @@ import AdminViewAccounts from './Admin/AdminViewAccounts';
 import AdminAccountDetails from './Admin/AdminAccountDetails';
 import AdminSuspendUser from './Admin/AdminSuspendUser';
 import AdminUpdateAccountDetails from './Admin/AdminUpdateAccountDetails';
-import AdminCreateProfile from './Admin/AdminCreateprofile';
+import AdminCreateProfile from './Admin/AdminCreateProfile';
 import AdminViewProfiles from './Admin/AdminViewProfiles';
 import AdminProfileDetails from "./Admin/AdminProfileDetails";
 import AdminUpdateProfileDetails from './Admin/AdminUpdateProfileDetails';
+import AdminViewModels from './Admin/AdminViewModels';
+import AdminUpdateModel from './Admin/AdminUpdateModel';
+import AdminDeleteModel from './Admin/AdminDeleteModel';
 
 export default function App() {
   return (
@@ -91,6 +94,9 @@ export default function App() {
         <Route path="/admin/view-profiles" element={<AdminViewProfiles />} />
         <Route path="/admin/profile/:roleId" element={<AdminProfileDetails />} />
         <Route path="/admin/update-profile/:roleId" element={<AdminUpdateProfileDetails />} />
+        <Route path="/admin/view-models" element={<AdminViewModels />} />
+        <Route path="/admin/update-model" element={<AdminUpdateModel />} />
+        <Route path="/admin/model/:modelId" element={<AdminDeleteModel />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>

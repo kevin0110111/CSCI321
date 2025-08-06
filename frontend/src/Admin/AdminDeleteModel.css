@@ -1,0 +1,109 @@
+.adminDelMod-content {
+  flex: 1;
+  padding: 50px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.adminDelMod-model-details-header {
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.adminDelMod-model-info-section {
+  margin-top: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.adminDelMod-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  width: 100%;
+  align-items: center;
+}
+
+.adminDelMod-action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.adminDelMod-btn {
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  margin: 0;
+}
+
+.adminDelMod-btn-update {
+  background-color: rgb(53, 164, 53);
+}
+
+.adminDelMod-btn-update:hover {
+  background-color: rgb(32, 133, 32);
+}
+
+.adminDelMod-btn-danger {
+  background-color: #e74c3c;
+}
+
+.adminDelMod-btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.adminDelMod-btn-back {
+  background-color: #6c757d;
+}
+
+.adminDelMod-btn-back:hover {
+  background-color: #5a6268;
+}
+
+.adminDelMod-error-message {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fdecea;
+  border-radius: 4px;
+}
+
+.adminDelMod-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.adminDelMod-modal-box {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.adminDelMod-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}

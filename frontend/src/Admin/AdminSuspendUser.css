@@ -117,3 +117,109 @@
 .admin-btn-success:hover {
   background-color: #1e8449;
 }
+
+.adminSus-loading-container, .adminSus-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adminSus-error-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.suspension-status-alert {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.current-suspension-info {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #d97706;
+}
+
+.suspension-preview {
+  background: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.suspension-preview h3 {
+  margin: 0 0 0.5rem 0;
+  color: #374151;
+}
+
+.suspension-preview p {
+  margin: 0.25rem 0;
+  color: #6b7280;
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-warning {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.admin-btn-warning:hover:not(:disabled) {
+  background-color: #d97706;
+}
+
+.susUser-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.susUser-modal-box {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.susUser-modal-box p {
+  margin-bottom: 20px;
+}
+
+.susUser-modal-box .susUser-btn {
+  margin: 0 10px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.susUser-btn-ok, .susUser-btn-confirm {
+  background-color: #2ecc71;
+  color: white;
+  border-radius: 4px;
+}
+
+.susUser-btn-cancel {
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 4px;
+}

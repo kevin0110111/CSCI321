@@ -15,7 +15,7 @@ export default function AdminDashboard() {
         <AdminSidebar />
 
         <main className="admin-create-container">
-          <h1>Welcome to Maize Tussel Admin!</h1>
+          <h1>TasselAI admin</h1>
           {/* add dashboard widgets here */}
         </main>
       </div>

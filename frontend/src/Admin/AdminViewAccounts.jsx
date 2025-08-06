@@ -4,25 +4,72 @@ import AdminTopBar from './AdminTopBar';
 import AdminSidebar from './AdminSidebar';
 import "./AdminViewAccounts.css";
 
-const allUsers = [
-  { id: 1, name: "Leslie Alexander", email: "leslie.alexander@example.com", role: "Admin" },
-  { id: 2, name: "Dries Vincent", email: "dries.vincent@example.com", role: "User" },
-  { id: 3, name: "Michael Foster", email: "michael.foster@example.com", role: "Agent" },
-  { id: 4, name: "Lindsay Walton", email: "lindsay.walton@example.com", role: "Admin" },
-  { id: 5, name: "Courtney Henry", email: "courtney.henry@example.com", role: "Agent" },
-  { id: 6, name: "Tom Cook", email: "tom.cook@example.com", role: "Premium User" }
-];
-
 export default function AdminViewAccounts() {
   const navigate = useNavigate();
+  const [allUsers, setAllUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [filteredUsers, setFilteredUsers] = useState(allUsers);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("Newest");
   const [selectedName, setSelectedName] = useState("");
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [selectedFilters, setSelectedFilters] = useState([]);
+
+  // Fetch accounts from API
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch(`http://localhost:8000/api/accounts/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add authorization header if needed
+            // 'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const accounts = await response.json();
+        
+        // Transform API data to match the expected format
+        const transformedUsers = accounts.map(account => ({
+          id: account.account_id,
+          name: account.profile?.name || account.username, // Use profile name if available, otherwise username
+          email: account.email,
+          role: account.role?.role_name || 'User', // Use role name from relationship, default to 'User'
+          username: account.username,
+          avatar_url: account.avatar_url,
+          region: account.region,
+          state: account.state,
+          is_premium: account.is_premium,
+          createDate: account.createDate,
+          subscription_expiry: account.subscription_expiry
+        }));
+
+        setAllUsers(transformedUsers);
+        setFilteredUsers(transformedUsers);
+      } catch (err) {
+        console.error('Error fetching accounts:', err);
+        setError(`Failed to load accounts: ${err.message}`);
+        // Fallback to empty array on error
+        setAllUsers([]);
+        setFilteredUsers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   // Filter users on search, selectedName, selectedRoles, sortOrder
   useEffect(() => {

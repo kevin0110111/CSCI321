@@ -47,7 +47,7 @@ export default function AdminTopBar() {
         aria-label="Go to admin home"
       >
         <span className="admin-logo-icon" role="img" aria-label="corn">🌽</span>
-        Logo
+        TasselAI
       </div>
 
       <div className="admin-top-center">
@@ -64,7 +64,7 @@ export default function AdminTopBar() {
           className={isProfileActive ? 'active-link' : ''}
           onClick={handleProfileClick}
         >
-          Profile
+          Role
         </a>
       </div>
 

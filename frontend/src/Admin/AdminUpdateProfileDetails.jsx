@@ -1,31 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminTopBar from "./AdminTopBar";
 import AdminSidebar from "./AdminSidebar";
 import "./AdminUpdateProfileDetails.css";
-
-const allRoles = [
-  {
-    id: 1,
-    role: "Admin",
-    permissions: ["Update Account", "Manage Accounts", "Access Database", "Use System", "Update Models", "Reply Comments"],
-  },
-  {
-    id: 2,
-    role: "User",
-    permissions: ["Use System", "Reply Comments"],
-  },
-  {
-    id: 3,
-    role: "Agent",
-    permissions: ["Manage Accounts", "Access Database", "Use System"],
-  },
-  {
-    id: 4,
-    role: "Premium User",
-    permissions: ["Use System", "Reply Comments", "Update Account"],
-  },
-];
 
 const allPermissions = [
   "Update Account",
@@ -33,32 +10,66 @@ const allPermissions = [
   "Access Database",
   "Use System",
   "Update Models",
-  "Reply Comments"
+  "Reply Comments",
 ];
 
 export default function AdminUpdateProfileDetails() {
   const { roleId } = useParams();
   const navigate = useNavigate();
 
-  const role = allRoles.find(r => r.id === Number(roleId));
-
+  const [role, setRole] = useState(null);
   const [newName, setNewName] = useState("");
   const [confirmName, setConfirmName] = useState("");
-  const [selectedPermissions, setSelectedPermissions] = useState(role ? [...role.permissions] : []);
+  const [selectedPermissions, setSelectedPermissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [responseBox, setResponseBox] = useState({ show: false, message: '', onOk: null });
 
-  if (!role) {
-    return (
-      <div className="admin-update-profile-dashboard">
-        <AdminTopBar />
-        <div className="admin-update-profile-layout">
-          <AdminSidebar />
-          <main className="admin-update-profile-content">
-            <h2>Role not found</h2>
-          </main>
-        </div>
-      </div>
-    );
-  }
+  // Fetch role details from API
+  useEffect(() => {
+    const fetchRoleDetails = async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(`http://localhost:8000/api/roles/${roleId}`);
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("Role not found");
+          } else {
+            throw new Error('Failed to fetch role details');
+          }
+          return;
+        }
+        
+        const roleData = await response.json();
+        
+        // Transform API data to match component expectations
+        const transformedRole = {
+          id: roleData.role_id,
+          role: roleData.role_name,
+          description: roleData.description || "",
+          permissions: roleData.description ? roleData.description.split(", ").filter(p => p.trim()) : [],
+          state: roleData.state
+        };
+        
+        setRole(transformedRole);
+        setSelectedPermissions([...transformedRole.permissions]);
+      } catch (err) {
+        setError(err.message || 'An error occurred while fetching role details');
+        console.error('Error fetching role details:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (roleId) {
+      fetchRoleDetails();
+    }
+  }, [roleId]);
 
   const handlePermissionChange = (perm) => {
     if (selectedPermissions.includes(perm)) {
@@ -69,16 +80,125 @@ export default function AdminUpdateProfileDetails() {
   };
 
   const handleCancel = () => {
-    navigate(-1);
+    navigate(`/admin/profile/${roleId}`)
   };
 
-  const handleUpdate = () => {
-    // Add your update logic here
-    alert(`Updated Profile:
-Old Name: ${role.role}
-New Name: ${newName}
-Permissions: ${selectedPermissions.join(", ")}`);
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      // Prepare update data
+      const updateData = {};
+      
+      // Only include role name if it's being changed
+      if (newName.trim() && newName !== role.role) {
+        updateData.role_name = newName.trim();
+      }
+      
+      // Always update permissions (description)
+      updateData.description = selectedPermissions.join(", ");
+
+      // Make API call to update role
+      const response = await fetch(`http://localhost:8000/api/roles/${roleId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to update role');
+      }
+
+      const updatedRole = await response.json();
+      
+      setResponseBox({
+        show: true,
+        message: `Role "${updatedRole.role_name}" updated successfully!`,
+        onOk: () => navigate(`/admin/profile/${roleId}`)
+      });
+      
+      // Update local role state
+      const transformedRole = {
+        id: updatedRole.role_id,
+        role: updatedRole.role_name,
+        description: updatedRole.description || "",
+        permissions: updatedRole.description ? updatedRole.description.split(", ").filter(p => p.trim()) : [],
+        state: updatedRole.state
+      };
+      
+      setRole(transformedRole);
+      
+      // Reset form fields
+      setNewName("");
+      setConfirmName("");
+
+    } catch (err) {
+      setResponseBox({
+        show: true,
+        message: err.message || 'An error occurred while updating the role',
+        onOk: null
+      });
+    } finally {
+      setIsUpdating(false);
+    }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="admin-dashboard">
+        <AdminTopBar />
+        <div className="admin-layout">
+          <AdminSidebar />
+          <main className="admin-content">
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+              <div>Loading role details...</div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state or role not found
+  if (error && !role) {
+    return (
+      <div className="admin-dashboard">
+        <AdminTopBar />
+        <div className="admin-layout">
+          <AdminSidebar />
+          <main className="admin-content">
+            <div style={{ padding: '20px' }}>
+              <h2 style={{ color: 'red', marginBottom: '20px' }}>
+                {error || "Role not found"}
+              </h2>
+              <button
+                className="admin-update-profile-btn-cancel"
+                onClick={() => navigate('/admin/profiles')}
+                style={{ 
+                  padding: '10px 20px',
+                  background: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Back to Profiles
+              </button>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  if (!role) return null;
 
   return (
     <div className="admin-dashboard">
@@ -86,7 +206,7 @@ Permissions: ${selectedPermissions.join(", ")}`);
       <div className="admin-layout">
         <AdminSidebar />
         <main className="admin-content">
-          <h1 className="admin-update-profile-title">UPDATE PROFILE</h1>
+          <h1 className="admin-update-profile-title">UPDATE ROLE</h1>
           <p className="admin-update-profile-warning">Ensure the permissions are not abused</p>
           <hr className="admin-update-profile-divider" />
 
@@ -95,7 +215,12 @@ Permissions: ${selectedPermissions.join(", ")}`);
             <h2 className="admin-update-profile-section-title">Change Profile Name</h2>
             <label className="admin-update-profile-label">
               Current Name
-              <input type="text" className="admin-update-profile-input" value={role.role} readOnly />
+              <input 
+                type="text" 
+                className="admin-update-profile-input" 
+                value={role.role} 
+                readOnly 
+              />
             </label>
             <label className="admin-update-profile-label">
               New Name
@@ -105,6 +230,7 @@ Permissions: ${selectedPermissions.join(", ")}`);
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="Enter new profile name"
+                disabled={isUpdating}
               />
             </label>
             <label className="admin-update-profile-label">
@@ -115,8 +241,14 @@ Permissions: ${selectedPermissions.join(", ")}`);
                 value={confirmName}
                 onChange={(e) => setConfirmName(e.target.value)}
                 placeholder="Confirm new profile name"
+                disabled={isUpdating}
               />
             </label>
+            {newName && newName !== confirmName && (
+              <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                Names do not match
+              </div>
+            )}
           </section>
 
           <hr className="admin-update-profile-divider" />
@@ -132,6 +264,7 @@ Permissions: ${selectedPermissions.join(", ")}`);
                     type="checkbox"
                     checked={selectedPermissions.includes(perm)}
                     onChange={() => handlePermissionChange(perm)}
+                    disabled={isUpdating}
                   />
                   <span className="admin-update-profile-permission-text">{perm}</span>
                 </label>
@@ -146,18 +279,45 @@ Permissions: ${selectedPermissions.join(", ")}`);
             <button
               className="admin-update-profile-btn-cancel"
               onClick={handleCancel}
+              disabled={isUpdating}
             >
               Cancel
             </button>
             <button
               className="admin-update-profile-btn-update"
               onClick={handleUpdate}
-              disabled={newName === "" || newName !== confirmName}
-              title={newName === "" || newName !== confirmName ? "Enter and confirm new name" : ""}
+              disabled={
+                isUpdating || 
+                (newName.trim() && newName !== confirmName) ||
+                (newName.trim() === "" && JSON.stringify(selectedPermissions.sort()) === JSON.stringify(role.permissions.sort()))
+              }
+              title={
+                isUpdating ? "Updating..." :
+                newName.trim() && newName !== confirmName ? "Enter and confirm new name" :
+                newName.trim() === "" && JSON.stringify(selectedPermissions.sort()) === JSON.stringify(role.permissions.sort()) ? "No changes to update" :
+                "Update role"
+              }
             >
-              Update
+              {isUpdating ? 'Updating...' : 'Update'}
             </button>
           </div>
+
+          {responseBox.show && (
+            <div className="adminUpRole-modal-overlay">
+              <div className="adminUpRole-modal-box">
+                <p>{responseBox.message}</p>
+                <button
+                  className="adminUpRole-btn adminUpRole-btn-ok"
+                  onClick={() => {
+                    responseBox.onOk?.();
+                    setResponseBox({ show: false, message: '', onOk: null });
+                  }}
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
