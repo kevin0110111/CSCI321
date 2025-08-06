@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import './UserUpload.css';
-import uploadIcon from '../assets/upload.svg'; // Upload icon
+import uploadIcon from '../assets/upload.png'; // Upload icon
 import JSZip from 'jszip'; // For extracting zip files
 import { useNavigate } from 'react-router-dom';
 
