@@ -13,7 +13,8 @@ export default function RegisterAccount() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    region: '',
+    country: '',
+    city: '',
     password: '',
     confirmPassword: '',
     name: '',
@@ -81,7 +82,8 @@ export default function RegisterAccount() {
       email: formData.email,
       password: formData.password,
       avatar_url: null,
-      region: formData.region,
+      country: formData.country,
+      city: formData.city,
       is_premium: false,
       subscription_expiry: null,
       name: formData.name,
@@ -262,10 +264,19 @@ export default function RegisterAccount() {
               />
               <input
                 type="text"
-                name="region"
-                placeholder="Region"
+                name="country"
+                placeholder="Country"
                 className="register-input"
-                value={formData.region}
+                value={formData.country}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                className="register-input"
+                value={formData.city}
                 onChange={handleChange}
                 required
               />

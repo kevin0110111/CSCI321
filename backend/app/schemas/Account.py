@@ -15,7 +15,8 @@ class AccountBase(BaseModel):
     username: str
     email: EmailStr
     avatar_url: Optional[str] = None
-    region: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
     state: AccountStateEnum = AccountStateEnum.active
     is_premium: bool = False
     subscription_expiry: Optional[date] = None
@@ -27,7 +28,8 @@ class AccountUpdate(BaseModel):
     username: Optional[str] = None
     email: Optional[EmailStr] = None
     avatar_url: Optional[str] = None
-    region: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
     state: Optional[AccountStateEnum] = None
     is_premium: Optional[bool] = None
     subscription_expiry: Optional[date] = None
@@ -60,7 +62,8 @@ class AccountWithProfileCreate(BaseModel):
     email: EmailStr
     password: str
     avatar_url: Optional[str] = None
-    region: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
     is_premium: bool = False
     subscription_expiry: Optional[date] = None
     
