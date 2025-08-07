@@ -8,7 +8,6 @@ export default function AdminTopBar() {
 
   const handleAccountClick = (e) => {
     e.preventDefault();
-    // If currently on create-profile page, clicking Account goes to create-account
     if (path.includes('create-profile')) {
       navigate('/admin/create-account');
     } else if (path.includes('account') && path.includes('create')) {
@@ -20,7 +19,6 @@ export default function AdminTopBar() {
 
   const handleProfileClick = (e) => {
     e.preventDefault();
-    // If currently on create-account page, clicking Profile goes to create-profile
     if (path.includes('create-account')) {
       navigate('/admin/create-profile');
     } else if (path.includes('profile') && path.includes('create')) {
@@ -34,6 +32,7 @@ export default function AdminTopBar() {
 
   const isAccountActive = path.includes('account');
   const isProfileActive = path.includes('profile');
+  const isCreatePage = path.includes('create-account');
 
   return (
     <header className="admin-top-nav">
@@ -51,21 +50,33 @@ export default function AdminTopBar() {
       </div>
 
       <div className="admin-top-center">
-        <a
-          href="/admin/view-accounts"
-          className={isAccountActive ? 'active-link' : ''}
-          onClick={handleAccountClick}
-        >
-          Account
-        </a>
-        <span className="admin-divider">|</span>
-        <a
-          href="/admin/view-profiles"
-          className={isProfileActive ? 'active-link' : ''}
-          onClick={handleProfileClick}
-        >
-          Role
-        </a>
+        {isCreatePage ? (
+          <a
+            href="/admin/create-account"
+            className={isAccountActive ? 'active-link' : ''}
+            onClick={handleAccountClick}
+          >
+            Account
+          </a>
+        ) : (
+          <>
+            <a
+              href="/admin/view-accounts"
+              className={isAccountActive ? 'active-link' : ''}
+              onClick={handleAccountClick}
+            >
+              Account
+            </a>
+            <span className="admin-divider">|</span>
+            <a
+              href="/admin/view-profiles"
+              className={isProfileActive ? 'active-link' : ''}
+              onClick={handleProfileClick}
+            >
+              Role
+            </a>
+          </>
+        )}
       </div>
 
       <div className="admin-icons">

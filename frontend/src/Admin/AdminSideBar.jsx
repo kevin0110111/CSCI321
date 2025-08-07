@@ -12,11 +12,6 @@ export default function AdminSidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/admin/home">
-            <span role="img" aria-label="notifications">🔔</span> Notifications
-          </Link>
-        </li>
-        <li>
           <Link to="/admin/view-accounts">
             <span role="img" aria-label="view">👁️</span> View
           </Link>

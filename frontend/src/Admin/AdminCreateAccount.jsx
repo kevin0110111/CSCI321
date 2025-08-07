@@ -10,7 +10,8 @@ export default function AdminCreateAccount() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
-  const [region, setRegion] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
   const [job, setJob] = useState('');
   const [institution, setInstitution] = useState('');
   const [reason, setReason] = useState('');
@@ -80,7 +81,8 @@ export default function AdminCreateAccount() {
       email: email,
       password: password,
       avatar_url: null,
-      region: region,
+      country: country,
+      city: city,
       is_premium: false,
       subscription_expiry: null,
       name: fullName,
@@ -106,6 +108,7 @@ export default function AdminCreateAccount() {
 
         if (role === 'User') roleIdToAssign = 2;
         else if (role === 'Agent') roleIdToAssign = 3;
+        else if (role === 'Admin') roleIdToAssign = 1;
 
         if (roleIdToAssign) {
           const assignRoleResponse = await fetch(`http://localhost:8000/api/accounts/${accountId}/assign-role/${roleIdToAssign}`, {
@@ -204,8 +207,12 @@ export default function AdminCreateAccount() {
             </ul>
             <hr className="admin-section-divider" />
             <label>
-              Region
-              <input type="text" required className='admin-form-select' value={region} onChange={e => setRegion(e.target.value)} />
+              Country
+              <input type="text" required className='admin-form-select' value={country} onChange={e => setCountry(e.target.value)} />
+            </label>
+            <label>
+              City
+              <input type="text" required className='admin-form-select' value={city} onChange={e => setCity(e.target.value)} />
             </label>
             <label>
               Job
@@ -227,7 +234,7 @@ export default function AdminCreateAccount() {
                 </option>
                 <option>Agent</option>
                 <option>User</option>
-                <option>Premium User</option>
+                <option>Admin</option>
               </select>
             </label>
             <label>

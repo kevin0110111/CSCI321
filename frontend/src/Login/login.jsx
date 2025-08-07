@@ -94,7 +94,7 @@ export default function Login() {
           navigate('/agentComment');
           return;
         } else if (profileName === 'admin' || profileName.includes('admin')) {
-          navigate('/admin/home');
+          navigate('/admin/view-accounts');
           return;
         }
       }
