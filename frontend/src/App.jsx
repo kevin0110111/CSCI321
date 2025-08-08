@@ -84,7 +84,7 @@ export default function App() {
         </Route>
 
         //Admin pages
-        <Route path="/admin/home" element={<AdminDashboard />} />
+        <Route path="/admin/home" element={<AdminDashBoard />} />
         <Route path="/admin/create-account" element={<AdminCreateAccount />} />
         <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
         <Route path="/admin/user/:userId" element={<AdminAccountDetails />} />
