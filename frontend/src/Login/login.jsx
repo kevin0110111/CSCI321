@@ -37,7 +37,7 @@ export default function Login() {
 
     try {
       // Call login API
-      const response = await fetch('http://localhost:8000/api/accounts/login', {
+      const response = await fetch('https://csci321.onrender.com/api/accounts/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
