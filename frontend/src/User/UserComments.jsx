@@ -1,5 +1,5 @@
 // UserComments.jsx
-import './userComments.css';
+import './UserComments.css';
 import userIcon from '../assets/logo.png'; 
 import { useState, useEffect } from 'react';
 
