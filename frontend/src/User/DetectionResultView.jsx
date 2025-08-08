@@ -1,5 +1,5 @@
 // DetectionResultView.jsx
-import './userResult.css';
+import './UserResult.css';
 import { useLocation } from 'react-router-dom';
 
 export default function DetectionResultView() {
