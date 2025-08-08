@@ -31,7 +31,7 @@ import ReAnnotate from './User/ReAnnotate';
 import DeleteAccount from './User/DeleteAccount';
 
 
-import AdminDashboard from './Admin/AdminDashBoard';
+import AdminDashboard from './Admin/AdminDashboard';
 import AdminCreateAccount from './Admin/AdminCreateAccount';
 import AdminViewAccounts from './Admin/AdminViewAccounts';
 import AdminAccountDetails from './Admin/AdminAccountDetails';
