@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';  // Use react-router Link for SPA navigation
-import './AdminSideBar.css';
+import './AdminSidebar.css';
 
 export default function AdminSidebar() {
   return (
