@@ -19,7 +19,7 @@ export default function AdminAccountDetails() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`http://localhost:8000/api/accounts/${userId}/with-role`, {
+        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}/with-role`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

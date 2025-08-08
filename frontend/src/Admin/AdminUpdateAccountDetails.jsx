@@ -51,7 +51,7 @@ export default function UpdateAccount() {
         setError(null);
 
         // Fetch user details
-        const userResponse = await fetch(`http://localhost:8000/api/accounts/${userId}/with-role`, {
+        const userResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}/with-role`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default function UpdateAccount() {
         const userData = await userResponse.json();
         
         // Fetch available roles
-        const rolesResponse = await fetch(`http://localhost:8000/api/roles/`, {
+        const rolesResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/roles/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function UpdateAccount() {
     if (!hasPasswordChanges || !isPasswordValid) return true;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/accounts/${userId}/change-password`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}/change-password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default function UpdateAccount() {
         updateData.username = newUsername;
       }
 
-      const response = await fetch(`http://localhost:8000/api/accounts/${userId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default function UpdateAccount() {
     if (!hasRoleChanges) return true;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/accounts/${userId}/update-role/${selectedRoleId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}/update-role/${selectedRoleId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

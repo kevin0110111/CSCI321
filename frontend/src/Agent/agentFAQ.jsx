@@ -23,7 +23,7 @@ export default function AgentFAQ() {
     const fetchFAQs = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8000/api/faqs/`, {
+        const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/faqs/`, {
           params: {
             skip: (currentPage - 1) * faqsPerPage,
             limit: faqsPerPage
@@ -40,7 +40,7 @@ export default function AgentFAQ() {
         setFaqs(formattedFAQs);
         
         // Get total count for pagination
-        const countResponse = await axios.get('http://localhost:8000/api/faqs/count');
+        const countResponse = await axios.get('https://fyp-backend-a0i8.onrender.com/api/faqs/count');
         setTotalPages(Math.ceil(countResponse.data.total / faqsPerPage));
       } catch (error) {
         console.error('Error fetching FAQs:', error);

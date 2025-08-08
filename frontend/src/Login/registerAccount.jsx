@@ -96,7 +96,7 @@ export default function RegisterAccount() {
 
     try {
       // Step 1: Create Account with Profile
-      const registerResponse = await fetch('http://localhost:8000/api/accounts/with-profile', { // Adjust URL as needed
+      const registerResponse = await fetch('https://fyp-backend-a0i8.onrender.com/api/accounts/with-profile', { // Adjust URL as needed
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ export default function RegisterAccount() {
         const roleIdToAssign = 2; // Auto-set role_id to 2
 
         // Step 2: Assign Role to the newly created account
-        const assignRoleResponse = await fetch(`http://localhost:8000/api/accounts/${accountId}/assign-role/${roleIdToAssign}`, { // Adjust URL as needed
+        const assignRoleResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${accountId}/assign-role/${roleIdToAssign}`, { // Adjust URL as needed
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

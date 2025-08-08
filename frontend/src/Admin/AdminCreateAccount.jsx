@@ -94,7 +94,7 @@ export default function AdminCreateAccount() {
     };
 
     try {
-      const registerResponse = await fetch('http://localhost:8000/api/accounts/with-profile', {
+      const registerResponse = await fetch('https://fyp-backend-a0i8.onrender.com/api/accounts/with-profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -111,7 +111,7 @@ export default function AdminCreateAccount() {
         else if (role === 'Admin') roleIdToAssign = 1;
 
         if (roleIdToAssign) {
-          const assignRoleResponse = await fetch(`http://localhost:8000/api/accounts/${accountId}/assign-role/${roleIdToAssign}`, {
+          const assignRoleResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${accountId}/assign-role/${roleIdToAssign}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
           });

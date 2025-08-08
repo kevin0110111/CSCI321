@@ -25,7 +25,7 @@ export default function AdminViewAccounts() {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(`http://localhost:8000/api/accounts/`, {
+        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

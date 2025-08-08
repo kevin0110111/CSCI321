@@ -29,7 +29,7 @@ export default function AdminDeleteModel() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`http://localhost:8000/api/models/${modelId}`, {
+        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/models/${modelId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function AdminDeleteModel() {
       if (note) formData.append('note', note);
       if (file) formData.append('file', file);
 
-      const response = await fetch(`http://localhost:8000/api/models/${modelId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/models/${modelId}`, {
         method: 'PUT',
         body: formData,
       });
@@ -151,7 +151,7 @@ export default function AdminDeleteModel() {
     setSubmitting(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/models/${modelId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/models/${modelId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -50,7 +50,7 @@ export default function AdminUpdateModel() {
       if (note) formData.append('note', note);
       formData.append('file', file);
 
-      const response = await fetch(`http://localhost:8000/api/models/`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/models/`, {
         method: 'POST',
         body: formData,
       });

@@ -24,7 +24,7 @@ export default function AgentBugReport() {
       try {
         setIsLoading(true);
         // Fetch bug reports with user data included
-        const response = await axios.get(`http://localhost:8000/api/bugreports/`, {
+        const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/bugreports/`, {
           params: {
             skip: (currentPage - 1) * reportsPerPage,
             limit: reportsPerPage
@@ -41,7 +41,7 @@ export default function AgentBugReport() {
         setBugReports(formattedReports);
         
         // Get total count for pagination
-        const countResponse = await axios.get('http://localhost:8000/api/bugreports/count');
+        const countResponse = await axios.get('https://fyp-backend-a0i8.onrender.com/api/bugreports/count');
         setTotalPages(Math.ceil(countResponse.data.total / reportsPerPage));
       } catch (error) {
         console.error('Error fetching bug reports:', error);

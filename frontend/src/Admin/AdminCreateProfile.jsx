@@ -48,7 +48,7 @@ export default function AdminCreateProfile() {
       };
 
       // Make API call to create role
-      const response = await fetch('http://localhost:8000/api/roles/', {
+      const response = await fetch('https://fyp-backend-a0i8.onrender.com/api/roles/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

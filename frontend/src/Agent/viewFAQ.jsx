@@ -29,7 +29,7 @@ export default function ViewFAQ() {
     if (!isCreating && faqId) {
       const fetchFAQ = async () => {
         try {
-          const response = await axios.get(`http://localhost:8000/api/faqs/${faqId}`);
+          const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/faqs/${faqId}`);
           setFaqData({
             title: response.data.title,
             content: response.data.content,
@@ -55,7 +55,7 @@ export default function ViewFAQ() {
     }
 
     try {
-      await axios.post('http://localhost:8000/api/faqs/', {
+      await axios.post('https://fyp-backend-a0i8.onrender.com/api/faqs/', {
         title: faqData.title,
         content: faqData.content,
         created_agent_id: agentId
@@ -74,7 +74,7 @@ export default function ViewFAQ() {
     }
 
     try {
-      await axios.put(`http://localhost:8000/api/faqs/${faqId}`, {
+      await axios.put(`https://fyp-backend-a0i8.onrender.com/api/faqs/${faqId}`, {
         title: faqData.title,
         content: faqData.content
       });
@@ -91,7 +91,7 @@ export default function ViewFAQ() {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/faqs/${faqId}`);
+      await axios.delete(`https://fyp-backend-a0i8.onrender.com/api/faqs/${faqId}`);
       setResponseBox({ show: true, message: 'FAQ deleted successfully!' });
     } catch (err) {
       console.error('Error deleting comment:', err);

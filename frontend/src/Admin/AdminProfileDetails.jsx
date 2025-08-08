@@ -28,7 +28,7 @@ export default function AdminProfileDetails() {
       setError("");
 
       try {
-        const response = await fetch(`http://localhost:8000/api/roles/${roleId}`);
+        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/roles/${roleId}`);
         
         if (!response.ok) {
           if (response.status === 404) {

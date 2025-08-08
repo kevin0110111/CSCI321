@@ -34,7 +34,7 @@ export default function AdminUpdateProfileDetails() {
       setError("");
 
       try {
-        const response = await fetch(`http://localhost:8000/api/roles/${roleId}`);
+        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/roles/${roleId}`);
         
         if (!response.ok) {
           if (response.status === 404) {
@@ -101,7 +101,7 @@ export default function AdminUpdateProfileDetails() {
       updateData.description = selectedPermissions.join(", ");
 
       // Make API call to update role
-      const response = await fetch(`http://localhost:8000/api/roles/${roleId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/roles/${roleId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

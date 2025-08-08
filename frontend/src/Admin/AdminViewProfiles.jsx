@@ -34,7 +34,7 @@ export default function AdminViewProfiles() {
       setError("");
       
       try {
-        const response = await fetch('http://localhost:8000/api/roles/');
+        const response = await fetch('https://fyp-backend-a0i8.onrender.com/api/roles/');
         
         if (!response.ok) {
           throw new Error('Failed to fetch roles');

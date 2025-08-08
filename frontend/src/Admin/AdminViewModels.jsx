@@ -17,7 +17,7 @@ export default function AdminViewModels() {
       setError("");
       
       try {
-        const response = await fetch('http://localhost:8000/api/models/');
+        const response = await fetch('https://fyp-backend-a0i8.onrender.com/api/models/');
         
         if (!response.ok) {
           throw new Error('Failed to fetch models');

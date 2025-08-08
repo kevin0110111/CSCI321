@@ -57,10 +57,10 @@ export default function UpdateAgentAccount() {
       }
 
       try {
-        const accountResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}`);
+        const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`);
         const accountData = await accountResponse.json();
 
-        const profileResponse = await fetch(`http://localhost:8000/api/profiles/${currentProfileId}`);
+        const profileResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/profiles/${currentProfileId}`);
         const profileData = await profileResponse.json();
 
         if (accountResponse.ok && profileResponse.ok) {
@@ -128,7 +128,7 @@ export default function UpdateAgentAccount() {
           new_password: formData.newPassword,
         };
 
-        const passwordResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}/change-password`, {
+        const passwordResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}/change-password`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ export default function UpdateAgentAccount() {
 
     try {
       // Update Account
-      const accountResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}`, {
+      const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ export default function UpdateAgentAccount() {
       });
 
       // Update Profile
-      const profileResponse = await fetch(`http://localhost:8000/api/profiles/${currentProfileId}`, {
+      const profileResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/profiles/${currentProfileId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ export default function ViewBugReport() {
     const fetchBugReport = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8000/api/bugreports/${bug_id}`);
+        const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/bugreports/${bug_id}`);
         
         // Format the date
         const formattedReport = {

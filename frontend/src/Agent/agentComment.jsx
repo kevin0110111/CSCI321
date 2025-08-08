@@ -24,7 +24,7 @@ export default function AgentComment() {
       try {
         setIsLoading(true);
         // Fetch comments with user data included using joinedload
-        const response = await axios.get(`http://localhost:8000/api/comments/`, {
+        const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/comments/`, {
           params: {
             skip: (currentPage - 1) * commentsPerPage,
             limit: commentsPerPage
@@ -41,7 +41,7 @@ export default function AgentComment() {
         setComments(formattedComments);
         
         // Get total count for pagination
-        const countResponse = await axios.get('http://localhost:8000/api/comments/count');
+        const countResponse = await axios.get('https://fyp-backend-a0i8.onrender.com/api/comments/count');
         setTotalPages(Math.ceil(countResponse.data.total / commentsPerPage));
       } catch (error) {
         console.error('Error fetching comments:', error);

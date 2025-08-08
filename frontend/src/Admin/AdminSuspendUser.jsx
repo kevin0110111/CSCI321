@@ -29,7 +29,7 @@ export default function AdminSuspendUser() {
         setError(null);
 
         // Fetch user details
-        const userResponse = await fetch(`http://localhost:8000/api/accounts/${userId}/with-role`, {
+        const userResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}/with-role`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export default function AdminSuspendUser() {
 
         // Check for existing suspension info
         try {
-          const suspendResponse = await fetch(`http://localhost:8000/api/suspend-info/${userId}`, {
+          const suspendResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/suspend-info/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export default function AdminSuspendUser() {
   // Update account state to suspended
   const updateAccountState = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/accounts/${userId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export default function AdminSuspendUser() {
     try {
       if (existingSuspendInfo) {
         // Remove existing suspension info first
-        await fetch(`http://localhost:8000/api/suspend-info/${userId}`, {
+        await fetch(`https://fyp-backend-a0i8.onrender.com/api/suspend-info/${userId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ export default function AdminSuspendUser() {
       }
 
       // Create new suspension info
-      const response = await fetch(`http://localhost:8000/api/suspend-info/`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/suspend-info/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ export default function AdminSuspendUser() {
   const unsuspendUser = async () => {
     try {
       // Update account state to active
-      const response = await fetch(`http://localhost:8000/api/accounts/${userId}`, {
+      const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ export default function AdminSuspendUser() {
       }
 
       // Remove suspension info
-      await fetch(`http://localhost:8000/api/suspend-info/${userId}`, {
+      await fetch(`https://fyp-backend-a0i8.onrender.com/api/suspend-info/${userId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

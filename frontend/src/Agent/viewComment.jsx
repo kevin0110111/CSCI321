@@ -25,7 +25,7 @@ export default function ViewComment() {
     const fetchComment = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8000/api/comments/${comment_id}`);
+        const response = await axios.get(`https://fyp-backend-a0i8.onrender.com/api/comments/${comment_id}`);
         setComment(response.data);
       } catch (err) {
         setError(err.response?.data?.detail || 'Failed to fetch comment');
@@ -57,7 +57,7 @@ export default function ViewComment() {
       }
 
       setIsLoading(true);
-      const response = await axios.post(`http://localhost:8000/api/comments/${comment_id}/reply`, {
+      const response = await axios.post(`https://fyp-backend-a0i8.onrender.com/api/comments/${comment_id}/reply`, {
         reply_content: reply,
         replied_agent_id: parseInt(agentId)
       });
@@ -82,7 +82,7 @@ export default function ViewComment() {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/comments/${comment_id}`);
+      await axios.delete(`https://fyp-backend-a0i8.onrender.com/api/comments/${comment_id}`);
       setResponseBox({ show: true, message: 'Comment deleted successfully!' });
     } catch (err) {
       setResponseBox({ show: true, message: 'Failed to delete comment' });
