@@ -70,7 +70,7 @@ export default function App() {
           <Route path="result" element={<UserResult />} />
           <Route path="resultview" element={<DetectionResultView />} />
           <Route path="subscription" element={<UserSubscription />} />
-          <Route path="reportBug" element={<ReportBug />} />
+          <Route path="ReportBug" element={<ReportBug />} />
           <Route path="leaveComment" element={<LeaveComment />} />
           <Route path="switchLanguage" element={<SwitchLanguage />} />
           <Route path="comments" element={<UserComments />} />
