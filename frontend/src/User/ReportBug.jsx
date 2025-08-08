@@ -1,5 +1,5 @@
 // ReportBug.jsx
-import './reportBug.css';
+import './ReportBug.css';
 import { useState, useEffect, useRef } from 'react';
 
 export default function ReportBug() {
