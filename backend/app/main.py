@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routers import accounts, profiles, roles, faqs, comments, bugreports, images, results, Models, suspendinfos
 from .database import engine
 from . import models
-#d
+#DELETE　this　after
 # Create tables
 models.Base.metadata.create_all(bind=engine)
 
