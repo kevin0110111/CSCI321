@@ -18,8 +18,6 @@ export default function AdminUpdateProfileDetails() {
   const navigate = useNavigate();
 
   const [role, setRole] = useState(null);
-  const [newName, setNewName] = useState("");
-  const [confirmName, setConfirmName] = useState("");
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -89,16 +87,10 @@ export default function AdminUpdateProfileDetails() {
     setSuccess("");
 
     try {
-      // Prepare update data
-      const updateData = {};
-      
-      // Only include role name if it's being changed
-      if (newName.trim() && newName !== role.role) {
-        updateData.role_name = newName.trim();
-      }
-      
-      // Always update permissions (description)
-      updateData.description = selectedPermissions.join(", ");
+      // Prepare update data - only updating permissions (description)
+      const updateData = {
+        description: selectedPermissions.join(", ")
+      };
 
       // Make API call to update role
       const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/roles/${roleId}`, {
@@ -118,7 +110,7 @@ export default function AdminUpdateProfileDetails() {
       
       setResponseBox({
         show: true,
-        message: `Role "${updatedRole.role_name}" updated successfully!`,
+        message: `Role "${updatedRole.role_name}" permissions updated successfully!`,
         onOk: () => navigate(`/admin/profile/${roleId}`)
       });
       
@@ -132,10 +124,6 @@ export default function AdminUpdateProfileDetails() {
       };
       
       setRole(transformedRole);
-      
-      // Reset form fields
-      setNewName("");
-      setConfirmName("");
 
     } catch (err) {
       setResponseBox({
@@ -146,6 +134,12 @@ export default function AdminUpdateProfileDetails() {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  // Check if permissions have changed
+  const hasPermissionsChanged = () => {
+    if (!role) return false;
+    return JSON.stringify(selectedPermissions.sort()) !== JSON.stringify(role.permissions.sort());
   };
 
   // Loading state
@@ -206,56 +200,30 @@ export default function AdminUpdateProfileDetails() {
       <div className="admin-layout">
         <AdminSidebar />
         <main className="admin-content">
-          <h1 className="admin-update-profile-title">UPDATE ROLE</h1>
+          <h1 className="admin-update-profile-title">UPDATE ROLE PERMISSIONS</h1>
           <p className="admin-update-profile-warning">Ensure the permissions are not abused</p>
           <hr className="admin-update-profile-divider" />
 
-          {/* Change Profile Name Section */}
+          {/* Current Role Display Section */}
           <section className="admin-update-profile-section">
-            <h2 className="admin-update-profile-section-title">Change Profile Name</h2>
+            <h2 className="admin-update-profile-section-title">Current Role</h2>
             <label className="admin-update-profile-label">
-              Current Name
+              Role Name
               <input 
                 type="text" 
                 className="admin-update-profile-input" 
                 value={role.role} 
                 readOnly 
+                style={{ backgroundColor: '#f8f9fa', cursor: 'not-allowed' }}
               />
             </label>
-            <label className="admin-update-profile-label">
-              New Name
-              <input
-                type="text"
-                className="admin-update-profile-input"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="Enter new profile name"
-                disabled={isUpdating}
-              />
-            </label>
-            <label className="admin-update-profile-label">
-              Confirm Name
-              <input
-                type="text"
-                className="admin-update-profile-input"
-                value={confirmName}
-                onChange={(e) => setConfirmName(e.target.value)}
-                placeholder="Confirm new profile name"
-                disabled={isUpdating}
-              />
-            </label>
-            {newName && newName !== confirmName && (
-              <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
-                Names do not match
-              </div>
-            )}
           </section>
 
           <hr className="admin-update-profile-divider" />
 
           {/* Change Permissions Section */}
           <section className="admin-update-profile-section">
-            <h2 className="admin-update-profile-section-title">Change Permissions</h2>
+            <h2 className="admin-update-profile-section-title">Update Permissions</h2>
             <fieldset className="admin-update-profile-permissions-fieldset">
               <legend className="admin-update-profile-permissions-legend">Permissions</legend>
               {allPermissions.map((perm) => (
@@ -286,19 +254,14 @@ export default function AdminUpdateProfileDetails() {
             <button
               className="admin-update-profile-btn-update"
               onClick={handleUpdate}
-              disabled={
-                isUpdating || 
-                (newName.trim() && newName !== confirmName) ||
-                (newName.trim() === "" && JSON.stringify(selectedPermissions.sort()) === JSON.stringify(role.permissions.sort()))
-              }
+              disabled={isUpdating || !hasPermissionsChanged()}
               title={
                 isUpdating ? "Updating..." :
-                newName.trim() && newName !== confirmName ? "Enter and confirm new name" :
-                newName.trim() === "" && JSON.stringify(selectedPermissions.sort()) === JSON.stringify(role.permissions.sort()) ? "No changes to update" :
-                "Update role"
+                !hasPermissionsChanged() ? "No changes to update" :
+                "Update role permissions"
               }
             >
-              {isUpdating ? 'Updating...' : 'Update'}
+              {isUpdating ? 'Updating...' : 'Update Permissions'}
             </button>
           </div>
 
