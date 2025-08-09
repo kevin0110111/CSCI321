@@ -21,7 +21,7 @@ body {
 }
 
 .menu-icon {
-    font-size: 50px;
+    font-size: 30px;
     color: black;
     cursor: pointer;
     user-select: none;
@@ -35,13 +35,14 @@ body {
 }
 
 .logo-img {
-    height: 35px;
-    width: 35px;
+    height: 50px;
+    width: 50px;
+    margin-right: 8px; /* Slight distance between logo and font */
 }
 
 .avatar-box {
-    width: 60px;
-    height: 60px;
+    width: 35px;
+    height: 35px;
 }
 
 .avatar-img {
@@ -145,4 +146,35 @@ body {
 .modal-actions button {
     padding: 0.5rem 1rem;
     cursor: pointer;
+}
+
+/* Responsive media query for mobile (screens < 768px) */
+@media (max-width: 767px) {
+    .dashboard-header {
+        height: 60px; /* Reduce height for mobile */
+        padding: 0 10px; /* Less padding to save space */
+    }
+
+    .menu-icon {
+        font-size: 35px; /* Smaller menu icon */
+    }
+
+    .product-logo {
+        font-size: 35px; /* Smaller product name font */
+    }
+
+    .logo-img {
+        height: 25px; /* Scale down logo */
+        width: 25px;
+        margin-right: 6px; /* Slightly reduce margin for mobile if needed */
+    }
+
+    .avatar-box {
+        width: 40px; /* Smaller avatar */
+        height: 40px;
+    }
+
+    .avatar-img {
+        border-width: 1px; /* Thinner border for mobile */
+    }
 }

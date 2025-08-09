@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import logo from '../assets/faq.svg';
-import avatar from '../assets/logo.png';
+import logo from '../assets/logo.png';
+import avatar from '../assets/user.png';
 import './dashboardLayout.css';
 
 export default function DashboardLayout() {
@@ -32,7 +32,7 @@ export default function DashboardLayout() {
 
                 <div className="product-logo">
                     <img src={logo} alt="Product Logo" className="logo-img" />
-                    <span className="product-name">MaizeTassel AI</span>
+                    <span className="product-name">Tassel AI</span>
                 </div>
 
                 <div
