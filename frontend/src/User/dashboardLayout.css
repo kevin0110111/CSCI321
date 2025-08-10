@@ -57,16 +57,17 @@ body {
 .usersidebar {
     position: fixed;
     top: 80px;
-    /* start below header */
     left: 0;
     width: 250px;
     height: calc(100vh - 80px);
     background-color: #e7f3f0;
     transform: translateX(-100%);
-    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    transition: transform 0.3s ease-in-out; /* Smoother, faster transition */
     z-index: 201;
     overflow-y: auto;
-    box-shadow: 4px 0 15px rgba(182, 161, 247, 0.2);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+    padding: 20px 0; /* Add top/bottom padding */
+    font-family: 'Arial', sans-serif; /* Modern sans-serif font */
 }
 
 .usersidebar.open {
@@ -77,22 +78,29 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-left: 10px;
 }
-
 .usersidebar ul li {
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Remove bottom margin; use padding instead */
+    padding: 15px 20px; /* Better spacing inside each item */
 }
 
 .usersidebar ul li a {
-    color: #000;
-    font-size: 25px;
+    color: #333; /* Darker text for better contrast */
+    font-size: 18px; /* Reduced for elegance */
     text-decoration: none;
-    font-weight: 400;
+    font-weight: 500; /* Slightly bolder for readability */
+    display: flex; /* For aligning icons later */
+    align-items: center;
 }
 
 .usersidebar ul li a:hover {
     text-decoration: underline;
+}
+
+.sidebar-divider {
+    border: none;
+    border-top: 1px solid #b3d7c2;
+    margin: 15px 20px; /* Align with item padding */
 }
 
 .overlay {
@@ -177,4 +185,38 @@ body {
     .avatar-img {
         border-width: 1px; /* Thinner border for mobile */
     }
+
+    .usersidebar {
+        width: 70vw;
+        min-width: 180px;
+        max-width: 300px;
+        font-size: 16px;
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+
+    .usersidebar ul li {
+    padding: 12px 15px; /* Reduced padding for mobile */
+    }
+    
+    .usersidebar ul li a {
+        font-size: 16px;
+    }
+
+    .dashboard-content {
+        margin-left: 0 !important;
+        padding: 10px;
+    }
+}
+
+.usersidebar ul li a:hover {
+    background-color: #d1e8e2; /* Light hover background matching theme */
+    border-radius: 4px; /* Rounded corners for softness */
+    padding: 10px; /* Inner padding for hover effect */
+    transition: background-color 0.2s ease; /* Smooth hover */
+}
+
+.usersidebar ul li a.active { /* Add 'active' class dynamically if needed (e.g., via NavLink) */
+    background-color: #b3d7c2;
+    font-weight: 600;
 }

@@ -85,7 +85,6 @@ export default function UserSubscription() {
       <div className="subscription-container">
         <h2>Choose Your Plan</h2>
         <div className="plan-options">
-          {/* Free Plan remains unchanged */}
           <div className="plan-card">
             <h3>FREE</h3>
             <p className="price">$0<span>/month</span></p>
@@ -94,9 +93,11 @@ export default function UserSubscription() {
               <li>✓ No re-detect</li>
             </ul>
             <div className="button-group">
-              <button className="current-plan" disabled>
-                {isPremium ? 'Downgrade' : 'Your Plan'}  {/* Optional: Add downgrade logic if needed */}
-              </button>
+              {!isPremium && (
+                <button className="current-plan" disabled>
+                  Your Plan
+                </button>
+              )}
             </div>
           </div>
 
@@ -124,7 +125,7 @@ export default function UserSubscription() {
           </Elements>
         )}
 
-        <p className="payment-note">Secure payment. Cancel anytime.</p>
+        <p className="payment-note">Secure payment. Cancel at the end of the month.</p>
       </div>
     </main>
   );

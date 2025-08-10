@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import avatar from '../assets/user.png';
 import './dashboardLayout.css';
+import { FaHome, FaUpload, FaHistory, FaComment, FaQuestionCircle, FaBug, FaCreditCard, FaSignOutAlt } from 'react-icons/fa'; 
 
 export default function DashboardLayout() {
     const navigate = useNavigate();
@@ -48,21 +49,48 @@ export default function DashboardLayout() {
             <div className="dashboard-body">
                 <div className={`usersidebar ${sidebarOpen ? 'open' : ''}`}>
                     <ul>
-                        <li><Link to="/user/dashboard" onClick={() => setSidebarOpen(false)}>Dashboard</Link></li>
-                        <li><Link to="/user/upload" onClick={() => setSidebarOpen(false)}>Upload Image</Link></li>
-                        <li><Link to="/user/result" onClick={() => setSidebarOpen(false)}>View Result History</Link></li>
-                        <li><Link to="/user/subscription" onClick={() => setSidebarOpen(false)}>Subscription</Link></li>
-                        <li><Link to="/user/diseasereport" onClick={() => setSidebarOpen(false)}>Disease Detection</Link></li>
-                        <li><Link to="/user/faq" onClick={() => setSidebarOpen(false)}>FAQ / Help</Link></li>
-                        <li><Link to="/user/reportBug" onClick={() => setSidebarOpen(false)}>Report a Bug</Link></li>
-                        <li><Link to="/user/leaveComment" onClick={() => setSidebarOpen(false)}>Leave a Comment</Link></li>
-                        <li><Link to="/user/comments" onClick={() => setSidebarOpen(false)}>User Comments</Link></li>
-                        <li><Link to="/user/switchLanguage" onClick={() => setSidebarOpen(false)}>Switch Language</Link></li>
-                        <li><Link to="/user/deleteAccount" onClick={() => setSidebarOpen(false)}>Delete Account</Link></li>
-                        <li onClick={handleLogout}>
-                            <a style={{ cursor: 'pointer' }}>Log out</a>
+                        <li>
+                            <Link to="/user/dashboard" onClick={() => setSidebarOpen(false)}>
+                                <FaHome style={{ marginRight: '10px', color: '#4CAF50' }} /> Dashboard
+                            </Link>
                         </li>
-
+                        <li>
+                            <Link to="/user/upload" onClick={() => setSidebarOpen(false)}>
+                                <FaUpload style={{ marginRight: '10px', color: '#4CAF50' }} /> Upload Image
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/result" onClick={() => setSidebarOpen(false)}>
+                                <FaHistory style={{ marginRight: '10px', color: '#4CAF50' }} /> Result History
+                            </Link>
+                        </li>
+                        <hr className="sidebar-divider" />
+                        <li>
+                            <Link to="/user/comments" onClick={() => setSidebarOpen(false)}>
+                                <FaComment style={{ marginRight: '10px', color: '#4CAF50' }} /> Comments
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/faq" onClick={() => setSidebarOpen(false)}>
+                                <FaQuestionCircle style={{ marginRight: '10px', color: '#4CAF50' }} /> FAQ / Help
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/reportBug" onClick={() => setSidebarOpen(false)}>
+                                <FaBug style={{ marginRight: '10px', color: '#4CAF50' }} /> Report Bug
+                            </Link>
+                        </li>
+                        <hr className="sidebar-divider" />
+                        <li>
+                            <Link to="/user/subscription" onClick={() => setSidebarOpen(false)}>
+                                <FaCreditCard style={{ marginRight: '10px', color: '#4CAF50' }} /> Subscription
+                            </Link>
+                        </li>
+                        <li onClick={handleLogout}>
+                            <a style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                <FaSignOutAlt style={{ marginRight: '10px', color: '#FF5722' }} /> Log out
+                            </a>
+                        </li>
                     </ul>
 
                 </div>
