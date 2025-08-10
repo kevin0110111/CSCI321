@@ -75,6 +75,10 @@ class AccountWithProfileCreate(BaseModel):
     reason_foruse: Optional[str] = None
     profile_preferred_language: 'ProfileLanguageEnum' = 'en'
 
+class SubscriptionStatusResponse(BaseModel):
+    is_premium: bool
+    subscription_expiry: Optional[date] = None
+
 # Import ProfileResponse after AccountResponse is defined
 from .Profile import ProfileResponse, ProfileLanguageEnum
 from .Role import RoleResponse
