@@ -15,54 +15,6 @@ export default function UserComments() {
   const commentsPerPage = 3;  
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    document.title = 'View Comments';
-    loadMoreComments();  
-  }, []);  
-
-  // Function to load more comments with pagination
-  const loadMoreComments = async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Fetch comments with skip and limit for pagination
-      const response = await axios.get(`${BASE_API_URL}/comments/`, {  
-        params: {
-          skip: (currentPage - 1) * commentsPerPage,
-          limit: commentsPerPage
-        }
-      });
-      
-      // Format comments, assuming backend returns [{ comment_id, user: {username}, content, created_at }]
-      const formattedComments = response.data.map(comment => ({
-        id: comment.comment_id,
-        username: comment.user?.username || 'Anonymous',  
-        content: comment.content,
-        time: formatDate(comment.created_at),  
-      }));
-      
-      setComments(prevComments => [...prevComments, ...formattedComments]);  
-      
-      // If this is the first load, also fetch total count
-      if (currentPage === 1) {
-        const countResponse = await axios.get(`${BASE_API_URL}/comments/count`);
-        setTotalComments(countResponse.data.total);
-      }
-      
-      // Update page and check if there are more comments
-      setCurrentPage(prevPage => prevPage + 1);
-      if (comments.length + formattedComments.length >= totalComments) {
-        setHasMore(false);
-      }
-    } catch (err) {
-      console.error('Error fetching comments:', err);
-      setError('Failed to load comments. Please try again later.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Function to format date as DD/MM/YYYY
   const formatDate = (dateString) => {
     if (!dateString) return 'Unknown time';
@@ -72,6 +24,65 @@ export default function UserComments() {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
+
+  // Function to load more comments with pagination
+  const loadMoreComments = async () => {
+    if (isLoading || !hasMore) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Fetch comments with skip and limit for pagination
+      const response = await axios.get(`${BASE_API_URL}/comments/`, {  
+        params: {
+          skip: (currentPage - 1) * commentsPerPage,
+          limit: commentsPerPage
+        }
+      });
+      
+      // Format comments
+      const formattedComments = response.data.map(comment => ({
+        id: comment.comment_id,
+        username: comment.user?.username || 'Anonymous',
+        content: comment.content || 'No content available',
+        time: formatDate(comment.created_at),
+      }));
+      
+      setComments(prevComments => [...prevComments, ...formattedComments]);
+      
+      // On first load, fetch total count
+      if (currentPage === 1) {
+        const countResponse = await axios.get(`${BASE_API_URL}/comments/count`);
+        setTotalComments(countResponse.data.total);
+      }
+      
+      // Update hasMore state
+      setHasMore(formattedComments.length === commentsPerPage);
+      
+    } catch (err) {
+      console.error('Error fetching comments:', err);
+      setError('Failed to load comments. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initial load effect
+  useEffect(() => {
+    document.title = 'View Comments';
+    // Reset states for fresh load
+    setComments([]);
+    setCurrentPage(1);
+    setHasMore(true);
+  }, []);
+
+  // Load data effect (runs when currentPage changes)
+  useEffect(() => {
+    if (currentPage >= 1) {
+      loadMoreComments();
+    }
+  }, [currentPage]);
 
   return (
     <main className="dashboard-content">
@@ -98,7 +109,10 @@ export default function UserComments() {
             ))}
             {hasMore && (
               <div className="load-more">
-                <button onClick={loadMoreComments} disabled={isLoading}>
+                <button 
+                  onClick={() => setCurrentPage(prev => prev + 1)} 
+                  disabled={isLoading}
+                >
                   {isLoading ? 'Loading...' : 'Load More'}
                 </button>
               </div>
