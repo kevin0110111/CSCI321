@@ -4,7 +4,7 @@ import userIcon from '../assets/logo.png';
 import { useState, useEffect } from 'react';
 import axios from 'axios';  // 新增：引入 axios 用于 API 调用
 
-const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api/comments/';  // 新增：统一 API base URL，便于维护
+const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  // 新增：统一 API base URL，便于维护
 
 export default function UserComments() {
   const [comments, setComments] = useState([]);  // 新增：存储从后端加载的评论数据
