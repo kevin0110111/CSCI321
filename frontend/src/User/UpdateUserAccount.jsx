@@ -25,16 +25,16 @@ export default function UpdateUserAccount() {
 
   const [currentAccountId, setCurrentAccountId] = useState(null);
   const [currentProfileId, setCurrentProfileId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // 新增：加载状态
-  const [fetchError, setFetchError] = useState(null); // 新增：fetch 错误显示
-  const [responseBox, setResponseBox] = useState({ show: false, message: '' }); // 新增：响应弹窗（如保存成功/失败）
+  const [isLoading, setIsLoading] = useState(true); 
+  const [fetchError, setFetchError] = useState(null); 
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' }); 
 
-  // 新函数：安全格式化 DOB (YYYY-MM-DD -> DD-MM-YYYY)
+
   const formatDob = (dob) => {
     if (!dob) return '';
     try {
       const date = new Date(dob);
-      if (isNaN(date.getTime())) return ''; // 无效日期
+      if (isNaN(date.getTime())) return ''; 
       return date.toLocaleDateString('en-GB').split('/').join('-');
     } catch (error) {
       console.error('DOB format error:', error);
@@ -43,12 +43,12 @@ export default function UpdateUserAccount() {
   };
 
   useEffect(() => {
-    // 从 localStorage 加载初始数据
+
     const storedAccountId = localStorage.getItem('accountId');
     const storedAccountString = localStorage.getItem('account');
 
-    console.log('Stored accountId:', storedAccountId); // 调试
-    console.log('Stored account string:', storedAccountString); // 调试
+    console.log('Stored accountId:', storedAccountId); 
+    console.log('Stored account string:', storedAccountString); 
 
     if (storedAccountId) {
       setCurrentAccountId(parseInt(storedAccountId, 10));
@@ -58,10 +58,10 @@ export default function UpdateUserAccount() {
     if (storedAccountString) {
       try {
         storedAccount = JSON.parse(storedAccountString);
-        console.log('Parsed storedAccount:', storedAccount); // 调试
+        console.log('Parsed storedAccount:', storedAccount); 
         if (storedAccount && storedAccount.profile && storedAccount.profile.profile_id) {
           setCurrentProfileId(storedAccount.profile.profile_id);
-          // fallback: 直接从 localStorage 回显
+
           setFormData(prev => ({
             ...prev,
             username: storedAccount.username || '',
@@ -81,7 +81,6 @@ export default function UpdateUserAccount() {
   }, []);
 
   useEffect(() => {
-    // fetch 最新数据
     const fetchAccountAndProfile = async () => {
       if (!currentAccountId || !currentProfileId) {
         console.warn('Missing accountId or profileId, skipping fetch');
@@ -92,26 +91,26 @@ export default function UpdateUserAccount() {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const token = localStorage.getItem('token'); // 假设登录时存了 token
+        const token = localStorage.getItem('token'); 
         const headers = {
           'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}), // 添加认证头
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}), 
         };
 
-        const accountResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}`, { headers });
+        const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`, { headers });
         if (!accountResponse.ok) {
           throw new Error(`Account fetch failed: ${accountResponse.status}`);
         }
         const accountData = await accountResponse.json();
 
-        const profileResponse = await fetch(`http://localhost:8000/api/profiles/${currentProfileId}`, { headers });
+        const profileResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/profiles/${currentProfileId}`, { headers });
         if (!profileResponse.ok) {
           throw new Error(`Profile fetch failed: ${profileResponse.status}`);
         }
         const profileData = await profileResponse.json();
 
-        console.log('Fetched accountData:', accountData); // 调试
-        console.log('Fetched profileData:', profileData); // 调试
+        console.log('Fetched accountData:', accountData); 
+        console.log('Fetched profileData:', profileData); 
 
         setFormData(prev => ({
           ...prev,
@@ -176,7 +175,7 @@ export default function UpdateUserAccount() {
           new_password: formData.newPassword,
         };
 
-        const passwordResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}/change-password`, {
+        const passwordResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}/change-password`, {
           method: 'PUT',
           headers,
           body: JSON.stringify(passwordChangePayload),
@@ -225,13 +224,13 @@ export default function UpdateUserAccount() {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       };
 
-      const accountResponse = await fetch(`http://localhost:8000/api/accounts/${currentAccountId}`, {
+      const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify(accountUpdatePayload),
       });
 
-      const profileResponse = await fetch(`http://localhost:8000/api/profiles/${currentProfileId}`, {
+      const profileResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/profiles/${currentProfileId}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify(profileUpdatePayload),
