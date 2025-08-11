@@ -6,9 +6,11 @@
   font-size: 1.25rem; 
   line-height: 1.6;
   min-height: 100vh; 
+  /* Ensure container is flex for better centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-
 
 .upload-container h2 {
   font-size: 1.75rem;
@@ -17,7 +19,6 @@
   text-align: center;
   font-weight: bold;
 }
-
 
 .upload-box {
   border: 1px dashed #aaa;
@@ -35,22 +36,16 @@
   justify-content: center;
 }
 
-
 .upload-box.drag-active {
   border-color: #1d4ed8;
   background-color: #f0f8ff;
 }
-
-
 
 .upload-box > img {
   width: 40px;
   display: block;
   margin: 0 auto 0.2rem auto;
 }
-
-
-
 
 .browse {
   color: #1d4ed8;
@@ -70,7 +65,6 @@
 .quota {
   margin-bottom: 0.5rem;
 }
-
 
 .image-type {
   margin-bottom: 0.5rem;
@@ -170,7 +164,6 @@
   max-width: none;             
 }
 
-
 .remove-btn {
   background-color: #fdd;
   border: 1px solid #c00;
@@ -186,7 +179,6 @@
   background-color: #fbb;
 }
 
-
 .result-modal-overlay,
 .disease-modal-overlay {
   position: fixed;
@@ -195,7 +187,6 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
-  /* 只渲染一次 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -240,7 +231,6 @@
   margin-top: 16px;
   flex-wrap: wrap;
 }
-
 
 .count-btn-save {
   background-color: #28a745;
@@ -325,9 +315,14 @@
 /* Phone */
 @media (max-width: 767px) {
   .upload-container {
-    padding: 0.5rem;
+    padding: 1rem; /* Increase padding for better spacing on mobile */
     font-size: 1rem;
     min-height: unset;
+    /* Strengthen centering with flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .upload-container h2 {
@@ -339,39 +334,50 @@
   .upload-box {
     padding: 0.7rem;
     min-height: 90px;
-    max-width: 98vw;
+    width: 90%; /* Adjust width to 90% for better centering and margin */
+    max-width: none;
+    margin: 0 auto;
     border-radius: 4px;
   }
 
   .preview-gallery {
     gap: 0.5rem;
     margin-top: 0.5rem;
+    width: 100%; /* Ensure gallery fits within box */
   }
 
   .preview-wrapper {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
+    flex-direction: row; /* Change to row for filename and remove button side by side */
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: space-between;
   }
 
   .preview-image {
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Smaller image on mobile to fit better */
+    height: 60px;
     border-radius: 6px;
   }
 
   .preview-filename {
     font-size: 0.85rem;
-    max-width: 90vw;
+    max-width: 150px; /* Limit width to prevent overflow */
     word-break: break-all;
+    flex-grow: 1;
+  }
+
+  .remove-btn {
+    font-size: 0.7rem;
+    padding: 1px 4px;
   }
 
   .button-group {
     flex-direction: column;
+    align-items: center; /* Change to center so buttons are not stretched full width */
+    justify-content: center;
     gap: 8px;
     max-width: 98vw;
     width: 100%;
-    align-items: stretch;
   }
 
   .submit-btn,
@@ -379,8 +385,10 @@
   .premium-btn {
     font-size: 1rem;
     min-width: unset;
-    padding: 10px 0;
+    width: auto; /* Auto width for natural button size */
+    padding: 10px 20px; /* Adjust padding for better touch target */
     border-radius: 6px;
+    margin: 0 auto; /* Center each button */
   }
 
   .upload-info {

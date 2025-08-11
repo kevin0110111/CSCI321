@@ -102,13 +102,15 @@ export default function UserUpload() {
               {files.map((file, index) => (
                 <div className="preview-wrapper" key={index}>
                   <img src={file.previewUrl} alt="Preview" className="preview-image" />
-                  <div className="preview-filename" title={file.name}>{file.name}</div>
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemove(index)}
-                  >
-                    Remove
-                  </button>
+                  <div className="preview-meta">
+                    <div className="preview-filename" title={file.name}>{file.name}</div>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemove(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
