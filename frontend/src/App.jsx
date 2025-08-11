@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoute from './Login/ProtectedRoute';
 
 import AgentComment from './Agent/agentComment';
 import AgentBugReport from './Agent/agentBugReport';
@@ -49,21 +50,79 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        {/* Public routes - no protection */}
         <Route path="/login" element={<Login />} />
         <Route path="/registerAccount" element={<RegisterAccount />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-
-        <Route path="/agentComment" element={<AgentComment />} />
-        <Route path="/agentBugReport" element={<AgentBugReport />} />
-        <Route path="/agentFAQ" element={<AgentFAQ />} />
-        <Route path="/viewComment/:comment_id" element={<ViewComment />} />
-        <Route path="/viewBugReport/:bug_id" element={<ViewBugReport />} />
-        <Route path="/viewFAQ" element={<ViewFAQ />} />
-        <Route path="/updateAgentAccount" element={<UpdateAgentAccount />} />
-
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="/user" element={<UserDashboardlayout />}>
+        {/* Agent routes - protected for 'agent' role */}
+        <Route
+          path="/agentComment"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <AgentComment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agentBugReport"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <AgentBugReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agentFAQ"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <AgentFAQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewComment/:comment_id"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <ViewComment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewBugReport/:bug_id"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <ViewBugReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewFAQ"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <ViewFAQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/updateAgentAccount"
+          element={
+            <ProtectedRoute allowedRoles={['agent']}>
+              <UpdateAgentAccount />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User routes - nested and protected for 'user' role */}
+        <Route
+          path="/user"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <UserDashboardlayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="dashboard" element={<UserDashboard />} />
           <Route path="upload" element={<UserUpload />} />
           <Route path="updateUserAccount" element={<UpdateUserAccount />} />
@@ -74,30 +133,118 @@ export default function App() {
           <Route path="leaveComment" element={<LeaveComment />} />
           <Route path="switchLanguage" element={<SwitchLanguage />} />
           <Route path="comments" element={<UserComments />} />
-          
-          <Route path="faq" element={<FAQHelp />} />                
+          <Route path="faq" element={<FAQHelp />} />
           <Route path="diseasereport" element={<DiseaseReport />} />
-          <Route path="densitymap" element={<DensityMap />} />           
+          <Route path="densitymap" element={<DensityMap />} />
           <Route path="deleteAccount" element={<DeleteAccount />} />
-          <Route path="/user/reannotate" element={<ReAnnotate />} />
-
+          <Route path="reannotate" element={<ReAnnotate />} />
         </Route>
 
-        //Admin pages
-        <Route path="/admin/home" element={<AdminDashBoard />} />
-        <Route path="/admin/create-account" element={<AdminCreateAccount />} />
-        <Route path="/admin/view-accounts" element={<AdminViewAccounts />} />
-        <Route path="/admin/user/:userId" element={<AdminAccountDetails />} />
-        <Route path="/admin/suspend-user/:userId" element={<AdminSuspendUser />} />
-        <Route path="/admin/update-user/:userId" element={<AdminUpdateAccountDetails />} />
-        <Route path="/admin/create-profile" element={<AdminCreateProfile />} />
-        <Route path="/admin/view-profiles" element={<AdminViewProfiles />} />
-        <Route path="/admin/profile/:roleId" element={<AdminProfileDetails />} />
-        <Route path="/admin/update-profile/:roleId" element={<AdminUpdateProfileDetails />} />
-        <Route path="/admin/view-models" element={<AdminViewModels />} />
-        <Route path="/admin/update-model" element={<AdminUpdateModel />} />
-        <Route path="/admin/model/:modelId" element={<AdminDeleteModel />} />
-        <Route path="/" element={<Navigate to="/admin" replace />} />
+        {/* Admin routes - protected for 'admin' role */}
+        <Route
+          path="/admin/home"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/create-account"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminCreateAccount />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/view-accounts"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminViewAccounts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/user/:userId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminAccountDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/suspend-user/:userId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminSuspendUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/update-user/:userId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUpdateAccountDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/create-profile"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminCreateProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/view-profiles"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminViewProfiles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/profile/:roleId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminProfileDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/update-profile/:roleId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUpdateProfileDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/view-models"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminViewModels />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/update-model"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUpdateModel />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/model/:modelId"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDeleteModel />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
