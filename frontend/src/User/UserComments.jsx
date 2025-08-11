@@ -2,74 +2,99 @@
 import './UserComments.css';
 import userIcon from '../assets/logo.png'; 
 import { useState, useEffect } from 'react';
-import axios from 'axios';  // 新增：引入 axios 用于 API 调用
+import axios from 'axios';  
 
-const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  // 新增：统一 API base URL，便于维护
+const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  
 
 export default function UserComments() {
-  const [comments, setComments] = useState([]);  // 新增：存储从后端加载的评论数据
-  const [visibleCount, setVisibleCount] = useState(3);
-  const [isLoading, setIsLoading] = useState(true);  // 新增：加载状态
-  const [error, setError] = useState(null);  // 新增：错误状态
+  const [comments, setComments] = useState([]);  
+  const [currentPage, setCurrentPage] = useState(1);  
+  const [totalComments, setTotalComments] = useState(0);  
+  const [isLoading, setIsLoading] = useState(true);  
+  const [error, setError] = useState(null);  
+  const commentsPerPage = 3;  
+  const [hasMore, setHasMore] = useState(true);  
 
   useEffect(() => {
     document.title = 'View Comments';
+    loadMoreComments();  
+  }, []);  
 
-    // 新增：从后端加载评论数据
-    const fetchComments = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const token = localStorage.getItem('token');  // 新增：支持认证 token
-        const response = await axios.get(`${BASE_API_URL}/comments/`, {  // 假设端点是 /api/comments/，根据您的 routers/comments.py 调整
+  // Function to load more comments with pagination
+  const loadMoreComments = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('token');  
+      // Fetch comments with skip and limit for pagination
+      const response = await axios.get(`${BASE_API_URL}/comments/`, {  
+        params: {
+          skip: (currentPage - 1) * commentsPerPage,
+          limit: commentsPerPage
+        },
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+      });
+      
+      // Format comments, assuming backend returns [{ comment_id, user: {username}, content, created_at }]
+      const formattedComments = response.data.map(comment => ({
+        id: comment.comment_id,
+        username: comment.user?.username || 'Anonymous',  
+        content: comment.content,
+        time: formatDate(comment.created_at),  
+      }));
+      
+      setComments(prevComments => [...prevComments, ...formattedComments]);  
+      
+      // If this is the first load, also fetch total count
+      if (currentPage === 1) {
+        const countResponse = await axios.get(`${BASE_API_URL}/comments/count`, {
           headers: {
             ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
           },
         });
-        // 假设后端返回数组，如 [{ id, username, content, time: '2024-06-03T09:15:00' }]
-        setComments(response.data.map(comment => ({
-          id: comment.id,
-          username: comment.username || 'Anonymous',  // fallback 如果无 username
-          content: comment.content,
-          time: formatTime(comment.time),  // 新增：格式化时间
-        })));
-      } catch (err) {
-        console.error('Error fetching comments:', err);
-        setError('Failed to load comments. Please try again later.');
-      } finally {
-        setIsLoading(false);
+        setTotalComments(countResponse.data.total);
       }
-    };
-
-    fetchComments();
-  }, []);
-
-  // 新增：时间格式化函数（假设后端是 ISO 字符串，转换为 'YYYY-MM-DD HH:MM AM/PM'）
-  const formatTime = (isoTime) => {
-    if (!isoTime) return 'Unknown time';
-    const date = new Date(isoTime);
-    return date.toLocaleString('en-US', { 
-      year: 'numeric', month: 'numeric', day: 'numeric',
-      hour: 'numeric', minute: 'numeric', hour12: true 
-    });
+      
+      // Update page and check if there are more comments
+      setCurrentPage(prevPage => prevPage + 1);
+      if (comments.length + formattedComments.length >= totalComments) {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error('Error fetching comments:', err);
+      setError('Failed to load comments. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const visibleComments = comments.slice(0, visibleCount);
+  // Function to format date as DD/MM/YYYY
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown time';
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <main className="dashboard-content">
       <div className="comments-container">
         <h2>User Comments</h2>
         <hr />
-        {isLoading ? (
-          <p>Loading comments...</p>  // 新增：加载提示
+        {isLoading && comments.length === 0 ? (
+          <p>Loading comments...</p>  
         ) : error ? (
-          <p className="error" style={{ color: 'red' }}>{error}</p>  // 新增：错误显示
+          <p className="error" style={{ color: 'red' }}>{error}</p>  
         ) : comments.length === 0 ? (
-          <p>No comments available.</p>  // 新增：空数据提示
+          <p>No comments available.</p>  
         ) : (
           <>
-            {visibleComments.map(comment => (
+            {comments.map(comment => (
               <div className="comment-item" key={comment.id}>
                 <img src={userIcon} alt="User" className="comment-avatar" />
                 <div className="comment-content">
@@ -79,9 +104,11 @@ export default function UserComments() {
                 </div>
               </div>
             ))}
-            {visibleCount < comments.length && (
+            {hasMore && (
               <div className="load-more">
-                <button onClick={() => setVisibleCount(visibleCount + 3)}>Load More</button>
+                <button onClick={loadMoreComments} disabled={isLoading}>
+                  {isLoading ? 'Loading...' : 'Load More'}
+                </button>
               </div>
             )}
           </>
