@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './FAQHelp.css';
 
-const BASE_API_URL = 'http://localhost:8000/api';  
+const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  
 
 const FAQHelp = () => {
   const [faqs, setFaqs] = useState([]);
