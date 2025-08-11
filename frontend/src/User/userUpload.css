@@ -321,3 +321,70 @@
   font-weight: bold;
   font-size: 1.5rem;
 }
+
+/* Phone */
+@media (max-width: 767px) {
+  .upload-container {
+    padding: 0.5rem;
+    font-size: 1rem;
+    min-height: unset;
+  }
+
+  .upload-container h2 {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .upload-box {
+    padding: 0.7rem;
+    min-height: 90px;
+    max-width: 98vw;
+    border-radius: 4px;
+  }
+
+  .preview-gallery {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .preview-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .preview-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+  }
+
+  .preview-filename {
+    font-size: 0.85rem;
+    max-width: 90vw;
+    word-break: break-all;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+    max-width: 98vw;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .submit-btn,
+  .reset-btn,
+  .premium-btn {
+    font-size: 1rem;
+    min-width: unset;
+    padding: 10px 0;
+    border-radius: 6px;
+  }
+
+  .upload-info {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+}
