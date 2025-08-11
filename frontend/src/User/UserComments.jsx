@@ -4,7 +4,7 @@ import userIcon from '../assets/logo.png';
 import { useState, useEffect } from 'react';
 import axios from 'axios';  
 
-const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  
+const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';
 
 export default function UserComments() {
   const [comments, setComments] = useState([]);  
@@ -13,7 +13,7 @@ export default function UserComments() {
   const [isLoading, setIsLoading] = useState(true);  
   const [error, setError] = useState(null);  
   const commentsPerPage = 3;  
-  const [hasMore, setHasMore] = useState(true);  
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     document.title = 'View Comments';
@@ -32,10 +32,7 @@ export default function UserComments() {
         params: {
           skip: (currentPage - 1) * commentsPerPage,
           limit: commentsPerPage
-        },
-        headers: {
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        },
+        }
       });
       
       // Format comments, assuming backend returns [{ comment_id, user: {username}, content, created_at }]
