@@ -36,6 +36,9 @@
 .load-more {
   text-align: center;
   margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .load-more button {
@@ -48,4 +51,12 @@
 
 .load-more button:hover {
   background-color: #4c8b7e;
+}
+
+.load-more .add-comment {
+  background-color: #4a90e2;
+}
+
+.load-more .add-comment:hover {
+  background-color: #357abd;
 }

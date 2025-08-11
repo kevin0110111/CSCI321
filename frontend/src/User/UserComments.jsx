@@ -1,6 +1,7 @@
 import './UserComments.css';
-import userIcon from '../assets/logo.png';
+import userIcon from '../assets/user.png';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Change this to your production endpoint if needed
@@ -12,6 +13,7 @@ export default function UserComments() {
   const [totalComments, setTotalComments] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const commentsPerPage = 3;
   const [hasMore, setHasMore] = useState(true);
@@ -145,13 +147,16 @@ export default function UserComments() {
               </div>
             ))}
 
-            {hasMore && (
-              <div className="load-more">
+            <div className="load-more">
+              {hasMore && (
                 <button onClick={() => loadComments(currentPage)} disabled={isLoading}>
                   {isLoading ? 'Loading...' : 'Load More'}
                 </button>
-              </div>
-            )}
+              )}
+              <button onClick={() => navigate('/user/leaveComment')} className="add-comment">
+                Add Comment
+              </button>
+            </div>
           </>
         )}
       </div>
