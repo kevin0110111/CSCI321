@@ -26,7 +26,6 @@ export default function UserComments() {
     setIsLoading(true);
     setError(null);
     try {
-      const token = localStorage.getItem('token');  
       // Fetch comments with skip and limit for pagination
       const response = await axios.get(`${BASE_API_URL}/comments/`, {  
         params: {
@@ -47,11 +46,7 @@ export default function UserComments() {
       
       // If this is the first load, also fetch total count
       if (currentPage === 1) {
-        const countResponse = await axios.get(`${BASE_API_URL}/comments/count`, {
-          headers: {
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-          },
-        });
+        const countResponse = await axios.get(`${BASE_API_URL}/comments/count`);
         setTotalComments(countResponse.data.total);
       }
       
