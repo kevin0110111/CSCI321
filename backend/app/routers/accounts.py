@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
 from datetime import date
-
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse, SubscriptionStatusResponse
 from ..database import get_db
@@ -246,15 +245,10 @@ def update_password(
 @router.get("/subscription-status", response_model=SubscriptionStatusResponse)
 def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
 
-    """
-    Get subscription status for a given account_id, with expiration check.
-    """
-    # Use existing CRUD method to get account
     account = crud.get_account(db, account_id=account_id)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found")
 
-    # Check if subscription has expired and update if necessary
     if account.is_premium and account.subscription_expiry and account.subscription_expiry < date.today():
         account.is_premium = False
         db.commit()
