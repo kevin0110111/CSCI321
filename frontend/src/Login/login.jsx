@@ -76,9 +76,8 @@ export default function Login() {
 
       // Store account info in localStorage or context
       localStorage.setItem('account', JSON.stringify(data.account));
+      localStorage.setItem('authToken', 'authenticated');
       localStorage.setItem('accountId', data.account.account_id);
-      localStorage.setItem('authToken', data.access_token);
-      localStorage.setItem('tokenType', data.token_type || 'Bearer');
 
       // Check if account has a role assigned
       if (data.account.role_id && data.account.role) {
