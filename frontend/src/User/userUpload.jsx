@@ -20,11 +20,12 @@ export default function UserUpload() {
       if (!accountId) return;
       try {
         const resp = await fetch(
-          `https://fyp-backend-a0i8.onrender.com/accounts/subscription-status?account_id=${accountId}`,
+          `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (resp.ok) {
           const data = await resp.json();
+          console.log('is_premium from API:', data.is_premium);
           setIsPremium(data.is_premium);
         }
       } catch (e) {
