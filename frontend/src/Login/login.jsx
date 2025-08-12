@@ -164,12 +164,20 @@ export default function Login() {
         </div>
 
         <button 
-          type="button"
-          className="google-btn"
-          onClick={handleGoogleLogin}
-          disabled={loading}
-        >
-          <span className="google-icon">G</span> Login with Google
+  type="button"
+  className="google-btn"
+  onClick={handleGoogleLogin}
+  disabled={loading}
+>
+          <span className="google-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.9 32.9 30.1 36 24 36c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l6-6C34.6 3.1 29.6 1 24 1 11.8 1 2 10.8 2 23s9.8 22 22 22c11 0 21-8 21-22 0-1.4-.2-2.8-.5-4z"/>
+              <path fill="#34A853" d="M6.3 14.7l7 5.1C14.9 16 19.1 13 24 13c3.1 0 5.9 1.1 8.1 3l6-6C34.6 6.1 29.6 4 24 4 16 4 8.9 8.6 6.3 14.7z"/>
+              <path fill="#FBBC05" d="M24 45c6 0 11.4-2.3 15.2-6l-7-5.8C30.5 34.9 27.5 36 24 36c-6.1 0-10.9-3.1-13.4-7.7l-7 5.4C6.2 40.5 14.4 45 24 45z"/>
+              <path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-1.3 3.9-5.1 7.5-11.8 7.5-6.5 0-12-5.2-12-12s5.5-12 12-12c3.1 0 5.9 1.1 8.1 3l6-6C34.6 5.1 29.6 3 24 3 12.3 3 2.7 12.2 2.7 24S12.3 45 24 45c11.7 0 21.3-8.5 21.3-21 0-1.7-.2-3.1-.8-4z"/>
+            </svg>
+          </span>
+          <span>Login with Google</span>
         </button>
 
         <button 

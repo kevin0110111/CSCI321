@@ -169,3 +169,39 @@
 @media (max-width: 480px){
   .login-box { width: 92%; padding: 22px 18px; border-radius: 14px; }
 }
+
+/* Make all form controls same width */
+.login-input,
+.google-btn,
+.login-btn {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Inputs: match border radius & padding to buttons */
+.login-input {
+  padding: 0.8rem 0.9rem;
+  border-radius: 10px;
+  margin-bottom: 0.9rem; /* even spacing */
+}
+
+/* Google button: align icon & text with space between */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem; /* space between icon & text */
+  margin-bottom: 0.75rem; /* match spacing to inputs */
+}
+
+.google-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+}
+
+/* Login button: match spacing */
+.login-btn {
+  margin-bottom: 1rem; /* before register link */
+}
