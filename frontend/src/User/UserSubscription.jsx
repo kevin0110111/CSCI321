@@ -48,12 +48,8 @@ export default function UserSubscription() {
     const fetchSubscriptionStatus = async () => {
       try {
         // Step 2: Refresh from backend API to ensure up-to-date
-        const token = localStorage.getItem('authToken');  // Use stored token for auth
         const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`, {
           method: 'GET',
-          headers: { 
-            'Authorization': `Bearer ${token}`,
-          },
         });
         if (!response.ok) {
           throw new Error('Failed to fetch status');
