@@ -16,16 +16,12 @@ export default function UserUpload() {
     document.title = 'Upload';
     const fetchSubscription = async () => {
       const accountId = localStorage.getItem('accountId');
+      const token = localStorage.getItem('token');
       if (!accountId) return;
       try {
-        const token = localStorage.getItem('authToken');  // Use stored token for auth
-        const tokenType = localStorage.getItem('tokenType') || 'Bearer'
         const resp = await fetch(
           `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`,
-          {
-            headers: {
-              'Authorization': `${tokenType} ${token}`,
-            }, }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         if (resp.ok) {
           const data = await resp.json();
