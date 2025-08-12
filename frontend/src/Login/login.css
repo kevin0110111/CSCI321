@@ -1,99 +1,171 @@
+/* ============ Theme ============ */
+:root{
+  --brand:#2f855a;     /* primary button color */
+  --brand-600:#276749;
+  --ring:#60a5fa;      /* focus ring */
+  --ink:#0f172a;
+  --muted:#6b7280;
+  --cardShadow: 0 18px 40px rgba(0,0,0,.35);
+}
+
+/* ============ Page background (uses /public/dbimg3.png) ============ */
 .login-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)),
-    url('/dbimg3.png') center/cover no-repeat;
-  /* optional: keeps image fixed while scrolling */
-  background-attachment: fixed;
+
+  background: url('/dbimg3.png') center/cover no-repeat fixed;
+  overflow: hidden; /* so overlay stays contained */
 }
 
+/* Dim + soften the image so the form reads well */
+.login-container::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(1200px 700px at 50% 25%, rgba(0,0,0,.18), transparent 60%),
+    rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events:none;
+}
+
+/* ============ Card (glass) ============ */
 .login-box {
-  /*
-  background-color: #fff;
-  padding: 2rem;
-  width: 350px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
-  */
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(255,255,255,.45);
-  box-shadow: 0 8px 24px rgba(0,0,0,.25);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 1;
+  width: 380px;
+  padding: 28px 24px;
+  border-radius: 16px;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.72));
+  border: 1px solid rgba(255,255,255,.5);
+  box-shadow: var(--cardShadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .login-title {
   text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+  font-weight: 800;
+  color: var(--ink);
 }
 
+/* ============ Inputs ============ */
 .login-input {
-  width: 92%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 2px solid #000;
-  border-radius: 6px;
+  width: 100%;
+  padding: .8rem .9rem;
+  margin-bottom: .9rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
   font-size: 1rem;
   outline: none;
+  background: rgba(255,255,255,.95);
+  transition: border-color .15s, box-shadow .15s, background .15s;
 }
 
+.login-input:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 4px rgba(96,165,250,.25);
+}
+
+/* ============ Links row ============ */
 .login-options {
-  text-align: right;
-  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin: .25rem 0 1rem;
 }
 
 .forgot-link {
-  font-size: 0.875rem;
-  color: #333;
+  font-size: .9rem;
+  color: var(--muted);
   text-decoration: none;
+}
+
+.forgot-link:hover { color: var(--ink); }
+
+/* ============ Buttons ============ */
+.google-btn, .login-btn {
+  width: 100%;
+  padding: .85rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
 }
 
 .google-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #c5dcfc;
-  color: #000;
-  font-size: 1rem;
-  padding: 0.75rem;
-  width: 100%;
-  border: 2px solid #000;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  font-weight: 500;
+  gap: .55rem;
+  background: #e8f0fe;
+  color: #111827;
+  margin-bottom: .75rem;
+}
+.google-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
 }
 
 .google-icon {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: white;
+  color: #4285F4;
 }
 
 .login-btn {
-  width: 100%;
-  background-color: #d3d3d3;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border: 2px solid #000;
-  border-radius: 6px;
-  cursor: pointer;
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand-600);
+}
+.login-btn:hover {
+  background: var(--brand-600);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0,0,0,.14);
+}
+.login-btn:disabled, .google-btn:disabled {
+  opacity:.6; cursor:not-allowed; transform:none; box-shadow:none;
 }
 
+/* ============ Register link ============ */
 .register-link {
-  text-align: right;
+  text-align: center;
   margin-top: 1rem;
-  font-size: 0.875rem;
+  font-size: .9rem;
+}
+.register-link a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 700;
+}
+.register-link a:hover { text-decoration: underline; }
+
+/* ============ Error message (if you remove inline styles) ============ */
+.error-message{
+  color:#b91c1c;
+  background:#fee2e2;
+  border:1px solid #fecaca;
+  border-radius: 10px;
+  padding: .6rem .75rem;
+  font-size: .9rem;
+  margin-bottom: .9rem;
 }
 
-.register-link a {
-  color: #3b82f6;
-  text-decoration: none;
+/* ============ Responsive ============ */
+@media (max-width: 480px){
+  .login-box { width: 92%; padding: 22px 18px; border-radius: 14px; }
 }
