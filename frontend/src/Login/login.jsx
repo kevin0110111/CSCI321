@@ -168,8 +168,16 @@ export default function Login() {
           className="google-btn"
           onClick={handleGoogleLogin}
           disabled={loading}
-        >
-          <span className="google-icon">G</span> Login with Google
+>
+          <span className="google-icon" aria-hidden="true">
+            <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#EA4335" d="M9 3.48c1.39 0 2.64.48 3.62 1.43l2.41-2.41C13.63.83 11.49 0 9 0 5.48 0 2.44 2.02 1.11 4.96l2.98 2.31C4.82 5.17 6.73 3.48 9 3.48z"/>
+              <path fill="#34A853" d="M9 18c2.43 0 4.68-.8 6.24-2.18l-2.87-2.35C11.45 14 10.3 14.4 9 14.4c-2.27 0-4.18-1.69-4.91-3.78l-3 2.32C2.42 15.98 5.47 18 9 18z"/>
+              <path fill="#FBBC05" d="M4.09 10.62A5.41 5.41 0 0 1 3.78 9c0-.56.1-1.1.29-1.62l-3-2.32A9 9 0 0 0 0 9c0 1.46.35 2.82.98 4.04l3.11-2.42z"/>
+              <path fill="#4285F4" d="M18 9c0-.6-.06-1.04-.17-1.5H9v3h5.22c-.26 1.3-1 2.3-2.12 3.02l2.87 2.35C16.92 14.7 18 12.13 18 9z"/>
+            </svg>
+          </span>
+          <span>Login with Google</span>
         </button>
 
         <button 
