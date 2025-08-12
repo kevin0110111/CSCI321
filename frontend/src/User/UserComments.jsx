@@ -82,6 +82,8 @@ export default function UserComments() {
         username: c.user?.username || 'Anonymous',
         content: c.content,
         time: formatDate(c.created_at),
+        reply_content: c.reply_content,
+        rating: c.rating, 
       }));
 
       // Append but remove duplicates (by id) in a safe, functional way
@@ -141,13 +143,37 @@ export default function UserComments() {
         ) : (
           <>
             {comments.map((comment) => (
-              <div className="comment-item" key={comment.id} onDoubleClick={() => handleDoubleClick(comment.id)}>
-                <img src={userIcon} alt="User" className="comment-avatar" />
-                <div className="comment-content">
-                  <strong>{comment.username}</strong>
-                  <p>{comment.content}</p>
-                  <span className="comment-time">{comment.time}</span>
+              <div key={comment.id}>
+                <div className="comment-item" onDoubleClick={() => handleDoubleClick(comment.id)}>
+                  <img src={userIcon} alt="User" className="comment-avatar" />
+                  <div className="comment-content">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <strong>{comment.username}</strong>
+                      <span style={{ color: '#FFA500', fontSize: '1.1em' }}>
+                        {'★'.repeat(comment.rating)}
+                        {'☆'.repeat(5 - comment.rating)}
+                      </span>
+                    </div>
+                    <p>{comment.content}</p>
+                    <span className="comment-time">{comment.time}</span>
+                    {comment.reply_content && (
+                      <div
+                        className="agent-reply"
+                        style={{
+                          marginTop: '8px',
+                          background: '#f5f5f5',
+                          borderLeft: '3px solid #4CAF50',
+                          padding: '8px 12px',
+                          borderRadius: '4px',
+                        }}
+                      >
+                        <strong style={{ color: '#4CAF50' }}>Agent Reply:</strong>
+                        <div>{comment.reply_content}</div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                <hr style={{ margin: '18px 0' }} />
               </div>
             ))}
 

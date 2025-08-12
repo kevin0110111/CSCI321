@@ -5,6 +5,7 @@ import axios from 'axios';
 
 export default function UserComment() {
   const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(5); 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function UserComment() {
     try {
       const response = await axios.post(`${BASE_API_URL}/comments`, {
         content: comment,
-        rating: 5,
+        rating: rating, 
         is_anonymous: false,
         user_id: parseInt(userId)
       });
@@ -31,6 +32,7 @@ export default function UserComment() {
       if (response.status === 200) {
         setSubmitted(true);
         setComment('');
+        setRating(5);
       }
     } catch (err) {
       setError('Failed to submit comment. Please try again.');
@@ -41,6 +43,7 @@ export default function UserComment() {
   const handleCancel = () => {
     navigate("/user/comments");
     setComment('');
+    setRating(5);
     setSubmitted(false);
     setError(null);
   };
@@ -54,6 +57,27 @@ export default function UserComment() {
       <main className="dashboard-content">
         <form className="comment-form" onSubmit={handleSubmit}>
           <h2 className="comment-title">Leave a Comment</h2>
+          <p style={{ marginBottom: 4, fontWeight: 500 }}>
+            Please rate and comment our product!
+          </p>
+          <div className="rating-select" style={{ marginBottom: '1rem' }}>
+            {[1,2,3,4,5].map((star) => (
+              <span
+                key={star}
+                style={{
+                  cursor: 'pointer',
+                  color: star <= rating ? '#FFA500' : '#ccc',
+                  fontSize: '1.5em',
+                  marginRight: 4
+                }}
+                onClick={() => setRating(star)}
+                data-testid={`star-${star}`}
+              >
+                ★
+              </span>
+            ))}
+            <span style={{ marginLeft: 8, fontSize: '1em', color: '#555' }}>{rating} / 5</span>
+          </div>
           <textarea
             placeholder="Enter your comment..."
             value={comment}
