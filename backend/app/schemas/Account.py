@@ -33,6 +33,12 @@ class AccountUpdate(BaseModel):
     state: Optional[AccountStateEnum] = None
     is_premium: Optional[bool] = None
     subscription_expiry: Optional[date] = None
+    name: Optional[str] = None
+    dob: Optional[date] = None
+    job: Optional[str] = None
+    institution: Optional[str] = None
+    reason_foruse: Optional[str] = None
+    profile_preferred_language: Optional[str] = None
 
 class PasswordChangeRequest(BaseModel):
     current_password: str

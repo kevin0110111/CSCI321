@@ -71,12 +71,27 @@ def create_account_with_profile(db: Session, account_data: AccountWithProfileCre
 
 def update_account(db: Session, account_id: int, account: AccountUpdate):
     db_account = db.query(Account).filter(Account.account_id == account_id).first()
-    if db_account:
-        update_data = account.dict(exclude_unset=True)
-        for field, value in update_data.items():
-            setattr(db_account, field, value)
-        db.commit()
-        db.refresh(db_account)
+    if not db_account:
+        return None
+
+    update_data = account.dict(exclude_unset=True)
+
+    # Update Account model fields
+    account_fields = ["username", "email", "avatar_url", "country", "city", "state",
+                      "is_premium", "subscription_expiry"]
+    for field in account_fields:
+        if field in update_data:
+            setattr(db_account, field, update_data[field])
+
+    # Update related Profile model fields
+    profile_fields = ["name", "dob", "job", "institution", "reason_foruse", "profile_preferred_language"]
+    if hasattr(db_account, "profile") and db_account.profile:
+        for field in profile_fields:
+            if field in update_data:
+                setattr(db_account.profile, field, update_data[field])
+
+    db.commit()
+    db.refresh(db_account)
     return db_account
 
 def delete_account(db: Session, account_id: int):
