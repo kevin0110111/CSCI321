@@ -5,7 +5,7 @@
   background-color: #fff;
   font-size: 1.25rem; 
   line-height: 1.6;
-  min-height: 100vh; 
+  max-height: 100%; 
   /* Ensure container is flex for better centering */
   display: flex;
   flex-direction: column;
@@ -25,6 +25,7 @@
   border-radius: 6px;
   padding: 1.5rem;
   min-height: 150px;
+  max-height: none;
   max-width: 800px;     
   width: 100%;          
   margin: 0 auto;       
@@ -78,10 +79,6 @@
 
 .image-name {
   margin: 0.5rem 0;
-}
-
-.quota {
-  color: #666;
 }
 
 .button-group {
@@ -395,4 +392,9 @@
     font-size: 1rem;
     margin-bottom: 1rem;
   }
+}
+
+.dashboard-content {
+    margin-top: 75px;
+    transition: margin-left 0.7s ease;
 }

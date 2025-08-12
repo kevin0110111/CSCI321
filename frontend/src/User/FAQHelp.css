@@ -8,29 +8,29 @@
 
 .faq-main {
   flex: 1;
-  padding: 60px;  /* 增加 padding 使内容更宽敞 */
-  max-width: 1200px;  /* 增加 max-width 使页面看起来更大 */
+  padding: 60px;  
+  max-width: 1200px;  
   margin: auto;
   background-color: #fff;
-  border-radius: 12px;  /* 添加圆角以提升视觉 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* 添加轻微阴影 */
+  border-radius: 12px;  
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  
 }
 
 .faq-main h1 {
-  font-size: 28px;  /* 增加标题字体大小 */
-  margin-bottom: 32px;  /* 增加底部间距 */
+  font-size: 28px;  
+  margin-bottom: 32px;  
   color: #333;
 }
 
 .faq-search {
-  width: calc(100% - 20px);  /* 使搜索框更宽 */
-  padding: 14px;  /* 增加 padding */
-  font-size: 16px;  /* 增加字体大小 */
+  width: calc(100% - 20px);  
+  padding: 14px;  
+  font-size: 16px;  
   border: 1px solid #ccc;
-  border-radius: 6px;  /* 增加圆角 */
+  border-radius: 6px;  
   outline: none;
-  margin-bottom: 24px;  /* 增加底部间距 */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);  /* 添加内阴影 */
+  margin-bottom: 24px;  
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);  
 }
 
 .faq-list {
@@ -38,18 +38,18 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #fafafa;
-  padding: 20px;  /* 增加内部 padding */
+  padding: 20px;  
 }
 
 .faq-item {
   border-top: 1px solid #e1e1e1;
-  padding: 16px 0;  /* 增加垂直 padding */
+  padding: 16px 0;  
   background-color: white;
-  transition: background-color 0.3s;  /* 添加过渡效果 */
+  transition: background-color 0.3s; 
 }
 
 .faq-item:hover {
-  background-color: #f5f5f5;  /* 悬停效果使交互更明显 */
+  background-color: #f5f5f5;  
 }
 
 .faq-item:first-child {
@@ -59,13 +59,13 @@
 .faq-question {
   background: none;
   border: none;
-  font-size: 18px;  /* 增加问题字体大小 */
+  font-size: 18px;  
   font-weight: bold;
   text-align: left;
   width: 100%;
   cursor: pointer;
   position: relative;
-  padding-right: 30px;  /* 增加右 padding 以容纳图标 */
+  padding-right: 30px;  
   color: #222;
 }
 
@@ -73,16 +73,16 @@
   content: "+";
   position: absolute;
   right: 0;
-  font-size: 24px;  /* 增加图标大小 */
+  font-size: 24px;  
   color: #333;
 }
 
 .faq-answer {
-  margin-top: 12px;  /* 增加顶部间距 */
-  font-size: 16px;  /* 增加答案字体大小 */
+  margin-top: 12px;  
+  font-size: 16px;  
   color: #444;
-  padding-left: 16px;  /* 增加左缩进 */
-  line-height: 1.6;  /* 改善可读性 */
+  padding-left: 16px;  
+  line-height: 1.6; 
 }
 
 .faq-item.expanded .faq-question::after {
@@ -90,8 +90,8 @@
 }
 
 .faq-footer {
-  margin-top: 32px;  /* 增加顶部间距 */
-  font-size: 15px;  /* 增加字体大小 */
+  margin-top: 32px;  
+  font-size: 15px;  
   color: #777;
-  text-align: center;  /* 居中对齐 */
+  text-align: center;  
 }

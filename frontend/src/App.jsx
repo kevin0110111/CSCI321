@@ -27,8 +27,6 @@ import UserDashboardlayout from './User/dashboardLayout';
 
 import FAQHelp from './User/FAQHelp';
 import DiseaseReport from './User/DiseaseReport';
-import DensityMap from './User/DensityMap';
-import ReAnnotate from './User/ReAnnotate';
 import DeleteAccount from './User/DeleteAccount';
 
 
@@ -135,9 +133,7 @@ export default function App() {
           <Route path="comments" element={<UserComments />} />
           <Route path="faq" element={<FAQHelp />} />
           <Route path="diseasereport" element={<DiseaseReport />} />
-          <Route path="densitymap" element={<DensityMap />} />
           <Route path="deleteAccount" element={<DeleteAccount />} />
-          <Route path="reannotate" element={<ReAnnotate />} />
         </Route>
 
         {/* Admin routes - protected for 'admin' role */}

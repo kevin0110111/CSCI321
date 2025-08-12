@@ -142,7 +142,7 @@ export default function UserDashboard() {
     <div>
       <ImageCarousel />
 
-      <h2 className="welcome-text">Welcome back! User xxx</h2>
+      <h2 className="welcome-text">Hint: Check the following 7 days weather!!</h2>
       <hr className="divider" />
 
       {/* Weather Forecast */}
@@ -178,13 +178,6 @@ export default function UserDashboard() {
                 </div>
               ) : null}
             </div>
-
-            {alert && (
-              <div className="weather-alert-card">
-                <span className="alert-icon">⚠️</span>
-                <p>{alert}</p>
-              </div>
-            )}
           </div>
 
           <div className="weather-forecast-row">

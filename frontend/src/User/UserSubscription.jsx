@@ -95,7 +95,7 @@ export default function UserSubscription() {
             <div className="button-group">
               {!isPremium && (
                 <button className="current-plan" disabled>
-                  Your Plan
+                  Current Plan
                 </button>
               )}
             </div>
@@ -111,7 +111,7 @@ export default function UserSubscription() {
             </ul>
             <div className="button-group">
               {isPremium ? (
-                <button className="current-plan" disabled>Your Plan</button>
+                <button className="current-plan" disabled>Current Plan</button>
               ) : (
                 <button className="upgrade-btn" onClick={() => setShowModal(true)}>Upgrade</button>
               )}
