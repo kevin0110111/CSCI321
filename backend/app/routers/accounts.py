@@ -45,21 +45,6 @@ def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
     # Return only the premium status using the new response model
     return SubscriptionStatusResponse(is_premium=account.is_premium)
 
-@router.get("/subscription-status", response_model=SubscriptionStatusResponse)
-def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
-
-    account = crud.get_account(db, account_id=account_id)
-    if account is None:
-        raise HTTPException(status_code=404, detail="Account not found")
-
-    if account.is_premium and account.subscription_expiry and account.subscription_expiry < date.today():
-        account.is_premium = False
-        db.commit()
-        db.refresh(account)
-
-    # Return only the premium status using the new response model
-    return SubscriptionStatusResponse(is_premium=account.is_premium)
-
 @router.post("/login", response_model=LoginResponse)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     """
