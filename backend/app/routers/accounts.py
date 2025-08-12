@@ -7,6 +7,13 @@ from datetime import date
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse, SubscriptionStatusResponse
 from ..database import get_db
+import os
+import secrets
+from fastapi.responses import JSONResponse
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
+WEB_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
@@ -19,6 +26,24 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
     message: str
     account: AccountResponse
+
+class GoogleOAuthRequest(BaseModel):
+    id_token: str
+
+@router.get("/subscription-status", response_model=SubscriptionStatusResponse)
+def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
+
+    account = crud.get_account(db, account_id=account_id)
+    if account is None:
+        raise HTTPException(status_code=404, detail="Account not found")
+
+    if account.is_premium and account.subscription_expiry and account.subscription_expiry < date.today():
+        account.is_premium = False
+        db.commit()
+        db.refresh(account)
+
+    # Return only the premium status using the new response model
+    return SubscriptionStatusResponse(is_premium=account.is_premium)
 
 @router.post("/login", response_model=LoginResponse)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
@@ -256,3 +281,71 @@ def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
 
     # Return only the premium status using the new response model
     return SubscriptionStatusResponse(is_premium=account.is_premium)
+
+@router.post("/oauth/google")
+def google_oauth_login(payload: GoogleOAuthRequest, db: Session = Depends(get_db)):
+    """
+    Handles login via Google OAuth.
+    Verifies Google ID token, logs in existing accounts or creates minimal ones.
+    """
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            payload.id_token, google_requests.Request(), WEB_CLIENT_ID
+        )
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid Google ID token")
+
+    email = idinfo.get("email")
+    name = idinfo.get("name")
+    picture = idinfo.get("picture")
+
+    # Existing account → login
+    db_account = crud.get_account_by_email(db, email=email)
+    if db_account:
+        account_with_role = crud.get_account_with_role(
+            db, account_id=db_account.account_id
+        )
+        return {
+            "message": "Login successful",
+            "account": account_with_role
+        }
+
+    # New account → create minimal profile
+    username_base = (email.split("@")[0]).replace('.', '')[:20] or "guser"
+    username = username_base
+    i = 1
+    while crud.get_account_by_username(db, username=username):
+        username = f"{username_base}{i}"
+        i += 1
+
+    generated_password = secrets.token_urlsafe(24)
+
+    account_payload = AccountWithProfileCreate(
+        username=username,
+        email=email,
+        password=generated_password,
+        avatar_url=picture,
+        country="",
+        city="",
+        is_premium=False,
+        subscription_expiry=None,
+        name=name,
+        dob=None,
+        job="",
+        institution="",
+        reason_foruse=""
+    )
+    created_account = crud.create_account_with_profile(db=db, account_data=account_payload)
+
+    return JSONResponse(
+        status_code=201,
+        content={
+            "message": "Account created via Google. Complete profile.",
+            "needs_profile_completion": True,
+            "account_id": created_account.account_id,
+            "email": email,
+            "username": username,
+            "name": name,
+            "avatar_url": picture
+        }
+    )
