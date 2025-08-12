@@ -89,8 +89,9 @@ export default function UserSubscription() {
             <h3>FREE</h3>
             <p className="price">$0<span>/month</span></p>
             <ul>
-              <li>✓ Basic quota</li>
-              <li>✓ No re-detect</li>
+              <li><span style={{ color: 'green' }}>✓</span> Basic Tassel Count</li>
+              <li><span style={{ color: 'red' }}>x</span> Disease detection</li>
+              <li><span style={{ color: 'red' }}>x</span> Multiple images/ZIP upload</li>
             </ul>
             <div className="button-group">
               {!isPremium && (
@@ -105,9 +106,9 @@ export default function UserSubscription() {
             <h3>PREMIUM</h3>
             <p className="price">$20<span>/month</span></p>
             <ul>
-              <li>✓ All features</li>
-              <li>✓ Re-detect</li>
-              <li>✓ Export results</li>
+              <li><span style={{ color: 'green' }}>✓</span> All features</li>
+              <li><span style={{ color: 'green' }}>✓</span> Disease detection</li>
+              <li><span style={{ color: 'green' }}>✓</span> Multiple images/ZIP upload</li>
             </ul>
             <div className="button-group">
               {isPremium ? (

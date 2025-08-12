@@ -8,11 +8,47 @@ export default function UserUpload() {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
+  const [isPremium, setIsPremium] = useState(false);
   const navigate = useNavigate();
+
+  // 查询会员状态
+  useEffect(() => {
+    document.title = 'Upload';
+    const fetchSubscription = async () => {
+      const accountId = localStorage.getItem('accountId');
+      const token = localStorage.getItem('token');
+      if (!accountId) return;
+      try {
+        const resp = await fetch(
+          `https://fyp-backend-a0i8.onrender.com/accounts/subscription-status?account_id=${accountId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (resp.ok) {
+          const data = await resp.json();
+          setIsPremium(data.is_premium);
+        }
+      } catch (e) {
+        setIsPremium(false);
+      }
+    };
+    fetchSubscription();
+  }, []);
 
   // Handle file selection or zip extraction
   const handleFileChange = async (event) => {
     const selectedFiles = Array.from(event.target.files);
+
+    if (!isPremium) {
+      if (selectedFiles.length > 1) {
+        alert('Free users can only upload one image.');
+        return;
+      }
+      if (selectedFiles.some(f => f.name.endsWith('.zip'))) {
+        alert('Only premium users can upload ZIP files.');
+        return;
+      }
+    }
+
     const newPreviewFiles = [];
 
     for (const file of selectedFiles) {
@@ -45,7 +81,12 @@ export default function UserUpload() {
       }
     }
 
-    setFiles((prev) => [...prev, ...newPreviewFiles]);
+
+    if (!isPremium) {
+      setFiles(newPreviewFiles.slice(0, 1));
+    } else {
+      setFiles((prev) => [...prev, ...newPreviewFiles]);
+    }
   };
 
   // Drag & drop support
@@ -81,10 +122,6 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
-  useEffect(() => {
-    document.title = 'Upload';
-  }, []);
-
   return (
     <main className="dashboard-content">
       <div className="upload-container">
@@ -118,17 +155,18 @@ export default function UserUpload() {
             <>
               <img src={uploadIcon} alt="Upload" />
               <p>
-                Drag and drop your image(s) or{' '}
+                Drag and drop your image{isPremium ? '(s)/ZIP' : ''} or{' '}
                 <span className="browse" onClick={triggerFileSelect}>Browse</span>
               </p>
-              <p>Support ZIP, png, jpg, jpeg</p>
-
+              <p>
+                Support {isPremium ? 'ZIP, ' : ''}png, jpg, jpeg
+              </p>
             </>
           )}
           <input
             type="file"
-            accept=".zip,image/*"
-            multiple
+            accept={isPremium ? ".zip,image/*" : "image/*"}
+            multiple={isPremium}
             ref={fileInputRef}
             style={{ display: 'none' }}
             onChange={handleFileChange}
@@ -144,7 +182,7 @@ export default function UserUpload() {
           )}
         </div>
 
-        {/* Action buttons (logic simplified) */}
+        {/* Action buttons */}
         <div className="button-group">
           <button className="reset-btn" onClick={handleReset}>Reset</button>
 
@@ -163,6 +201,7 @@ export default function UserUpload() {
 
           <button
             className="premium-btn"
+            disabled={!isPremium}
             onClick={() => {
               if (files.length === 0) {
                 alert('Please upload at least one image before checking for disease.');
@@ -174,6 +213,11 @@ export default function UserUpload() {
             Check Disease (Premium)
           </button>
         </div>
+        {!isPremium && (
+          <div style={{ color: '#e53935', marginTop: 8, fontSize: 14 }}>
+            Only premium users can upload ZIP/multiple images and use disease detection.
+          </div>
+        )}
       </div>
     </main>
   );
