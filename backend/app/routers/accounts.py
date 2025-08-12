@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
 from datetime import date
+from datetime import date
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse, SubscriptionStatusResponse
 from ..database import get_db
@@ -42,7 +43,6 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     
     # Get account with role information for better response
     account_with_role = crud.get_account_with_role(db, account_id=authenticated_account.account_id)
-    
     return LoginResponse(
         message="Login successful",
         account=account_with_role

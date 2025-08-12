@@ -46,17 +46,14 @@ export default function UserSubscription() {
     }
 
     const fetchSubscriptionStatus = async () => {
-      console.log('accountId:', storedAccountId, typeof storedAccountId);
-      console.log('token:', token);
       try {
         // Step 2: Refresh from backend API to ensure up-to-date
         const token = localStorage.getItem('authToken');  // Use stored token for auth
-        const url = `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`;
-        console.log('Will fetch:', url);
+        const tokenType = localStorage.getItem('tokenType') || 'Bearer'
         const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`, {
           method: 'GET',
           headers: { 
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `${tokenType} ${token}`,
           },
         });
         if (!response.ok) {
