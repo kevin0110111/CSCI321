@@ -12,7 +12,7 @@ app = FastAPI(title="Your API", version="1.0.0")
 # CORS middleware for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://csci321.onrender.com"],  # React default port
+    allow_origins=["http://localhost:5174", "https://csci321.onrender.com"],  # React default port
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
