@@ -24,7 +24,7 @@ import LeaveComment from './User/LeaveComment';
 import SwitchLanguage from './User/SwitchLanguage';
 import UserComments from './User/UserComments';
 import UserDashboardlayout from './User/dashboardLayout';
-
+import CommentReply from './User/CommentReply';
 import FAQHelp from './User/FAQHelp';
 import DiseaseReport from './User/DiseaseReport';
 import DensityMap from './User/DensityMap';
@@ -131,6 +131,7 @@ export default function App() {
           <Route path="subscription" element={<UserSubscription />} />
           <Route path="ReportBug" element={<ReportBug />} />
           <Route path="leaveComment" element={<LeaveComment />} />
+          <Route path="comments/:comment_id" element={<CommentReply />} />
           <Route path="switchLanguage" element={<SwitchLanguage />} />
           <Route path="comments" element={<UserComments />} />
           <Route path="faq" element={<FAQHelp />} />
