@@ -11,21 +11,20 @@ export default function UserUpload() {
   const [isPremium, setIsPremium] = useState(false);
   const navigate = useNavigate();
 
-  // 查询会员状态
+
   useEffect(() => {
     document.title = 'Upload';
     const fetchSubscription = async () => {
       const accountId = localStorage.getItem('accountId');
-      const token = localStorage.getItem('token');
       if (!accountId) return;
       try {
         const resp = await fetch(
-          `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`,{
+          method: 'GET',
+          }
         );
         if (resp.ok) {
           const data = await resp.json();
-          console.log('is_premium from API:', data.is_premium);
           setIsPremium(data.is_premium);
         }
       } catch (e) {
