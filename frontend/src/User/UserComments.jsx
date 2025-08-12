@@ -122,6 +122,10 @@ export default function UserComments() {
     return `${day}/${month}/${year}`;
   };
 
+  const handleDoubleClick = (commentId) => {
+    navigate(`/user/comments/${commentId}`);
+  };
+
   return (
     <main className="dashboard-content">
       <div className="comments-container">
@@ -137,7 +141,7 @@ export default function UserComments() {
         ) : (
           <>
             {comments.map((comment) => (
-              <div className="comment-item" key={comment.id}>
+              <div className="comment-item" key={comment.id} onDoubleClick={() => handleDoubleClick(comment.id)}>
                 <img src={userIcon} alt="User" className="comment-avatar" />
                 <div className="comment-content">
                   <strong>{comment.username}</strong>
