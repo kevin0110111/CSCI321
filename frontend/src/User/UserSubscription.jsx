@@ -49,11 +49,10 @@ export default function UserSubscription() {
       try {
         // Step 2: Refresh from backend API to ensure up-to-date
         const token = localStorage.getItem('authToken');  // Use stored token for auth
-        const tokenType = localStorage.getItem('tokenType') || 'Bearer'
         const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`, {
           method: 'GET',
           headers: { 
-            'Authorization': `${tokenType} ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
         });
         if (!response.ok) {
