@@ -1,6 +1,6 @@
 import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -110,12 +110,95 @@ export default function Login() {
     }
   };
 
-  // Handle Google login (placeholder for OAuth implementation)
-  const handleGoogleLogin = () => {
-    setError('Google login is not implemented yet');
-    // TODO: Implement Google OAuth
-    // This would typically redirect to Google OAuth endpoint
-    // window.location.href = '/api/auth/google';
+    // Google OAuth callback
+  const handleGoogleCredential = async (response) => {
+    const idToken = response.credential;
+    try {
+      const resp = await fetch("https://fyp-backend-a0i8.onrender.com/api/accounts/oauth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_token: idToken }),
+      });
+      const data = await resp.json();
+
+      if (resp.status === 201 && data.needs_profile_completion) {
+        navigate("/registerAccount", {
+          state: {
+            fromGoogle: true,
+            profile: {
+              email: data.email,
+              username: data.username,
+              name: data.name,
+              avatar_url: data.avatar_url
+            },
+            accountId: data.account_id
+          }
+        });
+        return;
+      }
+
+      if (resp.ok && data.account) {
+        localStorage.setItem("account", JSON.stringify(data.account));
+        localStorage.setItem("authToken", "authenticated");
+        localStorage.setItem("accountId", data.account.account_id);
+
+        if (data.account.role_id && data.account.role) {
+            localStorage.setItem('role', JSON.stringify(data.account.role));
+            const profileName = data.account.role.role_name.toLowerCase();
+
+            if (profileName === 'user' || profileName.includes('user')) {
+                navigate('/user/dashboard');
+                return;
+            } else if (profileName === 'agent' || profileName.includes('agent')) {
+                navigate('/agentComment');
+                return;
+            } else if (profileName === 'admin' || profileName.includes('admin')) {
+                navigate('/admin/view-accounts');
+                return;
+            }
+        }
+        navigate("/dashboard");
+        return;
+      }
+
+      setError(data.detail || data.message || "Google login failed");
+    } catch (err) {
+      console.error(err);
+      setError("Google login failed. Try again.");
+    }
+  };
+
+  // Load Google script on mount
+  useEffect(() => {
+    const clientId = (import.meta.env.VITE_GOOGLE_CLIENT_ID || '').trim();
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleCredential
+        });
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // Trigger Google One Tap manually on button click
+  const handleGoogleLoginClick = () => {
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      setError("Google login not available. Try again later.");
+    }
   };
 
   return (
@@ -166,7 +249,7 @@ export default function Login() {
         <button 
           type="button"
           className="google-btn"
-          onClick={handleGoogleLogin}
+          onClick={handleGoogleLoginClick}
           disabled={loading}
 >
           <span className="google-icon" aria-hidden="true">
