@@ -201,6 +201,12 @@
   height: 18px;
 }
 
+.google-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;       /* remove inline gap */
+}
+
 /* Login button: match spacing */
 .login-btn {
   margin-bottom: 1rem; /* before register link */
