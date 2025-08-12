@@ -24,6 +24,10 @@
   background-color: #ddd;
 }
 
+.comment-content {
+  width: 100%;
+}
+
 .comment-content p {
   margin: 0.25rem 0;
 }
