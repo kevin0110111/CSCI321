@@ -2,11 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
-from datetime import date
-
+from datetime import date, timedelta
+from typing import Optional
+from fastapi import Header
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse, SubscriptionStatusResponse
 from ..database import get_db
+from app.services.authToken import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, verify_access_token
+
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
@@ -19,6 +22,25 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
     message: str
     account: AccountResponse
+    access_token: str
+    token_type: str
+
+def get_current_user(
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db),
+):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing or invalid Authorization header")
+    token = authorization.split(" ", 1)[1]
+    payload = verify_access_token(token)
+    sub = payload.get("sub")
+    if not sub:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token missing subject")
+
+    user = crud.get_account(db, account_id=int(sub))
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return user
 
 @router.post("/login", response_model=LoginResponse)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
@@ -43,10 +65,19 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     
     # Get account with role information for better response
     account_with_role = crud.get_account_with_role(db, account_id=authenticated_account.account_id)
+
+    # generate token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    token = create_access_token(
+        data={"sub": str(account_with_role.account_id)},
+        expires_delta=access_token_expires
+    )
     
     return LoginResponse(
         message="Login successful",
-        account=account_with_role
+        account=account_with_role,
+        access_token=token,
+        token_type="Bearer"
     )
 
 @router.post("/", response_model=AccountResponse)
@@ -244,17 +275,18 @@ def update_password(
     )
 
 @router.get("/subscription-status", response_model=SubscriptionStatusResponse)
-def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
+def get_subscription_status(
+    account_id: int, 
+    db: Session = Depends(get_db), 
+    current_user = Depends(get_current_user)):
 
-    """
-    Get subscription status for a given account_id, with expiration check.
-    """
-    # Use existing CRUD method to get account
+    if int(account_id) != int(current_user.account_id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
+
     account = crud.get_account(db, account_id=account_id)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found")
 
-    # Check if subscription has expired and update if necessary
     if account.is_premium and account.subscription_expiry and account.subscription_expiry < date.today():
         account.is_premium = False
         db.commit()
