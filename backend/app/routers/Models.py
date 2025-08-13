@@ -143,7 +143,7 @@ async def delete_model(model_id: int, db: Session = Depends(get_db)):
     
     return {"message": "Model deleted successfully"}
 
-@router.post("/predict")
+@router.post("/active/predict")
 async def predict_model(
     file: UploadFile = File(...),
     task: str = Form(...),

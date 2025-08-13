@@ -141,7 +141,7 @@ export default function UserUpload() {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('task', 'detect');
-        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        const resp = await axios.post(`${BASE_API_URL}/active/predict`, formData);
         if (resp.data.result !== 'maize') {
           // 非maize，弹窗询问
           setPendingCountFile(file);
@@ -174,7 +174,7 @@ export default function UserUpload() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('task', 'count');
-      const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+      const resp = await axios.post(`${BASE_API_URL}/active/predict`, formData);
       setResults(prev => [...prev, { ...resp.data, previewUrl }]);
     } catch (e) {
       setResults(prev => [...prev, { error: 'Count failed', previewUrl }]);
@@ -199,7 +199,7 @@ export default function UserUpload() {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('task', 'disease');
-        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        const resp = await axios.post(`${BASE_API_URL}/active/predict`, formData);
         setResults(prev => [...prev, { ...resp.data, previewUrl: file.previewUrl }]);
       } catch (e) {
         setResults(prev => [...prev, { error: 'Disease detection failed', previewUrl: file.previewUrl }]);
