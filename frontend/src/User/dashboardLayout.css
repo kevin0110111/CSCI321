@@ -58,7 +58,7 @@ body {
     position: fixed;
     top: 80px;
     left: 0;
-    width: 200px;
+    width: 210px;
     height: calc(100vh - 80px);
     background-color: #e7f3f0;
     transform: translateX(-100%);
@@ -85,16 +85,13 @@ body {
 }
 
 .usersidebar ul li a {
-    color: #333; /* Darker text for better contrast */
+    color: #000000; /* Darker text for better contrast */
     font-size: 18px; /* Reduced for elegance */
     text-decoration: none;
     font-weight: 500; /* Slightly bolder for readability */
     display: flex; /* For aligning icons later */
     align-items: center;
-}
-
-.usersidebar ul li a:hover {
-    text-decoration: underline;
+    transition: background-color 0.5s ease, transform 0.8s ease 0.2s;
 }
 
 .sidebar-divider {
@@ -136,24 +133,86 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.2s ease;
 }
 
 .modal-box {
     background: white;
-    padding: 1.5rem 2rem;
-    border-radius: 10px;
+    padding: 1.8rem 2.2rem;
+    border-radius: 12px;
     text-align: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    animation: scaleUp 0.25s ease;
+    min-width: 300px;
+}
+
+.modal-box p {
+    font-size: 1.05rem;
+    color: #333;
+    margin-bottom: 1.2rem;
 }
 
 .modal-actions {
-    margin-top: 1rem;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .modal-actions button {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.2rem;
     cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.modal-actions button:first-child {
+    background-color: #4caf50;
+    color: white;
+}
+
+.modal-actions button:first-child:hover {
+    background-color: #45a049;
+}
+
+.modal-actions button:last-child {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.modal-actions button:last-child:hover {
+    background-color: #d5d5d5;
+}
+
+@keyframes fadeIn {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    to {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(2);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.logout-modal {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.modal-box {
+    animation: scaleUp 0.4s ease-out;
 }
 
 /* Responsive media query for mobile (screens < 768px) */
@@ -210,10 +269,11 @@ body {
 }
 
 .usersidebar ul li a:hover {
-    background-color: #d1e8e2; /* Light hover background matching theme */
+    background-color: #cae3da; /* Light hover background matching theme */
     border-radius: 4px; /* Rounded corners for softness */
-    padding: 10px; /* Inner padding for hover effect */
-    transition: background-color 0.2s ease; /* Smooth hover */
+    padding: 5px; /* Inner padding for hover effect */
+    transform: scale(1.2);
+    text-decoration: underline;
 }
 
 .usersidebar ul li a.active { /* Add 'active' class dynamically if needed (e.g., via NavLink) */

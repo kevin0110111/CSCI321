@@ -9,6 +9,7 @@ from app.services.supabase_storage import storage_service
 from app.database import SessionLocal
 from app.crud.Model import get_models
 from torchvision import transforms
+from ultralytics import YOLO
 
 class DetectModelManager:
     def __init__(self):
@@ -27,7 +28,8 @@ class DetectModelManager:
             count_path  = await self._resolve_active_model_path("count")
             disease_path = await self._resolve_active_model_path("disease")
             detect_path = await self._resolve_active_model_path("detect")
-            self._count_model   = self._load_full_pt(await self._download_to_cache(count_path))
+            count_local = await self._download_to_cache(count_path)
+            self._count_model = YOLO(count_local)
             self._disease_model = self._load_full_pt(await self._download_to_cache(disease_path))
             self._detect_model  = self._load_full_pt(await self._download_to_cache(detect_path))
             self._ready = True

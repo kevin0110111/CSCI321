@@ -69,12 +69,14 @@ export default function UserUpload() {
           const zipEntry = content.files[filename];
           // Only extract images (skip folders or unsupported files)
           if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(filename)) {
-            const blob = await zipEntry.async('blob');
-            const previewUrl = URL.createObjectURL(blob);
-            newPreviewFiles.push({
-              name: filename,
-              type: blob.type,
-              previewUrl,
+              const blob = await zipEntry.async('blob');
+              const fileObj = new File([blob], filename, { type: blob.type || 'image/jpeg' });
+              const previewUrl = URL.createObjectURL(fileObj);
+              newPreviewFiles.push({
+                file: fileObj,
+                name: filename,
+                type: fileObj.type,
+                previewUrl,
             });
           }
         }
@@ -82,6 +84,7 @@ export default function UserUpload() {
       // Handle single image files
       else if (file.type.startsWith('image/')) {
         newPreviewFiles.push({
+          file,
           name: file.name,
           type: file.type,
           previewUrl: URL.createObjectURL(file),
@@ -128,6 +131,7 @@ export default function UserUpload() {
   const handleRemove = (indexToRemove) => {
     const updatedFiles = files.filter((_, index) => index !== indexToRemove);
     setFiles(updatedFiles);
+    fileInputRef.current.value = null;
   };
 
   // Count按钮逻辑
@@ -141,9 +145,9 @@ export default function UserUpload() {
     for (const file of files) {
       try {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', file.file || file);
         formData.append('task', 'detect');
-        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData);
         if (resp.data.result !== 'maize') {
           // 非maize，弹窗询问
           setPendingCountFile(file);
@@ -174,9 +178,9 @@ export default function UserUpload() {
   const doCount = async (file, previewUrl) => {
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', file.file || file);
       formData.append('task', 'count');
-      const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+      const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData);
       setResults(prev => [...prev, { ...resp.data, previewUrl }]);
     } catch (e) {
       setResults(prev => [...prev, { error: t('countFailed'), previewUrl }]);
@@ -199,9 +203,9 @@ export default function UserUpload() {
     for (const file of files) {
       try {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', file.file || file);
         formData.append('task', 'disease');
-        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData);
         setResults(prev => [...prev, { ...resp.data, previewUrl: file.previewUrl }]);
       } catch (e) {
         setResults(prev => [...prev, { error: t('diseaseDetectionFailed'), previewUrl: file.previewUrl }]);

@@ -21,8 +21,6 @@ export default function DashboardLayout() {
     };
 
     const confirmLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('authToken');
         localStorage.removeItem('accountId');
         localStorage.removeItem('account');
         sessionStorage.clear();

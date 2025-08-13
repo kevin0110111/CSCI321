@@ -143,7 +143,7 @@ async def delete_model(model_id: int, db: Session = Depends(get_db)):
     
     return {"message": "Model deleted successfully"}
 
-@router.post("/predict")
+@router.post("/active/predict")
 async def predict_model(
     file: UploadFile = File(...),
     task: str = Form(...),
@@ -152,13 +152,16 @@ async def predict_model(
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     if task == "detect":
         input_tensor = model_manager._Resnet_preprocess(img)
+        categories = ["maize", "others"]
         model = model_manager._detect_model
         if model is None:
             return {"error": "Detection model is not loaded"}
         with torch.no_grad():
             output = model(input_tensor)
             pred = output.argmax(1).item()
-        return {"result": "maize" if pred == 1 else "others"}
+            pred_class = categories[pred] 
+        return {"result": f"{pred_class}"}
+    
     elif task == "disease":
         input_tensor = model_manager._Resnet_preprocess(img)
         categories = ["Blight", "Common_Rust","Gray_Leaf_Spot","Healthy"]
@@ -170,6 +173,7 @@ async def predict_model(
             pred = output.argmax(1).item()
             pred_class = categories[pred]
         return {"result": f"disease_{pred_class}"}
+    
     elif task == "count":
         model = model_manager._count_model  # 这里应是 ultralytics.YOLO 实例
         if model is None:
