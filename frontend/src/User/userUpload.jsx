@@ -117,9 +117,15 @@ export default function UserUpload() {
   }
 
   const handleReset = () => {
-    setFiles([])
-    setResults([])
-    fileInputRef.current.value = null
+    // reelease all preview URLs
+    files.forEach(file => {
+      if (file.previewUrl) {
+        URL.revokeObjectURL(file.previewUrl);
+      }
+    });
+    setFiles([]);
+    setResults([]);
+    fileInputRef.current.value = null;
   }
 
   const handleDragOver = (e) => {
@@ -133,9 +139,13 @@ export default function UserUpload() {
   }
 
   const handleRemove = (indexToRemove) => {
-    const updatedFiles = files.filter((_, index) => index !== indexToRemove)
-    setFiles(updatedFiles)
-    fileInputRef.current.value = null
+    // release the preview URL if it exists
+    if (files[indexToRemove].previewUrl) {
+      URL.revokeObjectURL(files[indexToRemove].previewUrl);
+    }
+    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
+    setFiles(updatedFiles);
+    fileInputRef.current.value = null;
   }
 
   // Count button logic
@@ -269,6 +279,17 @@ export default function UserUpload() {
       ? t('diseaseSuggestions.Healthy', { returnObjects: true })
       : t('diseaseSuggestions.Default', { returnObjects: true })
   }
+
+  useEffect(() => {
+    return () => {
+      // release all preview URLs when component unmounts
+      files.forEach(file => {
+        if (file.previewUrl) {
+          URL.revokeObjectURL(file.previewUrl);
+        }
+      });
+    };
+  }, [files]);
 
   return (
     <main className="user-upload-dashboard-content">
