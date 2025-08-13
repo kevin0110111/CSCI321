@@ -458,7 +458,7 @@ export default function UserUpload() {
               setShowImageModal(false);
             }}
           >
-            Back
+            {t("back") || "Back"}
           </button>
         </div>
       )}
