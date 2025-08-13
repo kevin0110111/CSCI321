@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from pydantic import BaseModel
-from datetime import date
-from datetime import date
+from pydantic import BaseModel, EmailStr
+from datetime import date, datetime, timedelta
 from .. import crud
 from app.schemas.Account import AccountCreate, AccountUpdate, AccountResponse, AccountWithProfileCreate, PasswordChangeRequest, PasswordResetRequest, PasswordResetResponse, SubscriptionStatusResponse
 from ..database import get_db
@@ -12,8 +11,15 @@ import secrets
 from fastapi.responses import JSONResponse
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
+import smtplib
+from email.mime.text import MIMEText
 
 WEB_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+WEB_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = os.getenv("SMTP_PORT", 587)
+SMTP_USERNAME = os.getenv("SMTP_USERNAME")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
@@ -29,6 +35,114 @@ class LoginResponse(BaseModel):
 
 class GoogleOAuthRequest(BaseModel):
     id_token: str
+
+# OTP storage (in-memory for simplicity, use database or Redis in production)
+otp_storage = {}  # {email: {"otp": str, "expires": datetime}}
+
+# OTP request model
+class OTPRequest(BaseModel):
+    email: EmailStr
+
+# OTP verification model
+class OTPVerifyRequest(BaseModel):
+    email: EmailStr
+    otp: str
+
+# Send email with OTP
+def send_otp_email(email: str, otp: str):
+    msg = MIMEText(f"Your OTP for password reset is: {otp}\nThis OTP is valid for 10 minutes.")
+    msg['Subject'] = 'Password Reset OTP'
+    msg['From'] = SMTP_USERNAME
+    msg['To'] = email
+
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.sendmail(SMTP_USERNAME, email, msg.as_string())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send OTP email: {str(e)}")
+
+# Validate password requirements
+def validate_password(password: str):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+    if not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one number"
+    if not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter"
+    if not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter"
+    if not any(c in "!@#$%^&*(),.?\":{}|<>" for c in password):
+        return False, "Password must contain at least one special character"
+    return True, ""
+
+@router.post("/send-otp")
+def send_otp(otp_request: OTPRequest, db: Session = Depends(get_db)):
+    email = otp_request.email
+    account = crud.get_account_by_email(db, email=email)
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+
+    # Generate 4-digit OTP
+    otp = ''.join([str(secrets.randbelow(10)) for _ in range(4)])
+    expires = datetime.utcnow() + timedelta(minutes=10)
+
+    # Store OTP
+    otp_storage[email] = {"otp": otp, "expires": expires}
+
+    # Send OTP via email
+    send_otp_email(email, otp)
+
+    return {"message": "OTP sent to your email"}
+
+@router.post("/verify-otp")
+def verify_otp(otp_verify: OTPVerifyRequest, db: Session = Depends(get_db)):
+    email = otp_verify.email
+    otp = otp_verify.otp
+
+    if email not in otp_storage:
+        raise HTTPException(status_code=400, detail="No OTP sent for this email")
+
+    stored_otp = otp_storage[email]
+    if stored_otp["expires"] < datetime.utcnow():
+        del otp_storage[email]
+        raise HTTPException(status_code=400, detail="OTP has expired")
+
+    if stored_otp["otp"] != otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+
+    # OTP is valid, keep it in storage until password reset
+    return {"message": "OTP verified successfully"}
+
+@router.post("/reset-password", response_model=PasswordResetResponse)
+def reset_password(reset_data: PasswordResetRequest, db: Session = Depends(get_db)):
+    """
+    Reset password using email after OTP verification.
+    """
+    email = reset_data.email
+    new_password = reset_data.new_password
+
+    # Check if OTP was verified
+    if email not in otp_storage:
+        raise HTTPException(status_code=400, detail="OTP verification required")
+
+    # Validate password requirements
+    is_valid, error_message = validate_password(new_password)
+    if not is_valid:
+        raise HTTPException(status_code=400, detail=error_message)
+
+    account = crud.reset_password_by_email(db, email=email, new_password=new_password)
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+
+    # Clear OTP after successful password reset
+    del otp_storage[email]
+
+    return PasswordResetResponse(
+        message="Password reset successfully",
+        success=True
+    )
 
 @router.get("/subscription-status", response_model=SubscriptionStatusResponse)
 def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
