@@ -64,12 +64,16 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             payload, sig_header, webhook_secret
         )
         
-        
+
         if event["type"] == "payment_intent.succeeded":
             payment_intent = event["data"]["object"]
             account_id = int(payment_intent["metadata"]["account_id"])
+            crud.update_account_premium_status(db, account_id=account_id, is_premium=True)
             
-            
+   
+        elif event["type"] == "checkout.session.completed":
+            session = event["data"]["object"]
+            account_id = int(session["metadata"]["account_id"])
             crud.update_account_premium_status(db, account_id=account_id, is_premium=True)
             
         return {"status": "success"}
