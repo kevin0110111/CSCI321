@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import accounts, profiles, roles, faqs, comments, bugreports, images, results, Models, suspendinfos
+from .routers import accounts, profiles, roles, faqs, comments, bugreports, images, results, Models, suspendinfos, payments
 from .database import engine
 from contextlib import asynccontextmanager
 from . import models
@@ -38,6 +38,7 @@ app.include_router(images.router, prefix="/api")
 app.include_router(results.router, prefix="/api")
 app.include_router(Models.router, prefix="/api")
 app.include_router(suspendinfos.router, prefix="/api")
+app.include_router(payments.router, prefix="/api")
 
 @app.get("/")
 def read_root():

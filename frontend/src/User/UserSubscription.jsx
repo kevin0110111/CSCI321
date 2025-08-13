@@ -1,80 +1,174 @@
 // UserSubscription.jsx
 import './userSubscription.css';
 import React, { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';  // Import Stripe
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';  // Stripe components
+import axios from 'axios'; 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');  // Replace with your Publishable Key
+const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
 
 export default function UserSubscription() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [daysRemaining, setDaysRemaining] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  
   useEffect(() => {
     document.title = 'Subscription Plan';
-  }, []);
-
-  const [showModal, setShowModal] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);  // Default to false
-  const [loading, setLoading] = useState(true);  // Loading state while fetching
-  const [currentAccountId, setCurrentAccountId] = useState(null);  // For API calls
-
-  useEffect(() => {
-    // Step 1: Get from localStorage (similar to UpdateAgentAccount.jsx)
-    const storedAccountString = localStorage.getItem('account');
-    const storedAccountId = localStorage.getItem('accountId');
-
-    if (storedAccountId) {
-      setCurrentAccountId(parseInt(storedAccountId, 10));
-    }
-
-    let storedIsPremium = false;
-    if (storedAccountString) {
-      try {
-        const storedAccount = JSON.parse(storedAccountString);
-        if (storedAccount && typeof storedAccount.is_premium === 'boolean') {
-          storedIsPremium = storedAccount.is_premium;
-        }
-      } catch (error) {
-        console.error('Failed to parse account from localStorage:', error);
-      }
-    }
-    setIsPremium(storedIsPremium);  // Set initial value from localStorage
-
-    if (!storedAccountString || !storedAccountId) {
-      // Handle not logged in (e.g., show alert or redirect)
-      alert('Please log in to view subscription.');
-      setLoading(false);
-      return;
-    }
-
-    const fetchSubscriptionStatus = async () => {
-      try {
-        // Step 2: Refresh from backend API to ensure up-to-date
-        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`, {
-          method: 'GET',
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch status');
-        }
-        const data = await response.json();
-        setIsPremium(data.is_premium);
-
-        // Optional: Update localStorage with latest status
-        const storedAccount = JSON.parse(storedAccountString);
-        storedAccount.is_premium = data.is_premium;
-        localStorage.setItem('account', JSON.stringify(storedAccount));
-      } catch (error) {
-        console.error('Error fetching subscription status:', error);
-        // Optional: Set to false on error
-      } finally {
-        setLoading(false);
-      }
-    };
+    
 
     fetchSubscriptionStatus();
   }, []);
 
-  if (loading) {
-    return <div>Loading subscription status...</div>;  // Show loader
+
+  const fetchSubscriptionStatus = async () => {
+    try {
+      setLoading(true);
+      const accountId = localStorage.getItem('accountId');
+      
+      const response = await axios.get(
+        `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`
+      );
+      
+      const newIsPremium = response.data.is_premium;
+      
+
+      localStorage.setItem('premiumStatus', newIsPremium);
+      
+
+      setIsPremium(newIsPremium);
+      if (response.data.subscription_expiry) {
+        setExpiryDate(response.data.subscription_expiry);
+        setDaysRemaining(response.data.days_remaining);
+      }
+    } catch (error) {
+      console.error('Load premiun status failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // payment modal component
+  function PaymentModal({ onClose, onSuccess }) {
+    const [error, setError] = useState(null);
+    const [processing, setProcessing] = useState(false);
+    const [name, setName] = useState(''); 
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      // authenticate user input
+      if (!name.trim()) {
+        setError('Please enter your name');
+        return;
+      }
+      
+      setProcessing(true);
+      
+      try {
+        const accountId = localStorage.getItem('accountId');
+        
+        // invoke Stripe API to create payment intent
+        const response = await axios.post(
+          `https://fyp-backend-a0i8.onrender.com/api/create-payment-intent?account_id=${accountId}`
+        );
+        
+        const { clientSecret } = response.data;
+        
+        // use Stripe.js to confirm the payment
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: { name: name } 
+          }
+        });
+        
+        if (error) {
+          setError(error.message);
+        } else if (paymentIntent.status === 'succeeded') {
+          onSuccess(); 
+        }
+      } catch (err) {
+        setError('Payment failed. Please try again.');
+        console.error(err);
+      } finally {
+        setProcessing(false);
+      }
+    };
+    
+    return (
+      <div className="payment-modal">
+        <div className="payment-content">
+          <h2>Complete Your Purchase</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your full name"
+                required
+                className="name-input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="card">Card Details</label>
+              <CardElement 
+                id="card"
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#424770',
+                      '::placeholder': {
+                        color: '#aab7c4',
+                      },
+                    },
+                    invalid: {
+                      color: '#9e2146',
+                    },
+                  }
+                }}
+              />
+            </div>
+            
+            {error && <div className="error-message">{error}</div>}
+            <button type="submit" disabled={processing || !stripe}>
+              {processing ? 'Processing...' : 'Pay Now'}
+            </button>
+          </form>
+          <button className="close-modal" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    );
   }
+
+  const handleUpgradeClick = async () => {
+    const accountId = localStorage.getItem('accountId');
+    
+    try {
+      //create a Stripe Checkout session
+      const response = await axios.post(
+        `https://fyp-backend-a0i8.onrender.com/api/create-checkout-session?account_id=${accountId}`
+      );
+      
+      const { sessionId } = response.data;
+      
+      // redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+      
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
+      }
+    } catch (err) {
+      console.error('Error creating checkout session:', err);
+    }
+  };
 
   return (
     <main className="dashboard-content">
@@ -85,9 +179,9 @@ export default function UserSubscription() {
             <h3>FREE</h3>
             <p className="price">$0<span>/month</span></p>
             <ul>
-              <li><span style={{ color: 'green' }}>✓</span> Basic Tassel Count</li>
-              <li><span style={{ color: 'red' }}>x</span> Disease detection</li>
-              <li><span style={{ color: 'red' }}>x</span> Multiple images/ZIP upload</li>
+              <li><span style={{ color: 'green' }}>✓</span> Basic Count</li>
+              <li><span style={{ color: 'red' }}>x</span> ZIP Upload</li>
+              <li><span style={{ color: 'red' }}>x</span> Multiple images Upload</li>
             </ul>
             <div className="button-group">
               {!isPremium && (
@@ -101,81 +195,51 @@ export default function UserSubscription() {
           <div className="plan-card premium">
             <h3>PREMIUM</h3>
             <p className="price">$20<span>/month</span></p>
+            {isPremium && daysRemaining && (
+              <div className="subscription-status">
+                <p style={{ color: '#4CAF50', fontWeight: 'bold' }}>
+                  {daysRemaining} days remaining
+                </p>
+                <p style={{ fontSize: '0.9em', color: '#555' }}>
+                  Expires: {new Date(expiryDate).toLocaleDateString()}
+                </p>
+              </div>
+            )}
             <ul>
               <li><span style={{ color: 'green' }}>✓</span> All features</li>
               <li><span style={{ color: 'green' }}>✓</span> Disease detection</li>
-              <li><span style={{ color: 'green' }}>✓</span> Multiple images/ZIP upload</li>
             </ul>
             <div className="button-group">
               {isPremium ? (
                 <button className="current-plan" disabled>Current Plan</button>
               ) : (
-                <button className="upgrade-btn" onClick={() => setShowModal(true)}>Upgrade</button>
+                <button className="upgrade-btn" onClick={handleUpgradeClick}>Upgrade</button>
               )}
             </div>
           </div>
         </div>
-
-        {showModal && (
-          <Elements stripe={stripePromise}>  {/* Wrap modal with Elements */}
-            <PaymentModal onClose={() => setShowModal(false)} />
-          </Elements>
-        )}
-
+        
         <p className="payment-note">Secure payment. Cancel at the end of the month.</p>
       </div>
+
+      {showModal && (
+        <Elements stripe={stripePromise}>
+          <PaymentModal 
+            onClose={() => setShowModal(false)} 
+            onSuccess={() => {
+            
+              alert("Payment successful! Your premium membership is now active.");
+              
+              
+              setIsPremium(true);
+              setShowModal(false);
+              
+              
+              window.location.reload();
+            }} 
+          />
+        </Elements>
+      )}
     </main>
-  );
-}
-
-// New component: Payment Modal
-function PaymentModal({ onClose }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [error, setError] = useState(null);
-  const [processing, setProcessing] = useState(false);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setProcessing(true);
-
-    // Fetch client_secret from backend (payment intent)
-    const response = await fetch('/create-payment-intent', {  // Replace with your backend API
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ priceId: 'Your Premium Price ID' }),  // Send price ID
-    });
-    const { clientSecret } = await response.json();
-
-    const { error } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: { name: 'User Name' },  // Can be obtained from form
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert('Payment successful! Subscription activated.');
-      onClose();
-    }
-    setProcessing(false);
-  };
-
-  return (
-    <div className="payment-modal">
-      <div className="payment-box">
-        <h3>Pay for Premium</h3>
-        <form onSubmit={handleSubmit}>
-          <CardElement />  {/* Stripe card input element */}
-          {error && <div>{error}</div>}
-          <button className="confirm-btn" disabled={processing}>
-            {processing ? 'Processing...' : 'Confirm Payment'}
-          </button>
-        </form>
-        <button className="close-btn" onClick={onClose}>Close</button>
-      </div>
-    </div>
   );
 }
