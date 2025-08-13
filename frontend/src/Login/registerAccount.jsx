@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './registerAccount.css';
 import calendar from '../assets/calendar.svg';
 import DatePicker from 'react-datepicker';
@@ -10,8 +10,6 @@ export default function RegisterAccount() {
   const [responseBox, setResponseBox] = useState({ show: false, message: '' });
   const [showDOBPicker, setShowDOBPicker] = useState(false);
   const [step, setStep] = useState(1);
-  const location = useLocation();
-  const [oauthFlow, setOauthFlow] = useState({ fromGoogle: false, accountId: null });
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -25,20 +23,6 @@ export default function RegisterAccount() {
     institution: '',
     reason: ''
   });
-
-  useEffect(() => {
-    if (location.state?.fromGoogle) {
-      const { profile, accountId } = location.state;
-      setFormData((prev) => ({
-        ...prev,
-        email: profile.email || "",
-        username: profile.username || "",
-        name: profile.name || ""
-      }));
-      setStep(2);
-      setOauthFlow({ fromGoogle: true, accountId });
-    }
-  }, [location]);
 
   const [passwordRequirements, setPasswordRequirements] = useState({
     length: false,
@@ -90,40 +74,8 @@ export default function RegisterAccount() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formattedDob = formData.dob;
-
-    if (oauthFlow.fromGoogle) {
-      const updatePayload = {
-        name: formData.name,
-        dob: formattedDob,
-        job: formData.job,
-        country: formData.country,
-        city: formData.city,
-        institution: formData.institution,
-        reason_foruse: formData.reason
-      };
-
-      const resp = await fetch(
-        `https://fyp-backend-a0i8.onrender.com/api/accounts/${oauthFlow.accountId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatePayload)
-        }
-      );
-
-      if (resp.ok) {
-        await fetch(
-          `https://fyp-backend-a0i8.onrender.com/api/accounts/${oauthFlow.accountId}/assign-role/2`,
-          { method: "PUT" }
-        );
-        setResponseBox({ show: true, message: "Registration successful and role assigned!" });
-      } else {
-        const err = await resp.json();
-        setResponseBox({ show: true, message: `Failed: ${err.detail || err.message}` });
-      }
-      return;
-    }
 
     const payload = {
       username: formData.username,
