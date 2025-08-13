@@ -54,7 +54,6 @@ async def create_checkout_session(account_id: int, db: Session = Depends(get_db)
 
 @router.post("/webhook")
 async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
-    """处理Stripe的webhook回调"""
     payload = await request.body()
     sig_header = request.headers.get("stripe-signature")
     webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")

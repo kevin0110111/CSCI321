@@ -198,13 +198,13 @@
   border: none;
 }
 
-/* 错误消息 */
+
 .error-message {
   color: #dc3545;
   font-size: 0.9rem;
 }
 
-/* 表单组样式 */
+
 .form-group {
   margin-bottom: 15px;
 }
@@ -216,7 +216,7 @@
   color: #444;
 }
 
-/* 姓名输入框样式 */
+
 .name-input {
   width: 100%;
   padding: 10px;
@@ -226,7 +226,7 @@
   margin-bottom: 15px;
 }
 
-/* 支付表单内容样式 */
+
 .payment-content form {
   display: flex;
   flex-direction: column;
@@ -234,7 +234,7 @@
   margin: 15px 0;
 }
 
-/* 支付按钮样式 */
+
 .payment-content button[type="submit"] {
   background-color: #28a745;
   color: white;
@@ -250,7 +250,7 @@
   background-color: #218838;
 }
 
-/* 取消按钮样式 */
+
 .payment-content .close-modal {
   width: 100%;
   padding: 10px;

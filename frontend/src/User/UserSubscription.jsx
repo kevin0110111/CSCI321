@@ -32,17 +32,15 @@ export default function UserSubscription() {
       );
       
       const newIsPremium = response.data.is_premium;
-      setIsPremium(newIsPremium);
       
 
+      localStorage.setItem('premiumStatus', newIsPremium);
+      
+
+      setIsPremium(newIsPremium);
       if (response.data.subscription_expiry) {
         setExpiryDate(response.data.subscription_expiry);
         setDaysRemaining(response.data.days_remaining);
-      }
-      
-
-      if (!isPremium && newIsPremium) {
-        alert("Payment successful! Your premium membership is now active.");
       }
     } catch (error) {
       console.error('Load premiun status failed:', error);
@@ -181,8 +179,9 @@ export default function UserSubscription() {
             <h3>FREE</h3>
             <p className="price">$0<span>/month</span></p>
             <ul>
-              <li><span style={{ color: 'green' }}>✓</span> Basic quota</li>
-              <li><span style={{ color: 'red' }}>x</span> No re-detect</li>
+              <li><span style={{ color: 'green' }}>✓</span> Basic Count</li>
+              <li><span style={{ color: 'red' }}>x</span> ZIP Upload</li>
+              <li><span style={{ color: 'red' }}>x</span> Multiple images Upload</li>
             </ul>
             <div className="button-group">
               {!isPremium && (
@@ -208,8 +207,7 @@ export default function UserSubscription() {
             )}
             <ul>
               <li><span style={{ color: 'green' }}>✓</span> All features</li>
-              <li><span style={{ color: 'green' }}>✓</span> Re-detect</li>
-              <li><span style={{ color: 'green' }}>✓</span> Export results</li>
+              <li><span style={{ color: 'green' }}>✓</span> Disease detection</li>
             </ul>
             <div className="button-group">
               {isPremium ? (
@@ -221,7 +219,7 @@ export default function UserSubscription() {
           </div>
         </div>
         
-        <p className="payment-note">Secure payment. Cancel anytime.</p>
+        <p className="payment-note">Secure payment. Cancel at the end of the month.</p>
       </div>
 
       {showModal && (
