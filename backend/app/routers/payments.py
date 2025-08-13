@@ -45,8 +45,8 @@ async def create_checkout_session(account_id: int, db: Session = Depends(get_db)
                 'account_id': str(account_id)
             },
             mode='payment',
-            success_url='https://csci321.onrender.com/user/subscription?success=true',
-            cancel_url='https://csci321.onrender.com/user/subscription?canceled=true',
+            success_url='https://csci321.onrender.com/user/subscription',  
+            cancel_url='https://csci321.onrender.com/user/subscription',  
         )
         return {"sessionId": session.id}
     except Exception as e:

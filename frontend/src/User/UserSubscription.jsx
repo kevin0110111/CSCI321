@@ -3,7 +3,7 @@ import './userSubscription.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import { loadStripe } from '@stripe/stripe-js';
-
+import { Elements, CardElement } from '@stripe/react-stripe-js';
 
 const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
 
@@ -15,42 +15,42 @@ export default function UserSubscription() {
   const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
-
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.get('success') === 'true') {
-      
-      alert("Payment successful! Your premium membership is now active.");
-      
-      fetchSubscriptionStatus();
-      
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    
     document.title = 'Subscription Plan';
     
-    // subscription status check
-    const fetchSubscriptionStatus = async () => {
-      try {
-        const accountId = localStorage.getItem('accountId');
-        const response = await axios.get(
-          `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`
-        );
-        
-        setIsPremium(response.data.is_premium);
-        if (response.data.subscription_expiry) {
-          setExpiryDate(response.data.subscription_expiry);
-          setDaysRemaining(response.data.days_remaining);
-        }
-      } catch (error) {
-        console.error('Error fetching subscription status:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
+
     fetchSubscriptionStatus();
   }, []);
 
+
+  const fetchSubscriptionStatus = async () => {
+    try {
+      setLoading(true);
+      const accountId = localStorage.getItem('accountId');
+      
+      const response = await axios.get(
+        `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`
+      );
+      
+      const newIsPremium = response.data.is_premium;
+      setIsPremium(newIsPremium);
+      
+
+      if (response.data.subscription_expiry) {
+        setExpiryDate(response.data.subscription_expiry);
+        setDaysRemaining(response.data.days_remaining);
+      }
+      
+
+      if (!isPremium && newIsPremium) {
+        alert("Payment successful! Your premium membership is now active.");
+      }
+    } catch (error) {
+      console.error('Load premiun status failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   // payment modal component
   function PaymentModal({ onClose, onSuccess }) {
     const [error, setError] = useState(null);
