@@ -1,16 +1,22 @@
 import { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 import './userUpload.css';
 import uploadIcon from '../assets/upload.png'; // Upload icon
 import JSZip from 'jszip'; // For extracting zip files
 import { useNavigate } from 'react-router-dom';
+const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';
 
 export default function UserUpload() {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showMaizeConfirm, setShowMaizeConfirm] = useState(false);
+  const [pendingCountFile, setPendingCountFile] = useState(null);
+  const [showDiseaseTip, setShowDiseaseTip] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     document.title = 'Upload';
@@ -122,6 +128,86 @@ export default function UserUpload() {
     setFiles(updatedFiles);
   };
 
+  // Count按钮逻辑
+  const handleCount = async () => {
+    if (files.length === 0) {
+      alert('Please upload an image first');
+      return;
+    }
+    setLoading(true);
+    setResults([]); // 清空旧结果
+    for (const file of files) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('task', 'detect');
+        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        if (resp.data.result !== 'maize') {
+          // 非maize，弹窗询问
+          setPendingCountFile(file);
+          setShowMaizeConfirm(true);
+          setLoading(false);
+          return; // 遇到非maize就停止，等用户确认
+        }
+        await doCount(file, file.previewUrl);
+      } catch (e) {
+        setResults(prev => [...prev, { error: 'Detection failed', previewUrl: file.previewUrl }]);
+      }
+    }
+    setLoading(false);
+  };
+
+  // 用户确认后再count
+  const handleMaizeConfirm = async (goOn) => {
+    setShowMaizeConfirm(false);
+    if (goOn && pendingCountFile) {
+      setLoading(true);
+      await doCount(pendingCountFile);
+      setLoading(false);
+    }
+    setPendingCountFile(null);
+  };
+
+  // 实际count模型调用
+  const doCount = async (file, previewUrl) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('task', 'count');
+      const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+      setResults(prev => [...prev, { ...resp.data, previewUrl }]);
+    } catch (e) {
+      setResults(prev => [...prev, { error: 'Count failed', previewUrl }]);
+    }
+  };
+
+  // Disease按钮逻辑
+  const handleDisease = () => {
+    if (files.length === 0) {
+      alert('please upload an image first');
+      return;
+    }
+    setShowDiseaseTip(true);
+  };
+
+  const doDisease = async () => {
+    setShowDiseaseTip(false);
+    setLoading(true);
+    setResults([]); // 清空旧结果
+    for (const file of files) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('task', 'disease');
+        const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
+        setResults(prev => [...prev, { ...resp.data, previewUrl: file.previewUrl }]);
+      } catch (e) {
+        setResults(prev => [...prev, { error: 'Disease detection failed', previewUrl: file.previewUrl }]);
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <main className="dashboard-content">
       <div className="upload-container">
@@ -185,32 +271,11 @@ export default function UserUpload() {
         {/* Action buttons */}
         <div className="button-group">
           <button className="reset-btn" onClick={handleReset}>Reset</button>
-
-          <button
-            className="submit-btn"
-            onClick={() => {
-              if (files.length === 0) {
-                alert('Please upload at least one image before counting.');
-                return;
-              }
-              alert('Count requested.');
-            }}
-          >
-            Count
+          <button className="submit-btn" onClick={handleCount} disabled={loading}>
+            {loading ? 'Counting...' : 'Count'}
           </button>
-
-          <button
-            className="premium-btn"
-            disabled={!isPremium}
-            onClick={() => {
-              if (files.length === 0) {
-                alert('Please upload at least one image before checking for disease.');
-                return;
-              }
-              alert('Disease check requested.');
-            }}
-          >
-            Check Disease (Premium)
+          <button className="premium-btn" disabled={!isPremium || loading} onClick={handleDisease}>
+            {loading ? 'Checking...' : 'Check Disease (Premium)'}
           </button>
         </div>
         {!isPremium && (
@@ -219,6 +284,48 @@ export default function UserUpload() {
           </div>
         )}
       </div>
+
+      {/* maize确认弹窗 */}
+      {showMaizeConfirm && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>This seems like not a maize, are you sure you want to continue?</p>
+            <button onClick={() => handleMaizeConfirm(true)}>Continue Detection</button>
+            <button onClick={() => handleMaizeConfirm(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* disease提示弹窗 */}
+      {showDiseaseTip && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>for best use please use single leaf</p>
+            <button onClick={doDisease}>I acknowledge, continue detection</button>
+          </div>
+        </div>
+      )}
+
+      {/* 结果展示 */}
+      {results.length > 0 && (
+        <div className="result-area">
+          <h3>Results</h3>
+          {results.map((res, idx) => (
+            <div key={idx} className="result-item">
+              <div style={{display: 'flex', alignItems: 'center', gap: 16}}>
+                <img src={res.previewUrl} alt="Uploaded" style={{maxWidth: 120, borderRadius: 8}} />
+                {res.image_base64 ? (
+                  <img src={`data:image/jpeg;base64,${res.image_base64}`} alt="Result" style={{maxWidth: 200, borderRadius: 8}} />
+                ) : null}
+                <div>
+                  {res.result && <div><b>Result:</b> {res.result}</div>}
+                  {res.error && <div style={{color: 'red'}}>{res.error}</div>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

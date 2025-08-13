@@ -2,12 +2,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import accounts, profiles, roles, faqs, comments, bugreports, images, results, Models, suspendinfos
 from .database import engine
+from contextlib import asynccontextmanager
 from . import models
+from .services.model_manager import model_manager
+
 #DELETE　this　after
 # Create tables
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Your API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await model_manager.init_async()
+    yield
+
+
+app = FastAPI(title="Your API", version="1.0.0", lifespan=lifespan)
 
 # CORS middleware for frontend communication
 app.add_middleware(
@@ -38,4 +47,7 @@ def read_root():
 def health_check():
     return {"status": "healthy"}
 
+@app.get("/ready")
+def ready():
+    return {"ready": model_manager.is_ready()}
 

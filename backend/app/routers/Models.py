@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List, Optional
-
+import base64
+import io
+from PIL import Image
 from .. import crud
 from ..schemas.Model import ModelCreate, ModelUpdate, ModelResponse
 from ..database import get_db
 from ..services import storage_service
+from app.services.model_manager import model_manager
+import torch
 
 router = APIRouter(prefix="/models", tags=["models"])
 
@@ -138,3 +142,50 @@ async def delete_model(model_id: int, db: Session = Depends(get_db)):
     crud.delete_model(db, model_id=model_id)
     
     return {"message": "Model deleted successfully"}
+
+@router.post("/predict")
+async def predict_model(
+    file: UploadFile = File(...),
+    task: str = Form(...),
+):
+    image_bytes = await file.read()
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    if task == "detect":
+        input_tensor = model_manager._Resnet_preprocess(img)
+        model = model_manager._detect_model
+        if model is None:
+            return {"error": "Detection model is not loaded"}
+        with torch.no_grad():
+            output = model(input_tensor)
+            pred = output.argmax(1).item()
+        return {"result": "maize" if pred == 1 else "others"}
+    elif task == "disease":
+        input_tensor = model_manager._Resnet_preprocess(img)
+        categories = ["Blight", "Common_Rust","Gray_Leaf_Spot","Healthy"]
+        model = model_manager._disease_model
+        if model is None:
+            return {"error": "Disease model is not loaded"}
+        with torch.no_grad():
+            output = model(input_tensor)
+            pred = output.argmax(1).item()
+            pred_class = categories[pred]
+        return {"result": f"disease_{pred_class}"}
+    elif task == "count":
+        model = model_manager._count_model  # 这里应是 ultralytics.YOLO 实例
+        if model is None:
+            return {"error": "Count model is not loaded"}
+
+        results = model.predict(img, verbose=False)
+        det = results[0]
+        num = int(len(det.boxes) if det.boxes is not None else 0)
+        annotated_img = det.plot()  # numpy (BGR)
+        annotated_pil = Image.fromarray(annotated_img[..., ::-1])  # 转成 RGB
+        buf = io.BytesIO()
+        annotated_pil.save(buf, format="JPEG")
+        img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+        return {
+            "result": num,
+            "image_base64": img_base64  # 前端用 data:image/jpeg;base64,xxx 直接显示
+        }
+    else:
+        return {"error": "Unknown task type"}
