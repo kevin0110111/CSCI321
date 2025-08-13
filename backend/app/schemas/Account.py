@@ -84,6 +84,7 @@ class AccountWithProfileCreate(BaseModel):
 class SubscriptionStatusResponse(BaseModel):
     is_premium: bool
     subscription_expiry: Optional[date] = None
+    days_remaining: Optional[int] = None
 
 # Import ProfileResponse after AccountResponse is defined
 from .Profile import ProfileResponse, ProfileLanguageEnum

@@ -37,13 +37,23 @@ def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found")
 
-    if account.is_premium and account.subscription_expiry and account.subscription_expiry < date.today():
-        account.is_premium = False
-        db.commit()
-        db.refresh(account)
+    # 计算剩余天数
+    days_remaining = None
+    if account.is_premium and account.subscription_expiry:
+        if account.subscription_expiry < date.today():
+            account.is_premium = False
+            db.commit()
+            db.refresh(account)
+        else:
+            # 计算剩余天数
+            days_remaining = (account.subscription_expiry - date.today()).days
 
-    # Return only the premium status using the new response model
-    return SubscriptionStatusResponse(is_premium=account.is_premium)
+    # 返回带有订阅过期时间和剩余天数的响应
+    return SubscriptionStatusResponse(
+        is_premium=account.is_premium,
+        subscription_expiry=account.subscription_expiry if account.is_premium else None,
+        days_remaining=days_remaining
+    )
 
 @router.post("/login", response_model=LoginResponse)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):

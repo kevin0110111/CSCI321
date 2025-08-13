@@ -7,7 +7,7 @@ from .Account import (
     create_account, create_account_with_profile, update_account, delete_account,
     assign_role_to_account, remove_role_from_account, get_account_with_role,
     update_account_role, verify_password, authenticate_account, update_password,
-    reset_password_by_email, change_password
+    reset_password_by_email, change_password, update_account_premium_status
 )
 
 from .Role import (
@@ -55,7 +55,8 @@ __all__ = [
     "create_account", "create_account_with_profile", "update_account", "delete_account",
     "assign_role_to_account", "remove_role_from_account", "get_account_with_role",
     "update_account_role", "verify_password", "authenticate_account",
-    "update_password", "reset_password_by_email", "change_password",
+    "update_password", "reset_password_by_email", "change_password", 
+    "update_account_premium_status",
     "get_role", "get_role_by_name", "get_roles", "create_role", "update_role", "delete_role",
     "get_faq", "get_faqs", "create_faq", "update_faq", "delete_faq",
     "get_comment", "get_comments", "get_comments_by_user", "get_comments_by_agent",
