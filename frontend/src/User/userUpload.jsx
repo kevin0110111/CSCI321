@@ -212,6 +212,19 @@ export default function UserUpload() {
     setLoading(false);
   };
 
+  const handleSaveImage = (base64Data) => {
+    const link = document.createElement('a');
+    link.href = `data:image/jpeg;base64,${base64Data}`;
+    link.download = `maize_count_${Date.now()}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDeleteResult = (indexToRemove) => {
+    setResults(results.filter((_, idx) => idx !== indexToRemove));
+  };
+
   return (
     <main className="dashboard-content">
       <div className="upload-container">
@@ -310,24 +323,51 @@ export default function UserUpload() {
         </div>
       )}
 
-      {/* 结果展示 */}
+      {/* 优化后的结果展示区域 */}
       {results.length > 0 && (
-        <div className="result-area">
-          <h3>Results</h3>
-          {results.map((res, idx) => (
-            <div key={idx} className="result-item">
-              <div style={{display: 'flex', alignItems: 'center', gap: 16}}>
-                <img src={res.previewUrl} alt="Uploaded" style={{maxWidth: 120, borderRadius: 8}} />
-                {res.image_base64 ? (
-                  <img src={`data:image/jpeg;base64,${res.image_base64}`} alt="Result" style={{maxWidth: 200, borderRadius: 8}} />
-                ) : null}
-                <div>
-                  {res.result && <div><b>Result:</b> {res.result}</div>}
-                  {res.error && <div style={{color: 'red'}}>{res.error}</div>}
+        <div className="result-section">
+          <h3>Analysis Results</h3>
+          <div className="results-grid">
+            {results.map((res, idx) => (
+              <div key={idx} className="result-card">
+                {res.image_base64 && (
+                  <div className="analyzed-image">
+                    <img 
+                      src={`data:image/jpeg;base64,${res.image_base64}`} 
+                      alt="Analyzed" 
+                    />
+                  </div>
+                )}
+                
+                <div className="result-info">
+                  {res.result !== undefined && (
+                    <div className="result-value">
+                      <span className="count-box"> Tassel Count: {res.result}</span>
+                    </div>
+                  )}
+                  {res.error && (
+                    <div className="result-error">{res.error}</div>
+                  )}
+                  
+                  <div className="result-actions">
+                    <button 
+                      className="save-btn"
+                      onClick={() => handleSaveImage(res.image_base64)}
+                      disabled={!res.image_base64}
+                    >
+                      Save
+                    </button>
+                    <button 
+                      className="delete-btn"
+                      onClick={() => handleDeleteResult(idx)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </main>
