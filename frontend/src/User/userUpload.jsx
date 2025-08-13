@@ -341,8 +341,8 @@ export default function UserUpload() {
                   {res.error && <div style={{color: 'red'}}>{res.error}</div>}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
     </main>
