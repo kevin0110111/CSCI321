@@ -1,10 +1,12 @@
 // UpdateUserAccount.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function UpdateUserAccount() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     username: '',
@@ -74,7 +76,7 @@ export default function UpdateUserAccount() {
         }
       } catch (error) {
         console.error('Failed to parse account data from localStorage:', error);
-        setResponseBox({ show: true, message: 'Failed to load stored account data!' });
+        setResponseBox({ show: true, message: t('loadAccountFailed') });
       }
     }
     setIsLoading(false);
@@ -84,7 +86,7 @@ export default function UpdateUserAccount() {
     const fetchAccountAndProfile = async () => {
       if (!currentAccountId || !currentProfileId) {
         console.warn('Missing accountId or profileId, skipping fetch');
-        setFetchError('Missing account or profile ID. Please log in again.');
+        setFetchError(t('missingAccountOrProfileID'));
         return;
       }
 
@@ -122,14 +124,14 @@ export default function UpdateUserAccount() {
       } catch (error) {
         console.error('Error fetching data:', error);
         setFetchError(`Failed to fetch data: ${error.message}. Check network or authentication.`);
-        setResponseBox({ show: true, message: 'An error occurred while fetching data!' });
+        setResponseBox({ show: true, message: t('fetchDataFailedMessage') });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchAccountAndProfile();
-  }, [currentAccountId, currentProfileId]);
+  }, [currentAccountId, currentProfileId, t]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -148,18 +150,18 @@ export default function UpdateUserAccount() {
 
   const handleSave = async () => {
     if (!currentAccountId || !currentProfileId) {
-      setResponseBox({ show: true, message: 'Account ID not available, please login again!' });
+      setResponseBox({ show: true, message: t('accountIdNotAvailable') });
       return;
     }
 
 
     if (formData.newPassword) {
       if (!formData.currentPassword) {
-        setResponseBox({ show: true, message: 'Please enter your current password to change it.' });
+        setResponseBox({ show: true, message: t('enterCurrentPassword') });
         return;
       }
       if (!passwordValidations.length || !passwordValidations.number || !passwordValidations.uppercase || !passwordValidations.specialChar || !passwordValidations.lowercase) {
-        setResponseBox({ show: true, message: 'New password does not meet all requirements!' });
+        setResponseBox({ show: true, message: t('newPasswordRequirements') });
         return;
       }
 
@@ -190,12 +192,12 @@ export default function UpdateUserAccount() {
           });
           return;
         } else {
-          setResponseBox({ show: true, message: 'Password changed successfully!' });
+          setResponseBox({ show: true, message: t('passwordChangeSuccess') });
           setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '' }));
         }
       } catch (error) {
         console.error('Error changing password:', error);
-        setResponseBox({ show: true, message: 'An error occurred during password change. Please try again.' });
+        setResponseBox({ show: true, message: t('passwordChangeError') });
         return;
       }
     }
@@ -237,7 +239,7 @@ export default function UpdateUserAccount() {
       });
 
       if (accountResponse.ok && profileResponse.ok) {
-        setResponseBox({ show: true, message: 'Account and profile details updated successfully!' });
+        setResponseBox({ show: true, message: t('updateSuccess') });
         setIsEditing(false);
         const updatedAccount = JSON.parse(localStorage.getItem('account') || '{}');
         updatedAccount.username = formData.username;
@@ -255,7 +257,7 @@ export default function UpdateUserAccount() {
       }
     } catch (error) {
       console.error('Error updating data:', error);
-      setResponseBox({ show: true, message: 'An error occurred during update. Please try again.' });
+      setResponseBox({ show: true, message: t('updateError') });
     }
   };
 
@@ -285,54 +287,54 @@ export default function UpdateUserAccount() {
           boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
           width: '100%',
         }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Update Account</h2>
+          <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>{t('updateAccount')}</h2>
 
           {isLoading ? (
-            <p>Loading account data...</p>
+            <p>{t('loadingAccountData')}</p>
           ) : (
             <>
               {fetchError && <p style={{ color: 'red', marginBottom: '1rem' }}>{fetchError}</p>}
               <div className="form-field">
-                <label>User name</label>
+                <label>{t('usernameLabel')}</label>
                 <input type="text" name="username" value={formData.username} onChange={handleInputChange} readOnly={!isEditing} />
               </div>
 
               <div className="form-field">
-                <label>Name</label>
+                <label>{t('nameLabel')}</label>
                 <input type="text" name="name" value={formData.name} onChange={handleInputChange} readOnly={!isEditing} />
               </div>
 
               <div className="form-field">
-                <label>Date of birth</label>
+                <label>{t('dobLabel')}</label>
                 <input type="text" name="dob" placeholder="DD-MM-YYYY" value={formData.dob} onChange={handleInputChange} readOnly={!isEditing} />
               </div>
 
               <div className="form-field">
-                <label>Email</label>
+                <label>{t('emailLabel')}</label>
                 <input type="email" name="email" value={formData.email} onChange={handleInputChange} readOnly={!isEditing} />
               </div>
 
               <div className="form-field">
-                <label>Current password</label>
+                <label>{t('currentPasswordLabel')}</label>
                 <input type="password" name="currentPassword" value={formData.currentPassword} onChange={handleInputChange} readOnly={!isEditing} />
               </div>
 
               <div className="form-field">
-                <label>New password</label>
+                <label>{t('newPasswordLabel')}</label>
                 <input type="password" name="newPassword" value={formData.newPassword} onChange={handleInputChange} readOnly={!isEditing} />
                 <div className="password-requirements">
-                  <p className={passwordValidations.length ? 'valid' : 'invalid'}>• At least 8 characters</p>
-                  <p className={passwordValidations.number ? 'valid' : 'invalid'}>• One number</p>
-                  <p className={passwordValidations.uppercase ? 'valid' : 'invalid'}>• One uppercase letter</p>
-                  <p className={passwordValidations.specialChar ? 'valid' : 'invalid'}>• One special character</p>
-                  <p className={passwordValidations.lowercase ? 'valid' : 'invalid'}>• One lowercase letter</p>
+                  <p className={passwordValidations.length ? 'valid' : 'invalid'}>• {t('passwordLength')}</p>
+                  <p className={passwordValidations.number ? 'valid' : 'invalid'}>• {t('passwordNumber')}</p>
+                  <p className={passwordValidations.uppercase ? 'valid' : 'invalid'}>• {t('passwordUppercase')}</p>
+                  <p className={passwordValidations.specialChar ? 'valid' : 'invalid'}>• {t('passwordSpecialChar')}</p>
+                  <p className={passwordValidations.lowercase ? 'valid' : 'invalid'}>• {t('passwordLowercase')}</p>
                 </div>
               </div>
 
               <div className="form-actions" style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem' }}>
-                <button className="edit-btn" onClick={() => setIsEditing(true)} disabled={isEditing}>Edit</button>
-                <button className="save-btn" onClick={handleSave} disabled={!isEditing}>Save</button>
-                <button className="back-btn" onClick={() => navigate(-1)}>Back</button>
+                <button className="edit-btn" onClick={() => setIsEditing(true)} disabled={isEditing}>{t('edit')}</button>
+                <button className="save-btn" onClick={handleSave} disabled={!isEditing}>{t('save')}</button>
+                <button className="back-btn" onClick={() => navigate(-1)}>{t('back')}</button>
               </div>
             </>
           )}
@@ -340,7 +342,7 @@ export default function UpdateUserAccount() {
           {responseBox.show && (
             <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', padding: '1rem', border: '1px solid #ccc', zIndex: 1000 }}>
               <p>{responseBox.message}</p>
-              <button onClick={closeResponseBox}>OK</button>
+              <button onClick={closeResponseBox}>{t('ok')}</button>
             </div>
           )}
         </div>

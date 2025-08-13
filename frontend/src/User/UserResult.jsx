@@ -2,9 +2,11 @@
 import './UserResult.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function UserResultHistory() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
 
   const results = [
@@ -38,13 +40,13 @@ export default function UserResultHistory() {
   ];
 
     useEffect(() => {
-      document.title = 'View Result';
-    }, []);
+      document.title = t('viewResultTitle');;
+    }, [t]);
   
   return (
         <main className="dashboard-content">
           <div className="result-list-container">
-            <h2>My Results</h2>
+            <h2>{t('myResults')}</h2>
             {results.map((item) => (
               <div className="result-row" key={item.id}>
                 <img src={item.imageUrl} alt="Thumbnail" className="result-thumb" />
@@ -61,9 +63,9 @@ export default function UserResultHistory() {
                       })
                     }
                   >
-                    View
+                    {t('view')}
                   </button>
-                  <button className="user-delete-btn">Delete</button>
+                  <button className="user-delete-btn">{t('delete')}</button>
                 </div>
               </div>
             ))}

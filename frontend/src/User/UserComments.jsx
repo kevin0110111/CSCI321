@@ -3,6 +3,7 @@ import userIcon from '../assets/user.png';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 // Change this to your production endpoint if needed
 const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';
@@ -17,10 +18,11 @@ export default function UserComments() {
 
   const commentsPerPage = 3;
   const [hasMore, setHasMore] = useState(true);
+  const { t } = useTranslation();
 
   // On mount: fetch total count and load first page
   useEffect(() => {
-    document.title = 'View Comments';
+    document.title = t('viewCommentsTitle');
 
     let cancelled = false;
 
@@ -44,7 +46,7 @@ export default function UserComments() {
       } catch (err) {
         if (!cancelled) {
           console.error('Error fetching comment count:', err);
-          setError('Failed to load comments. Please try again later.');
+          setError(t('failedToLoadComments'));
         }
       } finally {
         if (!cancelled) setIsLoading(false);
@@ -57,7 +59,7 @@ export default function UserComments() {
       cancelled = true;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   // loadComments: fetch a single page and append (deduplicated)
   const loadComments = async (page = currentPage) => {
@@ -79,7 +81,7 @@ export default function UserComments() {
 
       const formatted = data.map((c) => ({
         id: c.comment_id,
-        username: c.user?.username || 'Anonymous',
+        username: c.user?.username || t('anonymous'),
         content: c.content,
         time: formatDate(c.created_at),
         reply_content: c.reply_content,
@@ -109,14 +111,14 @@ export default function UserComments() {
       setCurrentPage(page + 1);
     } catch (err) {
       console.error('Error fetching comments:', err);
-      setError('Failed to load comments. Please try again later.');
+      setError(t('failedToLoadComments'));
     } finally {
       setIsLoading(false);
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Unknown time';
+    if (!dateString) return t('unknownTime');
     const d = new Date(dateString);
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -131,15 +133,15 @@ export default function UserComments() {
   return (
     <main className="dashboard-content">
       <div className="comments-container">
-        <h2>User Comments</h2>
+        <h2>{t('userComments')}</h2>
         <hr />
 
         {isLoading && comments.length === 0 ? (
-          <p>Loading comments...</p>
+          <p>{t('loadingComments')}</p>
         ) : error ? (
           <p className="error" style={{ color: 'red' }}>{error}</p>
         ) : comments.length === 0 ? (
-          <p>No comments available.</p>
+          <p>{t('noCommentsAvailable')}</p>
         ) : (
           <>
             {comments.map((comment) => (
@@ -167,7 +169,7 @@ export default function UserComments() {
                           borderRadius: '4px',
                         }}
                       >
-                        <strong style={{ color: '#4CAF50' }}>Agent Reply:</strong>
+                        <strong style={{ color: '#4CAF50' }}>{t('agentReply')}:</strong>
                         <div>{comment.reply_content}</div>
                       </div>
                     )}
@@ -180,11 +182,11 @@ export default function UserComments() {
             <div className="load-more">
               {hasMore && (
                 <button onClick={() => loadComments(currentPage)} disabled={isLoading}>
-                  {isLoading ? 'Loading...' : 'Load More'}
+                  {isLoading ? t('loading') : t('loadMore')}
                 </button>
               )}
               <button onClick={() => navigate('/user/leaveComment')} className="add-comment">
-                Add Comment
+                {t('addComment')}
               </button>
             </div>
           </>

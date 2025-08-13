@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement } from '@stripe/react-stripe-js';
+import { useTranslation } from 'react-i18next';
 
 const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
 
@@ -13,13 +14,14 @@ export default function UserSubscription() {
   const [expiryDate, setExpiryDate] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const { t } = useTranslation();
   
   useEffect(() => {
-    document.title = 'Subscription Plan';
+    document.title = t('subscriptionPlan');
     
 
     fetchSubscriptionStatus();
-  }, []);
+  }, [t]);
 
 
   const fetchSubscriptionStatus = async () => {
@@ -43,7 +45,7 @@ export default function UserSubscription() {
         setDaysRemaining(response.data.days_remaining);
       }
     } catch (error) {
-      console.error('Load premiun status failed:', error);
+      console.error('Load premium status failed:', error);
     } finally {
       setLoading(false);
     }
@@ -60,7 +62,7 @@ export default function UserSubscription() {
       
       // authenticate user input
       if (!name.trim()) {
-        setError('Please enter your name');
+        setError(t('enterYourNameAlert'));
         return;
       }
       
@@ -90,7 +92,7 @@ export default function UserSubscription() {
           onSuccess(); 
         }
       } catch (err) {
-        setError('Payment failed. Please try again.');
+        setError(t('paymentFailedAlert'));
         console.error(err);
       } finally {
         setProcessing(false);
@@ -100,23 +102,23 @@ export default function UserSubscription() {
     return (
       <div className="payment-modal">
         <div className="payment-content">
-          <h2>Complete Your Purchase</h2>
+          <h2>{t('completeYourPurchase')}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">{t('fullNameLabel')}</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your full name"
+                placeholder={t('fullNamePlaceholder')}
                 required
                 className="name-input"
               />
             </div>
             
             <div className="form-group">
-              <label htmlFor="card">Card Details</label>
+              <label htmlFor="card">{t('cardDetailsLabel')}</label>
               <CardElement 
                 id="card"
                 options={{
@@ -138,7 +140,7 @@ export default function UserSubscription() {
             
             {error && <div className="error-message">{error}</div>}
             <button type="submit" disabled={processing || !stripe}>
-              {processing ? 'Processing...' : 'Pay Now'}
+              {processing ? t('processingPayment') : t('payNow')}
             </button>
           </form>
           <button className="close-modal" onClick={onClose}>Cancel</button>
@@ -173,53 +175,53 @@ export default function UserSubscription() {
   return (
     <main className="dashboard-content">
       <div className="subscription-container">
-        <h2>Choose Your Plan</h2>
+        <h2>{t('chooseYourPlan')}</h2>
         <div className="plan-options">
           <div className="plan-card">
-            <h3>FREE</h3>
-            <p className="price">$0<span>/month</span></p>
+            <h3>{t('freePlan')}</h3>
+            <p className="price">$0<span>{t('perMonth')}</span></p>
             <ul>
-              <li><span style={{ color: 'green' }}>✓</span> Basic Count</li>
-              <li><span style={{ color: 'red' }}>x</span> ZIP Upload</li>
-              <li><span style={{ color: 'red' }}>x</span> Multiple images Upload</li>
+              <li><span style={{ color: 'green' }}>✓</span> {t('basicCount')}</li>
+              <li><span style={{ color: 'red' }}>x</span> {t('zipUpload')}</li>
+              <li><span style={{ color: 'red' }}>x</span> {t('multiImageUpload')}</li>
             </ul>
             <div className="button-group">
               {!isPremium && (
                 <button className="current-plan" disabled>
-                  Current Plan
+                  {t('currentPlan')}
                 </button>
               )}
             </div>
           </div>
 
           <div className="plan-card premium">
-            <h3>PREMIUM</h3>
-            <p className="price">$20<span>/month</span></p>
+            <h3>{t('premiumPlan')}</h3>
+            <p className="price">$20<span>{t('perMonth')}</span></p>
             {isPremium && daysRemaining && (
               <div className="subscription-status">
                 <p style={{ color: '#4CAF50', fontWeight: 'bold' }}>
                   {daysRemaining} days remaining
                 </p>
                 <p style={{ fontSize: '0.9em', color: '#555' }}>
-                  Expires: {new Date(expiryDate).toLocaleDateString()}
+                  {t('expires')}: {new Date(expiryDate).toLocaleDateString()}
                 </p>
               </div>
             )}
             <ul>
-              <li><span style={{ color: 'green' }}>✓</span> All features</li>
-              <li><span style={{ color: 'green' }}>✓</span> Disease detection</li>
+              <li><span style={{ color: 'green' }}>✓</span> {t('allFeatures')}</li>
+              <li><span style={{ color: 'green' }}>✓</span> {t('diseaseDetection')}</li>
             </ul>
             <div className="button-group">
               {isPremium ? (
-                <button className="current-plan" disabled>Current Plan</button>
+                <button className="current-plan" disabled>{t('currentPlan')}</button>
               ) : (
-                <button className="upgrade-btn" onClick={handleUpgradeClick}>Upgrade</button>
+                <button className="upgrade-btn" onClick={handleUpgradeClick}>{t('upgrade')}</button>
               )}
             </div>
           </div>
         </div>
         
-        <p className="payment-note">Secure payment. Cancel at the end of the month.</p>
+        <p className="payment-note">{t('securePaymentNote')}</p>
       </div>
 
       {showModal && (
@@ -228,7 +230,7 @@ export default function UserSubscription() {
             onClose={() => setShowModal(false)} 
             onSuccess={() => {
             
-              alert("Payment successful! Your premium membership is now active.");
+              alert(t('paymentSuccessfulAlert'));
               
               
               setIsPremium(true);

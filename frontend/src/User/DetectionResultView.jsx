@@ -1,9 +1,11 @@
 // DetectionResultView.jsx
 import './UserResult.css';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function DetectionResultView() {
   const location = useLocation();
+  const { t } = useTranslation();
 
   const result = location.state || {
     id: 1,
@@ -18,13 +20,13 @@ export default function DetectionResultView() {
   return (
         <main className="dashboard-content">
           <div className="detection-container">
-            <h2 className="detection-title">Detection Result</h2>
+            <h2 className="detection-title">{t('detectionResult')}</h2>
             <div className="detection-grid">
               <img src={result.imageUrl} alt="Annotated" className="detection-image" />
               <div className="detection-info">
-                <p><strong>Total Maize Count:</strong> {result.count}</p>
-                <p><strong>Processing Time:</strong> {result.time}</p>
-                <p><strong>Image Size:</strong> {result.size}</p>
+                <p><strong>{t('totalMaizeCount')}:</strong> {result.count}</p>
+                <p><strong>{t('processingTime')}:</strong> {result.time}</p>
+                <p><strong>{t('imageSize')}:</strong> {result.size}</p>
               </div>
             </div>
             <div className="detection-buttons">
@@ -41,7 +43,7 @@ export default function DetectionResultView() {
               marginTop: '20px'
             }}
           >
-            Back
+            {t('back')}
           </button>
 
             </div>
