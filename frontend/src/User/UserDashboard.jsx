@@ -1,5 +1,6 @@
 import './UserDashboard.css';
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function ImageCarousel() {
     const images = [
@@ -67,12 +68,13 @@ export default function UserDashboard() {
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   // Replace with your actual OpenWeatherMap API key
   const API_KEY = '24988f54a3eb7d5e5a4b1a4240a6394e'; // Get free key from https://openweathermap.org/api
 
   useEffect(() => {
-    document.title = 'Dashboard';
+    document.title = t('dashboard');
 
     const fetchWeather = async () => {
       try {
@@ -130,7 +132,7 @@ export default function UserDashboard() {
 
         setLoading(false);
       } catch (err) {
-        setError(err.message || 'Failed to fetch weather data. Please try again later.');
+        setError(t('failedToLoadWeather'));
         setLoading(false);
       }
     };
@@ -142,7 +144,7 @@ export default function UserDashboard() {
     <div>
       <ImageCarousel />
 
-      <h2 className="welcome-text">Hint: Check the following 7 days weather!!</h2>
+      <h2 className="welcome-text">{t('hint')}</h2>
       <hr className="divider" />
 
       {/* Weather Forecast */}
@@ -157,13 +159,13 @@ export default function UserDashboard() {
           <div className="weather-row">
             <div className="weather-info-box">
               {loading ? (
-                <p>Loading weather...</p>
+                <p>{t('loadingWeather')}</p>
               ) : error ? (
                 <p className="error">{error}</p>
               ) : weatherData ? (
                 <div className="weather-main-info">
                   <div className="weather-left">
-                    <div className="weather-today-label">Today</div>
+                    <div className="weather-today-label">{t('today')}</div>
                     <img src={weatherData.icon} alt="Weather Icon" className="weather-icon-lg" />
                   </div>
                   <div className="weather-divider"></div>
@@ -171,8 +173,8 @@ export default function UserDashboard() {
                     <div className="temp-now">{weatherData.temp}°C</div>
                     <div className="desc">{weatherData.description}</div>
                     <div className="wind-humidity">
-                      Wind: {weatherData.wind} km/h<br />
-                      Humidity: {weatherData.humidity}%
+                      {t('wind')}: {weatherData.wind} km/h<br />
+                      {t('humidity')}: {weatherData.humidity}%
                     </div>
                   </div>
                 </div>
@@ -182,7 +184,7 @@ export default function UserDashboard() {
 
           <div className="weather-forecast-row">
             {loading ? (
-              <p>Loading forecast...</p>
+              <p>{t('loadingForecast')}</p>
             ) : error ? null : (
               forecastData.map((day, idx) => (
                 <div className="weather-forecast" key={idx}>
@@ -194,7 +196,7 @@ export default function UserDashboard() {
             )}
           </div>
 
-          <div className="last-updated">Last updated: {lastUpdated}</div>
+          <div className="last-updated">{t('lastUpdated')}: {lastUpdated}</div>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import './userUpload.css';
 import uploadIcon from '../assets/upload.png'; // Upload icon
 import JSZip from 'jszip'; // For extracting zip files
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';
 
 export default function UserUpload() {
@@ -17,9 +18,10 @@ export default function UserUpload() {
   const [pendingCountFile, setPendingCountFile] = useState(null);
   const [showDiseaseTip, setShowDiseaseTip] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    document.title = 'Upload';
+    document.title = t('uploadImage');
     const fetchSubscription = async () => {
       const accountId = localStorage.getItem('accountId');
       if (!accountId) return;
@@ -38,7 +40,7 @@ export default function UserUpload() {
       }
     };
     fetchSubscription();
-  }, []);
+  }, [t]);
 
   // Handle file selection or zip extraction
   const handleFileChange = async (event) => {
@@ -46,11 +48,11 @@ export default function UserUpload() {
 
     if (!isPremium) {
       if (selectedFiles.length > 1) {
-        alert('Free users can only upload one image.');
+        alert(t('freeUserMultiUploadAlert'));
         return;
       }
       if (selectedFiles.some(f => f.name.endsWith('.zip'))) {
-        alert('Only premium users can upload ZIP files.');
+        alert(t('zipUploadPremiumAlert')); // Use translation
         return;
       }
     }
@@ -131,7 +133,7 @@ export default function UserUpload() {
   // Count按钮逻辑
   const handleCount = async () => {
     if (files.length === 0) {
-      alert('Please upload an image first');
+      alert(t('uploadImageFirstAlert'));
       return;
     }
     setLoading(true);
@@ -151,7 +153,7 @@ export default function UserUpload() {
         }
         await doCount(file, file.previewUrl);
       } catch (e) {
-        setResults(prev => [...prev, { error: 'Detection failed', previewUrl: file.previewUrl }]);
+        setResults(prev => [...prev, { error: t('detectionFailed'), previewUrl: file.previewUrl }]);
       }
     }
     setLoading(false);
@@ -177,14 +179,14 @@ export default function UserUpload() {
       const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
       setResults(prev => [...prev, { ...resp.data, previewUrl }]);
     } catch (e) {
-      setResults(prev => [...prev, { error: 'Count failed', previewUrl }]);
+      setResults(prev => [...prev, { error: t('countFailed'), previewUrl }]);
     }
   };
 
   // Disease按钮逻辑
   const handleDisease = () => {
     if (files.length === 0) {
-      alert('please upload an image first');
+      alert(t('uploadImageFirstAlert'));
       return;
     }
     setShowDiseaseTip(true);
@@ -202,7 +204,7 @@ export default function UserUpload() {
         const resp = await axios.post(`${BASE_API_URL}/models/predict`, formData);
         setResults(prev => [...prev, { ...resp.data, previewUrl: file.previewUrl }]);
       } catch (e) {
-        setResults(prev => [...prev, { error: 'Disease detection failed', previewUrl: file.previewUrl }]);
+        setResults(prev => [...prev, { error: t('diseaseDetectionFailed'), previewUrl: file.previewUrl }]);
       }
     }
     setLoading(false);
@@ -211,7 +213,7 @@ export default function UserUpload() {
   return (
     <main className="dashboard-content">
       <div className="upload-container">
-        <h2>Upload Maize Images</h2>
+        <h2>{t('uploadMaizeImages')}</h2>
 
         {/* Upload box with drag/drop and preview area */}
         <div
@@ -231,7 +233,7 @@ export default function UserUpload() {
                       className="remove-btn"
                       onClick={() => handleRemove(index)}
                     >
-                      Remove
+                      {t('remove')}
                     </button>
                   </div>
                 </div>
@@ -242,7 +244,7 @@ export default function UserUpload() {
               <img src={uploadIcon} alt="Upload" />
               <p>
                 Drag and drop your image{isPremium ? '(s)/ZIP' : ''} or{' '}
-                <span className="browse" onClick={triggerFileSelect}>Browse</span>
+                <span className="browse" onClick={triggerFileSelect}>{t('browse')}</span>
               </p>
               <p>
                 Support {isPremium ? 'ZIP, ' : ''}png, jpg, jpeg
@@ -263,24 +265,24 @@ export default function UserUpload() {
         <div className="upload-info">
           {files.length > 0 && (
             <div className="image-type">
-              Image count: <span className="radio-selected">{files.length}</span>
+              {t('imageCount')}: <span className="radio-selected">{files.length}</span>
             </div>
           )}
         </div>
 
         {/* Action buttons */}
         <div className="button-group">
-          <button className="reset-btn" onClick={handleReset}>Reset</button>
+          <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
           <button className="submit-btn" onClick={handleCount} disabled={loading}>
-            {loading ? 'Counting...' : 'Count'}
+            {loading ? t('counting') : t('count')}
           </button>
           <button className="premium-btn" disabled={!isPremium || loading} onClick={handleDisease}>
-            {loading ? 'Checking...' : 'Check Disease (Premium)'}
+            {loading ? t('checking') : t('checkDisease')}
           </button>
         </div>
         {!isPremium && (
           <div style={{ color: '#e53935', marginTop: 8, fontSize: 14 }}>
-            Only premium users can upload ZIP/multiple images and use disease detection.
+            {t('premiumFeatureAlert')}
           </div>
         )}
       </div>
@@ -289,9 +291,9 @@ export default function UserUpload() {
       {showMaizeConfirm && (
         <div className="modal">
           <div className="modal-content">
-            <p>This seems like not a maize, are you sure you want to continue?</p>
-            <button onClick={() => handleMaizeConfirm(true)}>Continue Detection</button>
-            <button onClick={() => handleMaizeConfirm(false)}>Cancel</button>
+            <p>{t('notMaizeConfirm')}</p>
+            <button onClick={() => handleMaizeConfirm(true)}>{t('continueDetection')}</button>
+            <button onClick={() => handleMaizeConfirm(false)}>{t('cancel')}</button>
           </div>
         </div>
       )}
@@ -300,8 +302,8 @@ export default function UserUpload() {
       {showDiseaseTip && (
         <div className="modal">
           <div className="modal-content">
-            <p>for best use please use single leaf</p>
-            <button onClick={doDisease}>I acknowledge, continue detection</button>
+            <p>{t('singleLeafTip')}</p>
+            <button onClick={doDisease}>{t('continueDetectionAcknowledge')}</button>
           </div>
         </div>
       )}
@@ -309,7 +311,7 @@ export default function UserUpload() {
       {/* 结果展示 */}
       {results.length > 0 && (
         <div className="result-area">
-          <h3>Results</h3>
+          <h3>{t('results')}</h3>
           {results.map((res, idx) => (
             <div key={idx} className="result-item">
               <div style={{display: 'flex', alignItems: 'center', gap: 16}}>
@@ -318,7 +320,7 @@ export default function UserUpload() {
                   <img src={`data:image/jpeg;base64,${res.image_base64}`} alt="Result" style={{maxWidth: 200, borderRadius: 8}} />
                 ) : null}
                 <div>
-                  {res.result && <div><b>Result:</b> {res.result}</div>}
+                  {res.result && <div><b>{t('result')}:</b> {res.result}</div>}
                   {res.error && <div style={{color: 'red'}}>{res.error}</div>}
                 </div>
               </div>

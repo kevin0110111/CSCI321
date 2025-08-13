@@ -3,12 +3,14 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import avatar from '../assets/user.png';
 import './dashboardLayout.css';
-import { FaHome, FaUpload, FaHistory, FaComment, FaQuestionCircle, FaBug, FaCreditCard, FaSignOutAlt } from 'react-icons/fa'; 
+import { FaHome, FaUpload, FaHistory, FaComment, FaQuestionCircle, FaBug, FaCreditCard, FaSignOutAlt, FaLanguage } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 export default function DashboardLayout() {
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const { t } = useTranslation();
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -56,44 +58,49 @@ export default function DashboardLayout() {
                     <ul>
                         <li>
                             <Link to="/user/dashboard" onClick={() => setSidebarOpen(false)}>
-                                <FaHome style={{ marginRight: '10px', color: '#4CAF50' }} /> Dashboard
+                                <FaHome style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('dashboard')}
                             </Link>
                         </li>
                         <li>
                             <Link to="/user/upload" onClick={() => setSidebarOpen(false)}>
-                                <FaUpload style={{ marginRight: '10px', color: '#4CAF50' }} /> Upload Image
+                                <FaUpload style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('uploadImage')}
                             </Link>
                         </li>
                         <li>
                             <Link to="/user/result" onClick={() => setSidebarOpen(false)}>
-                                <FaHistory style={{ marginRight: '10px', color: '#4CAF50' }} /> Result History
+                                <FaHistory style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('resultHistory')}
                             </Link>
                         </li>
                         <hr className="sidebar-divider" />
                         <li>
                             <Link to="/user/comments" onClick={() => setSidebarOpen(false)}>
-                                <FaComment style={{ marginRight: '10px', color: '#4CAF50' }} /> Comments
+                                <FaComment style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('comment')}
                             </Link>
                         </li>
                         <li>
                             <Link to="/user/faq" onClick={() => setSidebarOpen(false)}>
-                                <FaQuestionCircle style={{ marginRight: '10px', color: '#4CAF50' }} /> FAQ / Help
+                                <FaQuestionCircle style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('faqHelp')}
                             </Link>
                         </li>
                         <li>
                             <Link to="/user/reportBug" onClick={() => setSidebarOpen(false)}>
-                                <FaBug style={{ marginRight: '10px', color: '#4CAF50' }} /> Report Bug
+                                <FaBug style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('reportBug')}
                             </Link>
                         </li>
                         <hr className="sidebar-divider" />
                         <li>
                             <Link to="/user/subscription" onClick={() => setSidebarOpen(false)}>
-                                <FaCreditCard style={{ marginRight: '10px', color: '#4CAF50' }} /> Subscription
+                                <FaCreditCard style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('subscription')}
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/user/switchLanguage" onClick={() => setSidebarOpen(false)}>
+                                <FaLanguage style={{ marginRight: '10px', color: '#4CAF50' }} /> {t('translate')}
                             </Link>
                         </li>
                         <li onClick={handleLogout}>
                             <a style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                                <FaSignOutAlt style={{ marginRight: '10px', color: '#FF5722' }} /> Log out
+                                <FaSignOutAlt style={{ marginRight: '10px', color: '#FF5722' }} /> {t('logout')}
                             </a>
                         </li>
                     </ul>
@@ -110,10 +117,10 @@ export default function DashboardLayout() {
                 {showLogoutModal && (
                     <div className="logout-modal">
                         <div className="modal-box">
-                            <p>Are you sure you want to log out?</p>
+                            <p>{t('logoutConfirm')}</p>
                             <div className="modal-actions">
-                                <button onClick={confirmLogout}>Yes</button>
-                                <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+                                <button onClick={confirmLogout}>{t('yes')}</button>
+                                <button onClick={() => setShowLogoutModal(false)}>{t('cancel')}</button>
                             </div>
                         </div>
                     </div>

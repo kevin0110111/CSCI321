@@ -1,6 +1,7 @@
 // FAQHelp.jsx
 import React, { useState, useEffect } from 'react';
 import './FAQHelp.css';
+import { useTranslation } from 'react-i18next';
 
 const BASE_API_URL = 'https://fyp-backend-a0i8.onrender.com/api';  
 
@@ -10,6 +11,7 @@ const FAQHelp = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   const fetchFAQs = async () => {
     setIsLoading(true);
@@ -34,7 +36,7 @@ const FAQHelp = () => {
       })));
     } catch (err) {
       console.error('Error fetching FAQs:', err);
-      setError('Failed to load FAQs. Please check if the backend server is running or try again later.');
+      setError(t('failedToLoadFAQs'));
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +44,7 @@ const FAQHelp = () => {
 
   useEffect(() => {
     fetchFAQs();
-  }, []);
+  }, [t]);
 
   const toggleFAQ = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
@@ -55,27 +57,27 @@ const FAQHelp = () => {
   return (
     <div className="faq-layout">
       <main className="faq-main">
-        <h1>FAQ / Help Document</h1>
+        <h1>{t('faqHelpDocument')}</h1>
         <input
           type="text"
-          placeholder="Search help topics..."
+          placeholder={t('searchPlaceholder')}
           className="faq-search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         {isLoading ? (
-          <p>Loading FAQs...</p>
+          <p>{t('loadingFAQs')}</p>
         ) : error ? (
           <div>
             <p className="error" style={{ color: 'red' }}>{error}</p>
             <button onClick={fetchFAQs} style={{ marginTop: '10px', padding: '8px 16px', background: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-              Retry
+              {t('retry')}
             </button>
           </div>
         ) : (
           <div className="faq-list">
             {filteredFaqs.length === 0 ? (
-              <p>No FAQs found matching your search. {faqs.length === 0 && 'No FAQs available in the database.'}</p>
+              <p>{t('noFaqsFound')}{' '} {faqs.length === 0 && t('noFaqsInDatabase')}</p>
             ) : (
               filteredFaqs.map((faq, index) => (
                 <div key={index} className={`faq-item ${activeIndex === index ? 'expanded' : ''}`}>
@@ -88,7 +90,7 @@ const FAQHelp = () => {
             )}
           </div>
         )}
-        <p className="faq-footer">Still need help? Contact support</p>
+        <p className="faq-footer">{t('stillNeedHelp')}</p>
       </main>
     </div>
   );
