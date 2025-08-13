@@ -21,7 +21,7 @@
 }
 
 .upload-box {
-  border: 3px dashed, rgba(0, 0, 0);
+  border: 3px dashed, rgba(0, 0, 0, 1);
   border-radius: 6px;
   padding: 1.5rem;
   min-height: 150px;

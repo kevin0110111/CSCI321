@@ -1,6 +1,7 @@
 import './ReportBug.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaBug } from 'react-icons/fa';
 
 export default function ReportBug() {
   const [title, setTitle] = useState('');
@@ -51,7 +52,9 @@ export default function ReportBug() {
   return (
     <main className="dashboard-content">
       <form className="bug-form" onSubmit={handleSubmit}>
-        <h2 className="bug-title">🐞 Report a Bug</h2>
+        <h2 className="bug-title">
+          <FaBug style={{ color: '#e53935', marginRight: 8 }} /> Report a Bug
+        </h2>
 
         <label>Bug Title</label>
         <input
