@@ -152,7 +152,7 @@ export default function UpdateUserAccount() {
       return;
     }
 
-    // 密码变更逻辑
+
     if (formData.newPassword) {
       if (!formData.currentPassword) {
         setResponseBox({ show: true, message: 'Please enter your current password to change it.' });
@@ -200,7 +200,7 @@ export default function UpdateUserAccount() {
       }
     }
 
-    // 更新 account 和 profile
+
     const accountUpdatePayload = {
       username: formData.username,
       email: formData.email,
@@ -214,7 +214,7 @@ export default function UpdateUserAccount() {
 
     const profileUpdatePayload = {
       name: formData.name,
-      dob: formattedDob || null, // 允许 null
+      dob: formattedDob || null, 
     };
 
     try {
@@ -239,7 +239,6 @@ export default function UpdateUserAccount() {
       if (accountResponse.ok && profileResponse.ok) {
         setResponseBox({ show: true, message: 'Account and profile details updated successfully!' });
         setIsEditing(false);
-        // 更新 localStorage 以保持一致
         const updatedAccount = JSON.parse(localStorage.getItem('account') || '{}');
         updatedAccount.username = formData.username;
         updatedAccount.email = formData.email;

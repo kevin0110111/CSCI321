@@ -154,7 +154,7 @@ export default function UserComments() {
                         {'☆'.repeat(5 - comment.rating)}
                       </span>
                     </div>
-                    <p>{comment.content}</p>
+                    <p style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{comment.content}</p>
                     <span className="comment-time">{comment.time}</span>
                     {comment.reply_content && (
                       <div
