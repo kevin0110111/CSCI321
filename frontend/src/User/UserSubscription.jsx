@@ -1,79 +1,101 @@
 // UserSubscription.jsx
 import './userSubscription.css';
 import React, { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';  // Import Stripe
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';  // Stripe components
+import axios from 'axios'; // 确保导入axios
+import { loadStripe } from '@stripe/stripe-js';
+import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');  // Replace with your Publishable Key
+// 使用您的Stripe公钥
+const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
 
 export default function UserSubscription() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [daysRemaining, setDaysRemaining] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  
   useEffect(() => {
     document.title = 'Subscription Plan';
-  }, []);
-
-  const [showModal, setShowModal] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);  // Default to false
-  const [loading, setLoading] = useState(true);  // Loading state while fetching
-  const [currentAccountId, setCurrentAccountId] = useState(null);  // For API calls
-
-  useEffect(() => {
-    // Step 1: Get from localStorage (similar to UpdateAgentAccount.jsx)
-    const storedAccountString = localStorage.getItem('account');
-    const storedAccountId = localStorage.getItem('accountId');
-
-    if (storedAccountId) {
-      setCurrentAccountId(parseInt(storedAccountId, 10));
-    }
-
-    let storedIsPremium = false;
-    if (storedAccountString) {
-      try {
-        const storedAccount = JSON.parse(storedAccountString);
-        if (storedAccount && typeof storedAccount.is_premium === 'boolean') {
-          storedIsPremium = storedAccount.is_premium;
-        }
-      } catch (error) {
-        console.error('Failed to parse account from localStorage:', error);
-      }
-    }
-    setIsPremium(storedIsPremium);  // Set initial value from localStorage
-
-    if (!storedAccountString || !storedAccountId) {
-      // Handle not logged in (e.g., show alert or redirect)
-      alert('Please log in to view subscription.');
-      setLoading(false);
-      return;
-    }
-
+    
+    // 获取订阅状态
     const fetchSubscriptionStatus = async () => {
       try {
-        // Step 2: Refresh from backend API to ensure up-to-date
-        const response = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${storedAccountId}`, {
-          method: 'GET',
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch status');
+        const accountId = localStorage.getItem('accountId');
+        const response = await axios.get(
+          `https://fyp-backend-a0i8.onrender.com/api/accounts/subscription-status?account_id=${accountId}`
+        );
+        
+        setIsPremium(response.data.is_premium);
+        if (response.data.subscription_expiry) {
+          setExpiryDate(response.data.subscription_expiry);
+          setDaysRemaining(response.data.days_remaining);
         }
-        const data = await response.json();
-        setIsPremium(data.is_premium);
-
-        // Optional: Update localStorage with latest status
-        const storedAccount = JSON.parse(storedAccountString);
-        storedAccount.is_premium = data.is_premium;
-        localStorage.setItem('account', JSON.stringify(storedAccount));
       } catch (error) {
         console.error('Error fetching subscription status:', error);
-        // Optional: Set to false on error
       } finally {
         setLoading(false);
       }
     };
-
+    
     fetchSubscriptionStatus();
   }, []);
 
-  if (loading) {
-    return <div>Loading subscription status...</div>;  // Show loader
+  // 支付模态框组件
+  function PaymentModal({ onClose, onSuccess }) {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [error, setError] = useState(null);
+    const [processing, setProcessing] = useState(false);
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setProcessing(true);
+      
+      try {
+        const accountId = localStorage.getItem('accountId');
+        
+        // 调用后端API获取client_secret
+        const response = await axios.post(
+          `https://fyp-backend-a0i8.onrender.com/api/create-payment-intent?account_id=${accountId}`
+        );
+        
+        const { clientSecret } = response.data;
+        
+        // 使用Stripe处理支付
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: { name: 'Premium User' }
+          }
+        });
+        
+        if (error) {
+          setError(error.message);
+        } else if (paymentIntent.status === 'succeeded') {
+          onSuccess();
+        }
+      } catch (err) {
+        setError('Payment failed. Please try again.');
+        console.error(err);
+      } finally {
+        setProcessing(false);
+      }
+    };
+    
+    return (
+      <div className="payment-modal">
+        <h2>Complete Your Purchase</h2>
+        <form onSubmit={handleSubmit}>
+          <CardElement />
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit" disabled={processing}>
+            {processing ? 'Processing...' : 'Pay Now'}
+          </button>
+        </form>
+        <button className="close-modal" onClick={onClose}>Close</button>
+      </div>
+    );
   }
 
   return (
@@ -85,9 +107,8 @@ export default function UserSubscription() {
             <h3>FREE</h3>
             <p className="price">$0<span>/month</span></p>
             <ul>
-              <li><span style={{ color: 'green' }}>✓</span> Basic Tassel Count</li>
-              <li><span style={{ color: 'red' }}>x</span> Disease detection</li>
-              <li><span style={{ color: 'red' }}>x</span> Multiple images/ZIP upload</li>
+              <li><span style={{ color: 'green' }}>✓</span> Basic quota</li>
+              <li><span style={{ color: 'red' }}>x</span> No re-detect</li>
             </ul>
             <div className="button-group">
               {!isPremium && (
@@ -101,10 +122,20 @@ export default function UserSubscription() {
           <div className="plan-card premium">
             <h3>PREMIUM</h3>
             <p className="price">$20<span>/month</span></p>
+            {isPremium && daysRemaining && (
+              <div className="subscription-status">
+                <p style={{ color: '#4CAF50', fontWeight: 'bold' }}>
+                  {daysRemaining} days remaining
+                </p>
+                <p style={{ fontSize: '0.9em', color: '#555' }}>
+                  Expires: {new Date(expiryDate).toLocaleDateString()}
+                </p>
+              </div>
+            )}
             <ul>
               <li><span style={{ color: 'green' }}>✓</span> All features</li>
-              <li><span style={{ color: 'green' }}>✓</span> Disease detection</li>
-              <li><span style={{ color: 'green' }}>✓</span> Multiple images/ZIP upload</li>
+              <li><span style={{ color: 'green' }}>✓</span> Re-detect</li>
+              <li><span style={{ color: 'green' }}>✓</span> Export results</li>
             </ul>
             <div className="button-group">
               {isPremium ? (
@@ -115,67 +146,22 @@ export default function UserSubscription() {
             </div>
           </div>
         </div>
-
-        {showModal && (
-          <Elements stripe={stripePromise}>  {/* Wrap modal with Elements */}
-            <PaymentModal onClose={() => setShowModal(false)} />
-          </Elements>
-        )}
-
-        <p className="payment-note">Secure payment. Cancel at the end of the month.</p>
+        
+        <p className="payment-note">Secure payment. Cancel anytime.</p>
       </div>
+
+      {showModal && (
+        <Elements stripe={stripePromise}>
+          <PaymentModal 
+            onClose={() => setShowModal(false)} 
+            onSuccess={() => {
+              setIsPremium(true);
+              fetchSubscriptionStatus();
+              setShowModal(false);
+            }} 
+          />
+        </Elements>
+      )}
     </main>
-  );
-}
-
-// New component: Payment Modal
-function PaymentModal({ onClose }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [error, setError] = useState(null);
-  const [processing, setProcessing] = useState(false);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setProcessing(true);
-
-    // Fetch client_secret from backend (payment intent)
-    const response = await fetch('/create-payment-intent', {  // Replace with your backend API
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ priceId: 'Your Premium Price ID' }),  // Send price ID
-    });
-    const { clientSecret } = await response.json();
-
-    const { error } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: { name: 'User Name' },  // Can be obtained from form
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert('Payment successful! Subscription activated.');
-      onClose();
-    }
-    setProcessing(false);
-  };
-
-  return (
-    <div className="payment-modal">
-      <div className="payment-box">
-        <h3>Pay for Premium</h3>
-        <form onSubmit={handleSubmit}>
-          <CardElement />  {/* Stripe card input element */}
-          {error && <div>{error}</div>}
-          <button className="confirm-btn" disabled={processing}>
-            {processing ? 'Processing...' : 'Confirm Payment'}
-          </button>
-        </form>
-        <button className="close-btn" onClick={onClose}>Close</button>
-      </div>
-    </div>
   );
 }

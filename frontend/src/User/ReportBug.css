@@ -1,6 +1,7 @@
 .bug-form {
   max-width: 600px;
   margin: 2rem auto;
+  margin-top: 150px;
   background: #fff;
   padding: 2rem;
   border-radius: 10px;
@@ -53,9 +54,60 @@
   background-color: #ddd;
 }
 
+.bug-actions button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+}
+
 .bug-success {
   margin-top: 1rem;
   color: green;
   text-align: center;
   font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+  .bug-form {
+    max-width: 100%;
+    margin: 1rem;
+    margin-top: 100px;
+    padding: 1.5rem;
+  }
+  
+  .bug-title {
+    font-size: 1.5rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .bug-form {
+    margin: 0.5rem;
+    margin-top: 80px;
+    padding: 1rem;
+  }
+  
+  .bug-title {
+    font-size: 1.3rem;
+  }
+  
+  .bug-form label {
+    margin-top: 0.75rem;
+  }
+  
+  .bug-form input[type="text"],
+  .bug-form textarea {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .bug-actions {
+    flex-direction: column;
+  }
+  
+  .bug-actions button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
 }
