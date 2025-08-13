@@ -3,7 +3,6 @@ import './userSubscription.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // 确保导入axios
 import { loadStripe } from '@stripe/stripe-js';
-import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // 使用您的Stripe公钥
 const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
@@ -43,13 +42,19 @@ export default function UserSubscription() {
 
   // 支付模态框组件
   function PaymentModal({ onClose, onSuccess }) {
-    const stripe = useStripe();
-    const elements = useElements();
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState(false);
+    const [name, setName] = useState(''); // 添加姓名状态
     
     const handleSubmit = async (e) => {
       e.preventDefault();
+      
+      // 基本验证
+      if (!name.trim()) {
+        setError('Please enter your name');
+        return;
+      }
+      
       setProcessing(true);
       
       try {
@@ -62,18 +67,18 @@ export default function UserSubscription() {
         
         const { clientSecret } = response.data;
         
-        // 使用Stripe处理支付
+        // 使用Stripe处理支付，使用用户输入的姓名
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
           payment_method: {
             card: elements.getElement(CardElement),
-            billing_details: { name: 'Premium User' }
+            billing_details: { name: name } // 使用输入的姓名
           }
         });
         
         if (error) {
           setError(error.message);
         } else if (paymentIntent.status === 'succeeded') {
-          onSuccess();
+          onSuccess(); // 成功后调用
         }
       } catch (err) {
         setError('Payment failed. Please try again.');
@@ -85,18 +90,77 @@ export default function UserSubscription() {
     
     return (
       <div className="payment-modal">
-        <h2>Complete Your Purchase</h2>
-        <form onSubmit={handleSubmit}>
-          <CardElement />
-          {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={processing}>
-            {processing ? 'Processing...' : 'Pay Now'}
-          </button>
-        </form>
-        <button className="close-modal" onClick={onClose}>Close</button>
+        <div className="payment-content">
+          <h2>Complete Your Purchase</h2>
+          <form onSubmit={handleSubmit}>
+            {/* 添加姓名输入框 */}
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your full name"
+                required
+                className="name-input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="card">Card Details</label>
+              <CardElement 
+                id="card"
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#424770',
+                      '::placeholder': {
+                        color: '#aab7c4',
+                      },
+                    },
+                    invalid: {
+                      color: '#9e2146',
+                    },
+                  }
+                }}
+              />
+            </div>
+            
+            {error && <div className="error-message">{error}</div>}
+            <button type="submit" disabled={processing || !stripe}>
+              {processing ? 'Processing...' : 'Pay Now'}
+            </button>
+          </form>
+          <button className="close-modal" onClick={onClose}>Cancel</button>
+        </div>
       </div>
     );
   }
+
+  const handleUpgradeClick = async () => {
+    const accountId = localStorage.getItem('accountId');
+    
+    try {
+      // 创建支付会话
+      const response = await axios.post(
+        `https://fyp-backend-a0i8.onrender.com/api/create-checkout-session?account_id=${accountId}`
+      );
+      
+      const { sessionId } = response.data;
+      
+      // 重定向到Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+      
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
+      }
+    } catch (err) {
+      console.error('Error creating checkout session:', err);
+    }
+  };
 
   return (
     <main className="dashboard-content">
@@ -141,7 +205,7 @@ export default function UserSubscription() {
               {isPremium ? (
                 <button className="current-plan" disabled>Current Plan</button>
               ) : (
-                <button className="upgrade-btn" onClick={() => setShowModal(true)}>Upgrade</button>
+                <button className="upgrade-btn" onClick={handleUpgradeClick}>Upgrade</button>
               )}
             </div>
           </div>
@@ -155,9 +219,15 @@ export default function UserSubscription() {
           <PaymentModal 
             onClose={() => setShowModal(false)} 
             onSuccess={() => {
+              // 显示成功消息
+              alert("Payment successful! Your premium membership is now active.");
+              
+              // 更新状态
               setIsPremium(true);
-              fetchSubscriptionStatus();
               setShowModal(false);
+              
+              // 刷新整个页面以确保获取最新状态
+              window.location.reload();
             }} 
           />
         </Elements>

@@ -27,6 +27,34 @@ async def create_payment_intent(account_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.post("/create-checkout-session")
+async def create_checkout_session(account_id: int, db: Session = Depends(get_db)):
+    """创建Stripe Checkout会话"""
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': 'Premium Subscription',
+                        'description': 'One month premium access to Tassel AI',
+                    },
+                    'unit_amount': 2000,  # $20.00
+                },
+                'quantity': 1,
+            }],
+            metadata={
+                'account_id': str(account_id)
+            },
+            mode='payment',
+            success_url='https://your-frontend-url.com/subscription?success=true',
+            cancel_url='https://your-frontend-url.com/subscription?canceled=true',
+        )
+        return {"sessionId": session.id}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @router.post("/webhook")
 async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     """处理Stripe的webhook回调"""
