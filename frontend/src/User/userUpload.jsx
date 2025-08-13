@@ -4,7 +4,7 @@ import "./userUpload.css"
 import uploadIcon from '../assets/upload.png';
 import JSZip from "jszip" // For extracting zip files
 import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import { useTranslation, Trans } from "react-i18next"
 const BASE_API_URL = "https://fyp-backend-a0i8.onrender.com/api"
 
 export default function UserUpload() {
@@ -279,13 +279,19 @@ export default function UserUpload() {
           ) : (
             <>
               <img src={uploadIcon} alt="Upload" />
-              <p>
-                Drag and drop your image{isPremium ? "(s)/ZIP" : ""} or{" "}
-                <span className="user-upload-browse" onClick={triggerFileSelect}>
-                  {t("browse") || "Browse"}
-                </span>
-              </p>
-              <p>Support {isPremium ? "ZIP, " : ""}png, jpg, jpeg</p>
+                <p>
+                  {t("dragAndDrop", {
+                    isPremium: isPremium ? "(s)/ZIP" : "",
+                  })}{" "}
+                  <span className="user-upload-browse" onClick={triggerFileSelect}>
+                    {t("browse")}
+                  </span>
+                </p>
+                <p>
+                  {t("supportedFormats", {
+                    formats: isPremium ? "ZIP, png, jpg, jpeg" : "png, jpg, jpeg"
+                  })}
+                </p>
             </>
           )}
           <input
@@ -327,12 +333,27 @@ export default function UserUpload() {
       </div>
 
       {/* Maize confirmation modal */}
-      {showMaizeConfirm && (
+      {showMaizeConfirm && pendingCountFile && (
         <div className="user-upload-modal">
           <div className="user-upload-modal-content">
             <p>{t("notMaizeConfirm") || "This does not appear to be a maize image. Continue anyway?"}</p>
-            <button onClick={() => handleMaizeConfirm(true)}>{t("continueDetection") || "Continue"}</button>
-            <button onClick={() => handleMaizeConfirm(false)}>{t("cancel") || "Cancel"}</button>
+
+            {/* show cannot count img*/}
+            <img
+              src={pendingCountFile.previewUrl || "/placeholder.svg"}
+              alt={pendingCountFile.name}
+              style={{ maxWidth: "100%", maxHeight: "100%", margin: "10px 0", borderRadius: "8px" }}
+            />
+            <div style={{ fontSize: "0.9em", color: "#666" }}>
+              {pendingCountFile.name}
+            </div>
+
+            <button onClick={() => handleMaizeConfirm(true)}>
+              {t("continueDetection") || "Continue"}
+            </button>
+            <button onClick={() => handleMaizeConfirm(false)}>
+              {t("cancel") || "Cancel"}
+            </button>
           </div>
         </div>
       )}

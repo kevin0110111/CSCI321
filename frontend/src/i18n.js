@@ -28,9 +28,9 @@ const resources = {
 
       //user/upload
       uploadMaizeImages: 'Upload Maize Images',
-      dragAndDrop: 'Drag and drop your image or ',
+      dragAndDrop: "Drag and drop your image{{isPremium}} or",
       browse: 'Browse',
-      supportedFormats: 'Support png, jpg, jpeg',
+      supportedFormats: "Support {{formats}}",
       imageCount: 'Image count',
       reset: 'Reset',
       count: 'Count',
@@ -199,9 +199,9 @@ const resources = {
 
       //user/upload
       uploadMaizeImages: '上传玉米图片',
-      dragAndDrop: '拖拽图片或',
+      dragAndDrop: "拖拽图片{{isPremium}}或",
       browse: '浏览',
-      supportedFormats: '支持 png, jpg, jpeg',
+      supportedFormats: "支持 {{formats}}",
       imageCount: '图片数量',
       reset: '重置',
       count: '计数',
