@@ -18,6 +18,9 @@ export default function UserUpload() {
   const [pendingCountFile, setPendingCountFile] = useState(null)
   const [showDiseaseTip, setShowDiseaseTip] = useState(false)
   const navigate = useNavigate()
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [modalImageUrl, setModalImageUrl] = useState(null)
+  const [pendingTasks, setPendingTasks] = useState([]);
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -143,6 +146,9 @@ export default function UserUpload() {
     }
     setLoading(true)
     setResults([]) // Clear old results
+
+    const newPendingTasks = []
+
     for (const file of files) {
       try {
         const formData = new FormData()
@@ -150,11 +156,9 @@ export default function UserUpload() {
         formData.append("task", "detect")
         const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData)
         if (resp.data.result !== "maize") {
-          // Not maize, show confirmation dialog
-          setPendingCountFile(file)
-          setShowMaizeConfirm(true)
-          setLoading(false)
-          return // Stop at first non-maize image, wait for user confirmation
+          // not maize store first
+          newPendingTasks.push(file)
+          continue // skip
         }
         await doCount(file, file.previewUrl)
       } catch (e) {
@@ -164,19 +168,42 @@ export default function UserUpload() {
         ])
       }
     }
-    setLoading(false)
-  }
+    if (newPendingTasks.length > 0) {
+      setPendingCountFile(newPendingTasks[0]);
+      setPendingTasks(newPendingTasks.slice(1));
+      setShowMaizeConfirm(true);
+    } else {
+      setLoading(false);
+    }
+  };
+
 
   // Count after user confirmation
   const handleMaizeConfirm = async (goOn) => {
-    setShowMaizeConfirm(false)
+    setShowMaizeConfirm(false);
+
     if (goOn && pendingCountFile) {
-      setLoading(true)
-      await doCount(pendingCountFile)
-      setLoading(false)
+      try {
+        setLoading(true);
+        await doCount(pendingCountFile, pendingCountFile.previewUrl);
+      } catch (e) {
+        setResults((prev) => [
+          ...prev,
+          { error: t("countFailed") || "Count failed", previewUrl: pendingCountFile.previewUrl },
+        ]);
+      }
     }
-    setPendingCountFile(null)
-  }
+
+    if (pendingTasks.length > 0) {
+      const next = pendingTasks[0];
+      setPendingCountFile(next);
+      setPendingTasks(pendingTasks.slice(1));
+      setShowMaizeConfirm(true);
+    } else {
+      setPendingCountFile(null);
+      setLoading(false);
+    }
+  };
 
   // Actual count model call
   const doCount = async (file, previewUrl) => {
@@ -185,11 +212,12 @@ export default function UserUpload() {
       formData.append("file", file.file || file)
       formData.append("task", "count")
       const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData)
-      setResults((prev) => [...prev, { ...resp.data, previewUrl }])
+      setResults((prev) => [...prev, { ...resp.data, previewUrl, taskType: "count" }])
     } catch (e) {
       setResults((prev) => [...prev, { error: t("countFailed") || "Count failed", previewUrl }])
     }
   }
+
 
   // Disease button logic
   const handleDisease = () => {
@@ -210,7 +238,7 @@ export default function UserUpload() {
         formData.append("file", file.file || file)
         formData.append("task", "disease")
         const resp = await axios.post(`${BASE_API_URL}/models/active/predict`, formData)
-        setResults((prev) => [...prev, { ...resp.data, previewUrl: file.previewUrl }])
+        setResults((prev) => [...prev, { ...resp.data, previewUrl: file.previewUrl, taskType: "disease" }])
       } catch (e) {
         setResults((prev) => [
           ...prev,
@@ -232,20 +260,14 @@ export default function UserUpload() {
     setResults(updatedResults)
   }
 
-  const getDiseaseSuggestions = (result) => {
-    if (result.result && result.result !== "healthy") {
-      // Return suggestions based on detected disease
-      const suggestions = {
-        leaf_blight: "Apply fungicide treatment and improve air circulation around plants.",
-        rust: "Remove affected leaves and apply copper-based fungicide.",
-        spot: "Ensure proper drainage and avoid overhead watering.",
-        default: "Consult with agricultural extension services for proper treatment.",
-      }
-      return suggestions[result.result] || suggestions.default
+  const getDiseaseSuggestions = (result, t) => {
+    if (result.result && result.result !== "Healthy") {
+      const key = result.result // e.g. Blight
+      return t(`diseaseSuggestions.${key}`, { returnObjects: true })
     }
-    return result.result === "healthy"
-      ? "Plant appears healthy. Continue regular monitoring."
-      : "No specific suggestions available."
+    return result.result === "Healthy"
+      ? t('diseaseSuggestions.Healthy', { returnObjects: true })
+      : t('diseaseSuggestions.Default', { returnObjects: true })
   }
 
   return (
@@ -338,6 +360,10 @@ export default function UserUpload() {
           <div className="user-upload-modal-content">
             <p>{t("notMaizeConfirm") || "This does not appear to be a maize image. Continue anyway?"}</p>
 
+            <div style={{ fontSize: "0.85rem", color: "#666", margin: "6px 0 8px" }}>
+              {(t("remainingImages") || "Remaining")} : {pendingTasks.length + 1} {t("images") || "images"}
+            </div>
+
             {/* show cannot count img*/}
             <img
               src={pendingCountFile.previewUrl || "/placeholder.svg"}
@@ -363,8 +389,77 @@ export default function UserUpload() {
         <div className="user-upload-modal">
           <div className="user-upload-modal-content">
             <p>{t("singleLeafTip") || "For best results, upload images of single leaves."}</p>
-            <button onClick={doDisease}>{t("continueDetectionAcknowledge") || "Continue"}</button>
+            <div style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "10px",
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+
+              <button onClick={doDisease}>
+                {t("continueDetectionAcknowledge") || "Continue"}
+              </button>
+
+              <button
+                onClick={() => setShowDiseaseTip(false)}
+              >
+                {t("cancel") || "Back"}
+              </button>
+
+            </div>
           </div>
+        </div>
+      )}
+
+      {/* Image Preview Modal */}
+      {showImageModal && (
+        <div
+          className="user-upload-modal"
+          onClick={() => setShowImageModal(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2000
+          }}
+        >
+          <img
+            src={modalImageUrl}
+            alt="Preview"
+            style={{
+              display: "block",
+              borderRadius: "8px",
+              maxWidth: "70vw",
+              maxHeight: "70vh"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            style={{
+              marginTop: "10px",
+              padding: "6px 12px",
+              backgroundColor: "#4f46e5",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "2rem"
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowImageModal(false);
+            }}
+          >
+            Back
+          </button>
         </div>
       )}
 
@@ -375,7 +470,6 @@ export default function UserUpload() {
             <div key={idx} className="user-upload-result-layout">
               {/* Blue box - Generated results image */}
               <div className="user-upload-result-box user-upload-blue-box">
-                <h4>Generated Result</h4>
                 {res.image_base64 ? (
                   <img
                     src={`data:image/jpeg;base64,${res.image_base64}`}
@@ -389,44 +483,55 @@ export default function UserUpload() {
 
               {/* Grey box - Count/Disease results */}
               <div className="user-upload-result-box user-upload-grey-box">
-                <h4>Analysis Result</h4>
+                <h4>{t("analysisResult") || "Analysis Result"}</h4>
                 <div className="user-upload-result-content">
-                  {res.result && (
+                  {res.taskType === "disease" && (
                     <div className="user-upload-result-text">
-                      <strong>Result:</strong> {res.result}
+                      <strong>{t("disease") || "Disease:"}</strong> {t(`diseaseNames.${res.result}`) || res.result}
                     </div>
                   )}
-                  {res.count && (
+                  {res.taskType === "count" && (
                     <div className="user-upload-result-text">
-                      <strong>Count:</strong> {res.count}
-                    </div>
-                  )}
-                  {res.confidence && (
-                    <div className="user-upload-result-text">
-                      <strong>Confidence:</strong> {(res.confidence * 100).toFixed(1)}%
+                      <strong>{t("count") || "Count:"}</strong> {res.result}
                     </div>
                   )}
                   {res.error && <div className="user-upload-error-text">{res.error}</div>}
                 </div>
-              </div>
-
-              {/* Green box - Save and Delete buttons */}
-              <div className="user-upload-result-box user-upload-green-box">
-                <h4>Actions</h4>
-                <div className="user-upload-action-buttons">
-                  <button className="user-upload-save-btn" onClick={() => handleSaveResult(idx)}>
-                    Save
-                  </button>
-                  <button className="user-upload-delete-btn" onClick={() => handleDeleteResult(idx)}>
-                    Delete
-                  </button>
-                </div>
+                <button
+                  className="user-result-view-btn"
+                  onClick={() => {
+                    const url = res.image_base64
+                      ? `data:image/jpeg;base64,${res.image_base64}`
+                      : res.previewUrl
+                    setModalImageUrl(url)
+                    setShowImageModal(true)
+                  }}
+                >
+                  {t("viewImage") || "View Image"}
+                </button>
               </div>
 
               {/* Yellow box - Disease suggestions */}
-              <div className="user-upload-result-box user-upload-yellow-box">
-                <h4>Suggestions</h4>
-                <div className="user-upload-suggestion-content">{getDiseaseSuggestions(res)}</div>
+              {res.taskType === "disease" && (
+                <div className="user-upload-result-box user-upload-yellow-box">
+                  <h4>{t("suggestions") || "Suggestions"}</h4>
+                  <div className="user-upload-suggestion-content">
+                    {getDiseaseSuggestions(res, t)}
+                  </div>
+                </div>
+              )}
+
+              {/* Green box - Save and Delete buttons */}
+              <div className="user-upload-result-box user-upload-green-box">
+                <h4>{t("actions") || "Actions"}</h4>
+                <div className="user-upload-action-buttons">
+                  <button className="user-upload-save-btn" onClick={() => handleSaveResult(idx)}>
+                    {t("save") || "Save"}
+                  </button>
+                  <button className="user-upload-delete-btn" onClick={() => handleDeleteResult(idx)}>
+                    {t("delete") || "Delete"}
+                  </button>
+                </div>
               </div>
             </div>
           ))}

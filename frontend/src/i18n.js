@@ -51,6 +51,21 @@ const resources = {
       detectionFailed: 'Detection failed',
       countFailed: 'Count failed',
       diseaseDetectionFailed: 'Disease detection failed',
+      analysisResult: "Analysis Result",
+      disease: "Disease",
+      diseaseNames: { 
+        Blight: "Blight", 
+        Common_Rust: "Common Rust", 
+        Gray_Leaf_Spot: "Gray Leaf Spot", 
+        Healthy: "Healthy" 
+      },
+      viewImage: "View Image",
+      suggestions: "Suggestions",
+      actions: "Actions",
+      remainingImages: 'Remaining',
+      images: 'images',
+
+
 
       //user/bug
       reportBugTitle: 'Report BUG',
@@ -172,7 +187,31 @@ const resources = {
       passwordLowercase: 'One lowercase letter',
       edit: 'Edit',
       save: 'Save',
-      ok: 'OK'
+      ok: 'OK',
+
+      diseaseSuggestions: {
+        Blight: [
+          "Apply a broad-spectrum fungicide containing chlorothalonil or mancozeb.",
+          "Remove and destroy severely affected leaves to reduce spore spread.",
+          "Improve air circulation by spacing plants properly and pruning excess foliage."
+        ],
+        Common_Rust: [
+          "Remove infected leaves as soon as possible.",
+          "Apply copper-based fungicide or sulfur-based spray in early stages.",
+          "Avoid excessive nitrogen fertilizer to reduce susceptibility."
+        ],
+        Gray_Leaf_Spot: [
+          "Use fungicides containing azoxystrobin, pyraclostrobin, or mancozeb.",
+          "Ensure proper drainage and avoid waterlogged conditions.",
+          "Practice crop rotation with non-host crops."
+        ],
+        Healthy: [
+          "Plant appears healthy. Continue regular monitoring."
+        ],
+        Default: [
+          "Consult with agricultural extension services for proper treatment."
+        ]
+      },
     },
   },
   zh: {
@@ -222,6 +261,22 @@ const resources = {
       detectionFailed: '检测失败',
       countFailed: '计数失败',
       diseaseDetectionFailed: '病害检测失败',
+      analysisResult: "分析结果",
+      disease: "病害",
+      diseaseNames: {
+        Blight: "枯萎病",
+        Common_Rust: "普通锈病",
+        Gray_Leaf_Spot: "灰斑病",
+        Healthy: "健康"
+      },
+      viewImage: "查看图片",
+      suggestions: "建议",
+      actions: "操作",
+      remainingImages: '剩余',
+      images: '张',
+
+
+
 
       //user/bug
       reportBugTitle: '报告错误',
@@ -344,6 +399,30 @@ const resources = {
       edit: '编辑',
       save: '保存',
       ok: '确定',
+      
+      diseaseSuggestions: {
+        Blight: [
+          "使用含百菌清或代森锰锌的广谱杀菌剂。",
+          "移除并销毁严重受害的叶片以减少孢子传播。",
+          "通过合理间距和修剪多余叶片改善通风。"
+        ],
+        Common_Rust: [
+          "尽快移除受感染的叶片。",
+          "在早期喷施含铜杀菌剂或硫基喷剂。",
+          "避免过量施用氮肥以降低易感性。"
+        ],
+        Gray_Leaf_Spot: [
+          "使用含嘧菌酯、吡唑醚菌酯或代森锰锌的杀菌剂。",
+          "保证排水良好，避免积水。",
+          "与非寄主作物进行轮作。"
+        ],
+        Healthy: [
+          "植物健康，继续日常监测。"
+        ],
+        Default: [
+          "请咨询农业推广部门以获得正确的防治方法。"
+        ]
+      },
     },
   },
 };

@@ -172,24 +172,24 @@ async def predict_model(
             output = model(input_tensor)
             pred = output.argmax(1).item()
             pred_class = categories[pred]
-        return {"result": f"disease_{pred_class}"}
+        return {"result": f"{pred_class}"}
     
     elif task == "count":
-        model = model_manager._count_model  # 这里应是 ultralytics.YOLO 实例
+        model = model_manager._count_model  
         if model is None:
             return {"error": "Count model is not loaded"}
 
         results = model.predict(img, verbose=False)
         det = results[0]
         num = int(len(det.boxes) if det.boxes is not None else 0)
-        annotated_img = det.plot()  # numpy (BGR)
-        annotated_pil = Image.fromarray(annotated_img[..., ::-1])  # 转成 RGB
+        annotated_img = det.plot()
+        annotated_pil = Image.fromarray(annotated_img[..., ::-1])
         buf = io.BytesIO()
         annotated_pil.save(buf, format="JPEG")
         img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
         return {
             "result": num,
-            "image_base64": img_base64  # 前端用 data:image/jpeg;base64,xxx 直接显示
+            "image_base64": img_base64
         }
     else:
         return {"error": "Unknown task type"}
