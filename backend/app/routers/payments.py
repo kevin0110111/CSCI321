@@ -7,18 +7,16 @@ import os
 
 router = APIRouter(tags=["payments"])
 
-# 设置Stripe API密钥
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")  # 在生产环境中使用环境变量
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")  
 
 @router.post("/create-payment-intent")
 async def create_payment_intent(account_id: int, db: Session = Depends(get_db)):
-    """创建支付意向"""
     try:
-        # 创建支付意向，金额为2000美分 ($20.00)
+        
         intent = stripe.PaymentIntent.create(
-            amount=2000,  # 金额以分为单位
+            amount=2000,  
             currency='usd',
-            metadata={"account_id": str(account_id)},  # 存储用户ID以便webhook使用
+            metadata={"account_id": str(account_id)},  
             description="Premium subscription for Tassel AI"
         )
         
@@ -29,7 +27,6 @@ async def create_payment_intent(account_id: int, db: Session = Depends(get_db)):
 
 @router.post("/create-checkout-session")
 async def create_checkout_session(account_id: int, db: Session = Depends(get_db)):
-    """创建Stripe Checkout会话"""
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -48,8 +45,8 @@ async def create_checkout_session(account_id: int, db: Session = Depends(get_db)
                 'account_id': str(account_id)
             },
             mode='payment',
-            success_url='https://your-frontend-url.com/subscription?success=true',
-            cancel_url='https://your-frontend-url.com/subscription?canceled=true',
+            success_url='https://csci321.onrender.com/user/subscription?success=true',
+            cancel_url='https://csci321.onrender.com/user/subscription?canceled=true',
         )
         return {"sessionId": session.id}
     except Exception as e:
@@ -63,17 +60,16 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
     
     try:
-        # 验证webhook签名
         event = stripe.Webhook.construct_event(
             payload, sig_header, webhook_secret
         )
         
-        # 处理支付成功事件
+        
         if event["type"] == "payment_intent.succeeded":
             payment_intent = event["data"]["object"]
             account_id = int(payment_intent["metadata"]["account_id"])
             
-            # 更新用户为Premium状态，并设置一个月后的过期日期
+            
             crud.update_account_premium_status(db, account_id=account_id, is_premium=True)
             
         return {"status": "success"}

@@ -1,10 +1,10 @@
 // UserSubscription.jsx
 import './userSubscription.css';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // 确保导入axios
+import axios from 'axios'; 
 import { loadStripe } from '@stripe/stripe-js';
 
-// 使用您的Stripe公钥
+
 const stripePromise = loadStripe('pk_test_51Ru8SlHrem0LSH6PWcPPXY0sdWkVysPiYjWyh1UDqqecL7MH49Jv5bojWQ9zt7r5636oHpkWzih3JYxQjiS8JcrP004cD0orLg');
 
 export default function UserSubscription() {
@@ -15,9 +15,20 @@ export default function UserSubscription() {
   const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
+
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.get('success') === 'true') {
+      
+      alert("Payment successful! Your premium membership is now active.");
+      
+      fetchSubscriptionStatus();
+      
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
     document.title = 'Subscription Plan';
     
-    // 获取订阅状态
+    // subscription status check
     const fetchSubscriptionStatus = async () => {
       try {
         const accountId = localStorage.getItem('accountId');
@@ -40,16 +51,16 @@ export default function UserSubscription() {
     fetchSubscriptionStatus();
   }, []);
 
-  // 支付模态框组件
+  // payment modal component
   function PaymentModal({ onClose, onSuccess }) {
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState(false);
-    const [name, setName] = useState(''); // 添加姓名状态
+    const [name, setName] = useState(''); 
     
     const handleSubmit = async (e) => {
       e.preventDefault();
       
-      // 基本验证
+      // authenticate user input
       if (!name.trim()) {
         setError('Please enter your name');
         return;
@@ -60,25 +71,25 @@ export default function UserSubscription() {
       try {
         const accountId = localStorage.getItem('accountId');
         
-        // 调用后端API获取client_secret
+        // invoke Stripe API to create payment intent
         const response = await axios.post(
           `https://fyp-backend-a0i8.onrender.com/api/create-payment-intent?account_id=${accountId}`
         );
         
         const { clientSecret } = response.data;
         
-        // 使用Stripe处理支付，使用用户输入的姓名
+        // use Stripe.js to confirm the payment
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
           payment_method: {
             card: elements.getElement(CardElement),
-            billing_details: { name: name } // 使用输入的姓名
+            billing_details: { name: name } 
           }
         });
         
         if (error) {
           setError(error.message);
         } else if (paymentIntent.status === 'succeeded') {
-          onSuccess(); // 成功后调用
+          onSuccess(); 
         }
       } catch (err) {
         setError('Payment failed. Please try again.');
@@ -93,7 +104,6 @@ export default function UserSubscription() {
         <div className="payment-content">
           <h2>Complete Your Purchase</h2>
           <form onSubmit={handleSubmit}>
-            {/* 添加姓名输入框 */}
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
               <input
@@ -143,14 +153,14 @@ export default function UserSubscription() {
     const accountId = localStorage.getItem('accountId');
     
     try {
-      // 创建支付会话
+      //create a Stripe Checkout session
       const response = await axios.post(
         `https://fyp-backend-a0i8.onrender.com/api/create-checkout-session?account_id=${accountId}`
       );
       
       const { sessionId } = response.data;
       
-      // 重定向到Stripe Checkout
+      // redirect to Stripe Checkout
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId });
       
@@ -219,14 +229,14 @@ export default function UserSubscription() {
           <PaymentModal 
             onClose={() => setShowModal(false)} 
             onSuccess={() => {
-              // 显示成功消息
+            
               alert("Payment successful! Your premium membership is now active.");
               
-              // 更新状态
+              
               setIsPremium(true);
               setShowModal(false);
               
-              // 刷新整个页面以确保获取最新状态
+              
               window.location.reload();
             }} 
           />
