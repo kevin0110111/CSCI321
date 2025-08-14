@@ -155,7 +155,7 @@ const resources = {
       date: 'Date',
       imageId: 'Image ID',
       id: 'Num',
-      maizeCount: 'Maize Count',
+      maizeCount: 'Tassel Count',
       noResults: 'No results found',
      
 
@@ -385,7 +385,7 @@ const resources = {
       date: '日期',
       imageId: '图片ID',
       id: '序号',
-      maizeCount: '玉米计数',
+      maizeCount: '玉米穗计数',
       noResults: '未找到历史结果',
     
       
