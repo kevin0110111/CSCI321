@@ -2,15 +2,15 @@
 .faq-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f5f4f4;
   font-family: Arial, sans-serif;
+  background-color: #f5f4f4;
 }
 
 .faq-main {
   flex: 1;
   padding: 60px;  
   max-width: 1200px;  
-  margin: auto;
+  margin: 5px auto;
   background-color: #fff;
   border-radius: 12px;  
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  

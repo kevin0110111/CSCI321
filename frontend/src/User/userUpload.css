@@ -1,7 +1,7 @@
 /* Upload section styling */
 .user-upload-container {
   padding: 2rem;
-  background-color: #fff;
+  background: linear-gradient(145deg, #a8edea,#fed6e3);
   font-size: 1.25rem;
   line-height: 1.6;
   max-height: 100%;
@@ -9,6 +9,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15),
+              0 6px 12px rgba(0, 0, 0, 0.12),
+              inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  max-width: 1200px;
+  margin: 2rem auto 0;
 }
 
 .user-upload-container h2 {
@@ -380,12 +386,12 @@
 /* Modified results container layout to display all boxes in a single horizontal line */
 .user-upload-results-container {
   margin: 2rem auto;
-  max-width: 1400px;
-  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(145deg, #edebf8, #d7f2ce);
+  background: linear-gradient(145deg, #e5e2f4, #dff8d8);
   border-radius: 12px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1),
   -5px -5px 15px rgba(255, 255, 255, 0.7);
@@ -410,7 +416,7 @@
   justify-items: center;
   align-items: center;
   max-width: 100%;
-  width: 1400px;
+  width: 1200px;
 }
 
 .user-upload-result-box {

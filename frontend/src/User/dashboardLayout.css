@@ -265,6 +265,7 @@ body {
     .dashboard-content {
         margin-top: 60px;
         margin-left: 0 !important;
+        padding: 10px;
     }
 }
 
@@ -279,4 +280,30 @@ body {
 .usersidebar ul li a.active { /* Add 'active' class dynamically if needed (e.g., via NavLink) */
     background-color: #b3d7c2;
     font-weight: 600;
+}
+
+.user-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-content {
+    flex: 1;
+}
+
+.dashboard-footer {
+    padding: 15px;
+    text-align: center;
+    background-color: rgba(236, 234, 239, 0.85);
+    font-size: 14px;
+    color: #000000;
+    border-top: 3px solid #ddd;
+    margin-top: 15px;
 }
