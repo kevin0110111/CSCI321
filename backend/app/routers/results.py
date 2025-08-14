@@ -16,7 +16,7 @@ router = APIRouter(prefix="/results", tags=["results"])
 
 @router.post("/", response_model=ResultResponse)
 def create_result(result: ResultCreate, db: Session = Depends(get_db)):
-    # 检查用户是否存在
+    
     db_user = crud.get_account(db, account_id=result.user_id)
     if not db_user:
         raise HTTPException(
@@ -24,7 +24,7 @@ def create_result(result: ResultCreate, db: Session = Depends(get_db)):
             detail="User not found"
         )
     
-    # 检查图像是否存在
+    
     db_image = crud.get_image(db, image_id=result.image_id)
     if not db_image:
         raise HTTPException(
@@ -32,7 +32,7 @@ def create_result(result: ResultCreate, db: Session = Depends(get_db)):
             detail="Image not found"
         )
     
-    # 创建结果记录
+    
     db_result = crud.create_result(db, result)
     return db_result
 

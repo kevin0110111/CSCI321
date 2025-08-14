@@ -134,6 +134,11 @@ const resources = {
       myResults: 'My Results',
       view: 'View',
       delete: 'Delete',
+      AddNote: 'Add Note',
+      AddDescription: 'Add your description for this result',
+      EnterNote: 'Enter your notes here...',
+      imageSavedSuccess: 'Image saved successfully!',
+      saveImageError: 'Error saving image: {{error}}',
 
       //user/viewResult
       detectionResultTitle: 'Detection Result',
@@ -188,6 +193,8 @@ const resources = {
       edit: 'Edit',
       save: 'Save',
       ok: 'OK',
+      saved: 'Saved',
+      saving: 'Saving...',
 
       diseaseSuggestions: {
         Blight: [
@@ -345,6 +352,12 @@ const resources = {
       myResults: '我的结果',
       view: '查看',
       delete: '删除',
+      AddNote: '添加备注',
+      AddDescription: '为此结果添加您的描述',
+      EnterNote: '在此输入您的备注...',
+      imageSavedSuccess: '图片已成功保存！',
+      saveImageError: '保存图片失败，请重试！',
+
 
       //user/viewResult
       detectionResultTitle: '检测结果',
@@ -399,6 +412,9 @@ const resources = {
       edit: '编辑',
       save: '保存',
       ok: '确定',
+      saved: '已保存',
+      saving: '正在保存...',
+
       
       diseaseSuggestions: {
         Blight: [

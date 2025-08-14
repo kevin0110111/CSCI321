@@ -151,7 +151,7 @@ def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found")
 
-    # 计算剩余天数
+    
     days_remaining = None
     if account.is_premium and account.subscription_expiry:
         if account.subscription_expiry < date.today():
@@ -159,10 +159,10 @@ def get_subscription_status(account_id: int, db: Session = Depends(get_db)):
             db.commit()
             db.refresh(account)
         else:
-            # 计算剩余天数
+            
             days_remaining = (account.subscription_expiry - date.today()).days
 
-    # 返回带有订阅过期时间和剩余天数的响应
+    
     return SubscriptionStatusResponse(
         is_premium=account.is_premium,
         subscription_expiry=account.subscription_expiry if account.is_premium else None,

@@ -247,7 +247,7 @@ def update_account_premium_status(db: Session, account_id: int, is_premium: bool
 
     account.is_premium = is_premium
 
-    # 设置订阅过期时间 - 一个月后
+
     if is_premium:
         account.subscription_expiry = date.today() + timedelta(days=30)
 

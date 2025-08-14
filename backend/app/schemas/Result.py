@@ -16,10 +16,10 @@ class ResultBase(BaseModel):
 class ResultCreate(BaseModel):
     user_id: int
     image_id: int
-    result_type: str  # 或使用枚举类型 
-    result_data: str  # 改为result_data与其他保持一致
+    result_type: str  
+    result_data: str  
     is_saved: Optional[bool] = True
-    note: Optional[str] = None  # 添加note字段
+    note: Optional[str] = None  
 
 class ResultUpdate(BaseModel):
     result_type: Optional[ResultTypeEnum] = None

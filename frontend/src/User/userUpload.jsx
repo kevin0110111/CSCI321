@@ -108,6 +108,21 @@ export default function UserUpload() {
     }
   }
 
+  const handleImageError = (event, index) => {
+    console.log("Image preview failed to load, refreshing...");
+    const file = files[index];
+    if (file && file.file) {
+      
+      if (file.previewUrl) URL.revokeObjectURL(file.previewUrl);
+      
+      const newUrl = URL.createObjectURL(file.file);
+      
+      const updatedFiles = [...files];
+      updatedFiles[index] = {...file, previewUrl: newUrl};
+      setFiles(updatedFiles);
+    }
+  };
+
   // Drag & drop support
   const handleDrop = async (e) => {
     e.preventDefault()
@@ -265,21 +280,21 @@ export default function UserUpload() {
   }
 
   const handleSaveResult = (resultIndex) => {
-    // 打开note modal并设置当前要保存的结果索引
+    
     setSavingResultIndex(resultIndex);
-    setCurrentNote(''); // 清空之前的note
+    setCurrentNote(''); 
     setShowNoteModal(true);
   };
 
   const saveResultWithNote = async () => {
-    // 关闭modal
+    
     setShowNoteModal(false);
     
-    // 获取要保存的结果
+    
     const resultIndex = savingResultIndex;
     const result = results[resultIndex];
     
-    // 显示保存中状态
+    
     const saveBtn = document.querySelector(`[data-idx="${resultIndex}"].user-upload-save-btn`);
     const originalText = saveBtn.textContent;
     saveBtn.disabled = true;
@@ -295,9 +310,9 @@ export default function UserUpload() {
       
       let imageFile, formData = new FormData();
       
-      // 根据不同任务类型处理不同的图像数据
+      
       if (result.taskType === "count" && result.image_base64) {
-        // 计数任务 - 保存带标注的结果图像
+        
         const base64Data = result.image_base64;
         const byteCharacters = atob(base64Data);
         const byteArrays = [];
@@ -316,7 +331,7 @@ export default function UserUpload() {
         imageFile = new File([blob], fileName, { type: "image/jpeg" });
         
       } else if (result.taskType === "disease") {
-        // 疾病检测任务 - 保存原始图像
+        
         try {
           const response = await fetch(result.previewUrl);
           const blob = await response.blob();
@@ -331,7 +346,7 @@ export default function UserUpload() {
         return;
       }
       
-      // 创建并提交FormData保存图像
+      
       formData.append("user_id", accountId);
       formData.append("file", imageFile);
       formData.append("result_type", result.taskType);
@@ -339,7 +354,7 @@ export default function UserUpload() {
         formData.append("result_value", result.result.toString());
       }
       
-      // 调用API保存图像
+      
       const response = await fetch(`${BASE_API_URL}/images/`, {
         method: "POST",
         body: formData,
@@ -351,17 +366,17 @@ export default function UserUpload() {
       
       const data = await response.json();
       
-      // 2. 保存结果到results表
+      
       const resultData = {
         user_id: parseInt(accountId),
         image_id: data.image_id,
         result_type: result.taskType,
         result_data: result.result ? result.result.toString() : "",
         is_saved: true,
-        note: currentNote // 添加用户输入的note
+        note: currentNote 
       };
       
-      // 调用API保存结果
+      
       const resultResponse = await fetch(`${BASE_API_URL}/results/`, {
         method: "POST",
         headers: {
@@ -375,15 +390,15 @@ export default function UserUpload() {
         throw new Error("Failed to save result to database");
       }
       
-      // 显示成功消息
+      
       setSuccessMessage(t("imageSavedSuccess") || "Image saved successfully!");
       setShowSuccessModal(true);
       
-      // 记录到结果中，以防止重复保存
+      
       result.savedToDatabase = true;
       result.savedImageId = data.image_id;
       
-      // 更新results数组中的对象
+      
       const updatedResults = [...results];
       updatedResults[resultIndex] = { ...result };
       setResults(updatedResults);
@@ -391,16 +406,16 @@ export default function UserUpload() {
     } catch (error) {
       console.error("Error saving image:", error);
       setSuccessMessage(t("saveImageError") || "Error saving image. Please try again.");
-      setShowSuccessModal(true); // 或创建单独的错误Modal
+      setShowSuccessModal(true); 
     } finally {
-      // 恢复按钮状态
+      
       const saveBtn = document.querySelector(`[data-idx="${resultIndex}"].user-upload-save-btn`);
       if (saveBtn) {
         saveBtn.disabled = false;
         saveBtn.textContent = originalText;
       }
       
-      // 清除保存状态
+      
       setSavingResultIndex(null);
     }
   };
@@ -447,7 +462,12 @@ export default function UserUpload() {
             <div className="user-upload-preview-gallery">
               {files.map((file, index) => (
                 <div className="user-upload-preview-wrapper" key={index}>
-                  <img src={file.previewUrl || "/placeholder.svg"} alt="Preview" className="user-upload-preview-image" />
+                  <img 
+                    src={file.previewUrl || "/placeholder.svg"} 
+                    alt="Preview" 
+                    className="user-upload-preview-image"
+                    onError={(e) => handleImageError(e, index)} 
+                  />
                   <div className="user-upload-preview-meta">
                     <div className="user-upload-preview-filename" title={file.name}>
                       {file.name}
@@ -629,12 +649,12 @@ export default function UserUpload() {
         <div className="user-upload-modal">
           <div className="user-upload-modal-content">
             <h3>{t("AddNote") || "Add Note"}</h3>
-            <p>{t("Add Description for your image.") || "Add a description or note for this result:"}</p>
+            <p>{t("AddDescription") || "Add a description or note for this result:"}</p>
             
             <textarea
               value={currentNote}
               onChange={(e) => setCurrentNote(e.target.value)}
-              placeholder={t("Enter your note.") || "Enter your notes here..."}
+              placeholder={t("EnterNote") || "Enter your notes here..."}
               style={{
                 width: "100%",
                 height: "100px",
@@ -769,7 +789,7 @@ export default function UserUpload() {
                     disabled={res.savedToDatabase}
                   >
                     {res.savedToDatabase 
-                      ? (t("Saved") || "Saved") 
+                      ? (t("saved") || "Saved") 
                       : (t("save") || "Save")}
                   </button>
                   <button 
