@@ -4,8 +4,11 @@ import reportBug from '../assets/bug.svg';
 import faq from '../assets/faq.svg';
 import logout from '../assets/logout.svg';
 import profile from '../assets/profile.svg';
+import calendar from '../assets/calendar.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function UpdateAgentAccount() {
   const [isEditing, setIsEditing] = useState(false);
@@ -69,9 +72,7 @@ export default function UpdateAgentAccount() {
             username: accountData.username,
             email: accountData.email,
             name: profileData.name,
-            dob: profileData.dob
-                ? new Date(profileData.dob).toLocaleDateString('en-GB').split('/').join('-')
-                : '',
+            dob: profileData.dob ? profileData.dob : '',
           }));
         } else {
           console.error('Failed to fetch account or profile data.');
@@ -79,7 +80,7 @@ export default function UpdateAgentAccount() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setResponseBox({ show: true, message: 'An error occured while fetching data!' });
+        setResponseBox({ show: true, message: 'An error occurred while fetching data!' });
       }
     };
 
@@ -111,7 +112,6 @@ export default function UpdateAgentAccount() {
         return;
     }
 
-    // Handle password change separately if newPassword is provided
     if (formData.newPassword) {
       if (!formData.currentPassword) {
         setResponseBox({ show: true, message: 'Please enter your current password to change it.' });
@@ -143,37 +143,29 @@ export default function UpdateAgentAccount() {
             show: true,
             message: `Failed to change password: ${passwordData.detail || 'Something went wrong.'}`
           });
-          return; // Stop if password change failed
+          return;
         } else {
             setResponseBox({ show: true, message: 'Password changed successfully!' });
-            // Clear password fields after successful change
             setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '' }));
         }
-
       } catch (error) {
         console.error('Error changing password:', error);
         setResponseBox({ show: true, message: 'An error occurred during password change. Please try again.' });
-        return; // Stop if there's an error
+        return;
       }
     }
 
-    // Prepare account update payload (username and email)
     const accountUpdatePayload = {
       username: formData.username,
       email: formData.email,
     };
 
-    // Prepare profile update payload (name and DOB)
-    const [day, month, year] = formData.dob.split('-').map(Number);
-    const formattedDob = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
     const profileUpdatePayload = {
       name: formData.name,
-      dob: formattedDob,
+      dob: formData.dob,
     };
 
     try {
-      // Update Account
       const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`, {
         method: 'PUT',
         headers: {
@@ -182,7 +174,6 @@ export default function UpdateAgentAccount() {
         body: JSON.stringify(accountUpdatePayload),
       });
 
-      // Update Profile
       const profileResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/profiles/${currentProfileId}`, {
         method: 'PUT',
         headers: {
@@ -222,7 +213,6 @@ export default function UpdateAgentAccount() {
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
       <aside className="agentsidebar">
         <div className="logo">Agent Portal</div>
         <nav className="sidebar-nav">
@@ -239,9 +229,7 @@ export default function UpdateAgentAccount() {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <div className="main-section">
-        {/* Header */}
         <header className="header">
           <h1>Account Settings</h1>
           <div className="profile">
@@ -249,7 +237,6 @@ export default function UpdateAgentAccount() {
           </div>
         </header>
 
-        {/* Account Form */}
         <main className="account-form-container">
           <div className="account-form">
             <div className="form-field">
@@ -276,14 +263,32 @@ export default function UpdateAgentAccount() {
 
             <div className="form-field">
               <label>Date of birth</label>
-              <input
-                type="text"
-                name="dob"
-                placeholder="DD-MM-YYYY"
-                value={formData.dob}
-                onChange={handleInputChange}
-                readOnly={!isEditing}
-              />
+              <div className="agentdob-input-wrapper">
+                <DatePicker
+                  selected={formData.dob ? new Date(formData.dob) : null}
+                  onChange={(date) => {
+                    const isoDate = date ? date.toISOString().split('T')[0] : '';
+                    setFormData(prev => ({
+                      ...prev,
+                      dob: isoDate
+                    }));
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Date of birth"
+                  className="agentdate-picker-input"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  id="dob-datepicker"
+                  readOnly={!isEditing}
+                />
+                <img
+                  src={calendar}
+                  alt="Calendar"
+                  className="calendar-icon"
+                  onClick={() => isEditing && document.getElementById('dob-datepicker')?.focus()}
+                />
+              </div>
             </div>
 
             <div className="form-field">
@@ -355,7 +360,6 @@ export default function UpdateAgentAccount() {
               </div>
             </div>
           )}
-
         </main>
       </div>
     </div>
