@@ -233,18 +233,21 @@
   height: 50px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 968px) {
   .user-upload-modal-content {
     max-width: 80vw;
     max-height: 70vh;
     padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .user-upload-modal-content img {
-      max-width: 100%;
-      height: auto;
-      max-height: 40vh;
-      object-fit: contain;
+    max-width: 100%;
+    max-height: calc(70vh - 100px);
+    object-fit: contain;
   }
 
   .user-upload-modal-content button {
@@ -278,7 +281,7 @@
 }
 
 /* Phone */
-@media (max-width: 767px) {
+@media (max-width: 968px) {
   .user-upload-container {
     padding: 1rem;
     font-size: 1rem;

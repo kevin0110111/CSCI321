@@ -72,3 +72,9 @@
 .load-more .add-comment:hover {
   background-color: #b9fce2;
 }
+
+@media (max-width: 968px) {
+  .comments-container {
+    margin-top: 0rem;
+  }
+}

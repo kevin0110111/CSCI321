@@ -4,7 +4,7 @@
   text-align: left;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
   .comment-reply-container {
     margin-top: 0rem;
   }

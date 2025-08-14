@@ -58,3 +58,9 @@
   font-weight: bold;
   color: green;
 }
+
+@media (max-width: 968px) {
+  .comment-form {
+    margin-top: 0rem;
+  }
+}
