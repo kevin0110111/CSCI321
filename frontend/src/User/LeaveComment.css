@@ -59,7 +59,7 @@
   color: green;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .comment-form {
     margin-top: 0rem;
   }

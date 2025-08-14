@@ -233,11 +233,11 @@
   height: 50px;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .user-upload-modal-content {
     max-width: 80vw;
     max-height: 70vh;
-    padding: 16px;
+    padding: 1px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -255,6 +255,7 @@
     max-width: none;
     height: 44px;
     font-size: 0.7rem;
+    flex: 1 1 100%;
   }
 
   .user-upload-modal-content button+button {
@@ -281,7 +282,7 @@
 }
 
 /* Phone */
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .user-upload-container {
     padding: 1rem;
     font-size: 1rem;
@@ -327,15 +328,12 @@
   }
 
   .user-upload-preview-filename {
-    font-size: 0.85rem;
-    color: #333;
-    white-space: normal;
-    overflow: visible;
-    overflow-wrap: break-word;
-    word-break: break-all;
-    text-overflow: unset;
-    max-width: none;
-    margin-right: 10px;
+    max-width: 60vw;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
   }
 
   .user-upload-remove-btn {
@@ -586,7 +584,7 @@
 }
 
 /* Updated mobile responsiveness to stack boxes vertically on small screens */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .user-upload-result-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto;
