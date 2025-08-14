@@ -2,6 +2,7 @@
   max-width: 700px;
   margin: 2rem auto;
   text-align: left;
+  padding: 0 15px;
 }
 
 .comments-container h2 {
@@ -14,6 +15,8 @@
   align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .comment-avatar {
@@ -22,6 +25,7 @@
   object-fit: cover;
   border-radius: 50%;
   background-color: #ddd;
+  flex-shrink: 0;
 }
 
 .comment-content {
@@ -30,6 +34,7 @@
 
 .comment-content p {
   margin: 0.25rem 0;
+  word-wrap: break-word;
 }
 
 .comment-time {
@@ -43,6 +48,7 @@
   display: flex;
   justify-content: center;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .load-more button {
@@ -55,6 +61,7 @@
   font: bold 1rem Arial, sans-serif;
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+  min-width: 120px;
 }
 
 .load-more button:hover {
@@ -71,4 +78,92 @@
 
 .load-more .add-comment:hover {
   background-color: #b9fce2;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .comments-container {
+    margin: 1rem auto;
+  }
+  
+  .comments-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .comment-item {
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+  }
+  
+  .load-more {
+    gap: 1rem;
+  }
+  
+  .load-more button {
+    padding: 0.5rem 1rem;
+    min-width: 110px;
+  }
+}
+
+/* Small mobile optimizations */
+@media (max-width: 480px) {
+  .comments-container {
+    margin: 0.8rem auto;
+    padding: 0 10px;
+  }
+  
+  .comments-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .comment-item {
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .comment-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .comment-content p {
+    font-size: 0.95rem;
+  }
+  
+  .comment-time {
+    font-size: 0.75rem;
+  }
+  
+  .load-more {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .load-more button {
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* Touch-friendly enhancements */
+@media (hover: none) {
+  .load-more button {
+    -webkit-tap-highlight-color: transparent;
+    padding: 0.7rem 1.2rem; /* Slightly larger tap target */
+  }
+  
+  .load-more button:active {
+    background-color: #c5e6fd;
+    transform: translateY(1px);
+  }
+  
+  .load-more .add-comment:active {
+    background-color: #b9fce2;
+  }
 }

@@ -147,6 +147,16 @@ const resources = {
       processingTime: 'Processing Time',
       imageSize: 'Image Size',
       back: 'Back',
+      Date: 'Date',
+      type: 'Detect Type',
+      searchResults: 'Search Results',
+      number: 'Number',
+      note: 'Note',
+      date: 'Date',
+      imageId: 'Image ID',
+      id: 'Num',
+      maizeCount: 'Maize Count',
+     
 
       //user/dashboard
       weatherInSingapore: 'Weather in Singapore',
@@ -241,7 +251,7 @@ const resources = {
       cancel: '取消',
       faqHelp: '常见问题 / 帮助',
       reportBug: '报告错误',
-      resultHistory: '结果历史',
+      resultHistory: '历史结果',
 
       //user/upload
       uploadMaizeImages: '上传玉米图片',
@@ -366,6 +376,17 @@ const resources = {
       processingTime: '处理时间',
       imageSize: '图片大小',
       back: '返回',
+      Date: '日期',
+      type: '检测类型',
+      searchResults: '搜索结果或者备注',
+      number: '序号',
+      note: '备注',
+      date: '日期',
+      imageId: '图片ID',
+      id: '序号',
+      maizeCount: '玉米计数',
+    
+      
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',

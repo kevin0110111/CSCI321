@@ -210,7 +210,85 @@
   margin-top: 1rem;
 }
 
+/* Base carousel container */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
 
+/* Carousel slide area */
+.carousel-slides {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 400px; /* Default height for desktop */
+}
+
+/* Individual slide */
+.carousel-slide {
+  min-width: 100%;
+  position: relative;
+}
+
+/* Image styling */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation buttons */
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+/* Carousel indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.carousel-indicator.active {
+  background: white;
+}
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
   .carousel-wrapper {
     height: 300px;  
@@ -284,5 +362,58 @@
   .last-updated {
     font-size: 1rem;
     text-align: center;
+  }
+
+  .carousel-slides {
+    height: 250px; /* Reduced height for tablets */
+  }
+  
+  .carousel-button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-slides {
+    height: 200px; /* Further reduced height for mobile phones */
+  }
+  
+  .carousel-button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    opacity: 0.7; /* Slightly more transparent on mobile */
+  }
+  
+  .carousel-indicators {
+    bottom: 10px; /* Move indicators closer to bottom edge */
+  }
+  
+  .carousel-indicator {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Touch-specific optimizations */
+@media (hover: none) {
+  .carousel-button {
+    opacity: 0.7; /* Always visible on touch devices */
+  }
+  
+  /* Improve touch targets */
+  .carousel-indicator {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 360px) {
+  .carousel-slides {
+    height: 150px;
   }
 }
