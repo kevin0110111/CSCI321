@@ -13,7 +13,8 @@ export default function UserUpload() {
   const [files, setFiles] = useState([])
   const [isPremium, setIsPremium] = useState(false)
   const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loadingCount, setLoadingCount] = useState(false)
+  const [loadingDisease, setLoadingDisease] = useState(false)
   const [showMaizeConfirm, setShowMaizeConfirm] = useState(false)
   const [pendingCountFile, setPendingCountFile] = useState(null)
   const [showDiseaseTip, setShowDiseaseTip] = useState(false)
@@ -174,7 +175,7 @@ export default function UserUpload() {
       alert(t("uploadImageFirstAlert") || "Please upload an image first")
       return
     }
-    setLoading(true)
+    setLoadingCount(true)
     setResults([]) // Clear old results
 
     const newPendingTasks = []
@@ -203,7 +204,8 @@ export default function UserUpload() {
       setPendingTasks(newPendingTasks.slice(1));
       setShowMaizeConfirm(true);
     } else {
-      setLoading(false);
+      setLoadingCount(false);
+      alert(t("detectionCompleted") || "Detection completed!");
     }
   };
 
@@ -214,7 +216,7 @@ export default function UserUpload() {
 
     if (goOn && pendingCountFile) {
       try {
-        setLoading(true);
+        setLoadingCount(true);
         await doCount(pendingCountFile, pendingCountFile.previewUrl);
       } catch (e) {
         setResults((prev) => [
@@ -231,7 +233,7 @@ export default function UserUpload() {
       setShowMaizeConfirm(true);
     } else {
       setPendingCountFile(null);
-      setLoading(false);
+      setLoadingCount(false);
     }
   };
 
@@ -260,7 +262,7 @@ export default function UserUpload() {
 
   const doDisease = async () => {
     setShowDiseaseTip(false)
-    setLoading(true)
+    setLoadingDisease(true)
     setResults([]) // Clear old results
     for (const file of files) {
       try {
@@ -276,7 +278,8 @@ export default function UserUpload() {
         ])
       }
     }
-    setLoading(false)
+    setLoadingDisease(false)
+    alert(t("detectionCompleted") || "Detection completed!");
   }
 
   const handleSaveResult = (resultIndex) => {
@@ -521,12 +524,19 @@ export default function UserUpload() {
           <button className="user-upload-reset-btn" onClick={handleReset}>
             {t("reset") || "Reset"}
           </button>
-          <button className="user-upload-submit-btn" onClick={handleCount} disabled={loading}>
-            {loading ? t("counting") || "Counting..." : t("count") || "Count"}
+
+          <button className="user-upload-submit-btn" 
+          onClick={handleCount} 
+          disabled={loadingCount || loadingDisease}>
+            {loadingCount ? t("counting") || "Counting..." : t("count") || "Count"}
           </button>
-          <button className="user-upload-premium-btn" disabled={!isPremium || loading} onClick={handleDisease}>
-            {loading ? t("checking") || "Checking..." : t("checkDisease") || "Check Disease (Premium)"}
+
+          <button className="user-upload-premium-btn" 
+          onClick={handleDisease} 
+          disabled={!isPremium || loadingCount || loadingDisease} >
+            {loadingDisease ? t("checking") || "Checking..." : t("checkDisease") || "Check Disease (Premium)"}
           </button>
+
         </div>
         {!isPremium && (
           <div style={{ color: "#e53935", marginTop: 8, fontSize: 14 }}>

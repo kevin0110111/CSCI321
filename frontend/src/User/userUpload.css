@@ -564,6 +564,7 @@
     gap: 1rem;
     padding: 1rem;
     max-width: 100%;
+    align-items: center;
   }
 
   .user-upload-result-box {
@@ -595,4 +596,8 @@
 .user-upload-dashboard-content {
   margin-top: 75px;
   transition: margin-left 0.7s ease;
+}
+
+.user-upload-delete-btn {
+  margin-bottom: 0;
 }

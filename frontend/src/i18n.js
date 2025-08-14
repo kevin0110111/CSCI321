@@ -64,6 +64,7 @@ const resources = {
       actions: "Actions",
       remainingImages: 'Remaining',
       images: 'images',
+      detectionCompleted: 'Detection Completed!',
 
 
 
@@ -292,6 +293,7 @@ const resources = {
       actions: "操作",
       remainingImages: '剩余',
       images: '张',
+      detectionCompleted: '检测完成!',
 
 
 
