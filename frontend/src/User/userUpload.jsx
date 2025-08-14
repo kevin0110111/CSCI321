@@ -144,11 +144,11 @@ export default function UserUpload() {
   }
 
   const handleRemove = (indexToRemove) => {
-    // release the preview URL if it exists
-    if (files[indexToRemove].previewUrl) {
+    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
+
+    if (files[indexToRemove] && files[indexToRemove].previewUrl) {
       URL.revokeObjectURL(files[indexToRemove].previewUrl);
     }
-    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
     setFiles(updatedFiles);
     fileInputRef.current.value = null;
   }
@@ -429,7 +429,7 @@ export default function UserUpload() {
         }
       });
     };
-  }, [files]);
+  }, []);
 
   return (
     <main className="user-upload-dashboard-content">
