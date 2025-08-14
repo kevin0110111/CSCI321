@@ -16,7 +16,7 @@
   align-items: center;
   height: 100vh;
 
-  background: url('login_background.png') center/cover no-repeat fixed;
+  background: url('/login_background.png') center/cover no-repeat fixed;
   overflow: hidden; /* so overlay stays contained */
 }
 
