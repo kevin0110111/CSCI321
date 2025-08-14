@@ -1,11 +1,12 @@
 .bug-form {
-  max-width: 600px;
+  max-width: 700px;
   margin: 2rem auto;
   margin-top: 150px;
   background: #fff;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+      0 6px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
@@ -28,9 +29,9 @@
 .bug-form input[type="file"] {
   padding: 0.6rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: solid #bbbbbb;
   border-radius: 6px;
-  width: 100%;
+  width: auto;
 }
 
 .bug-form textarea {
@@ -51,12 +52,31 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background-color: #ddd;
+  font-weight: bold;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bug-actions button[type="button"] {
+  background: linear-gradient(145deg, #f0f0f0, #d9d9d9);
+  color: #333;
+}
+
+.bug-actions button[type="button"]:hover {
+  background: linear-gradient(145deg, #d9d9d9, #f0f0f0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .bug-actions button[type="submit"] {
-  background-color: #4CAF50;
+  background: linear-gradient(145deg, #4CAF50, #45A049);
   color: white;
+}
+
+.bug-actions button[type="submit"]:hover {
+  background: linear-gradient(145deg, #45A049, #4CAF50);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .bug-success {
@@ -69,22 +89,8 @@
 
 @media (max-width: 768px) {
   .bug-form {
-    max-width: 100%;
-    margin: 1rem;
-    margin-top: 100px;
-    padding: 1.5rem;
-  }
-  
-  .bug-title {
-    font-size: 1.5rem;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .bug-form {
-    margin: 0.5rem;
-    margin-top: 80px;
+    margin: 0.5rem auto;
+    margin-top: 20px;
     padding: 1rem;
   }
   

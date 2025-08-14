@@ -95,3 +95,52 @@
   color: #777;
   text-align: center;  
 }
+
+@media (max-width: 768px) {
+  .faq-main {
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 10px;
+    border-radius: 8px;
+  }
+
+  .faq-main h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .faq-search {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .faq-list {
+    padding: 12px;
+  }
+
+  .faq-item {
+    padding: 12px 0;
+  }
+
+  .faq-question {
+    font-size: 16px;
+    padding-right: 24px;
+  }
+
+  .faq-question::after {
+    font-size: 20px;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+    padding-left: 10px;
+  }
+
+  .faq-footer {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+}

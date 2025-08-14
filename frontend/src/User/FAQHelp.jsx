@@ -90,7 +90,9 @@ const FAQHelp = () => {
             )}
           </div>
         )}
-        <p className="faq-footer">{t('stillNeedHelp')}</p>
+        <p className="faq-footer">{t('stillNeedHelp')}
+          <a href="mailto:support@example.com">jwang109@mymail.sim.edu.sg</a>
+        </p>
       </main>
     </div>
   );

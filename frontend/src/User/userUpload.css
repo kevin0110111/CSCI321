@@ -233,6 +233,25 @@
   height: 50px;
 }
 
+@media (max-width: 1024px) {
+  .user-upload-modal-content {
+    max-width: 70vw;
+    max-height: 70vh;
+    padding: 16px;
+  }
+
+  .user-upload-modal-content button {
+    width: 130px;
+    max-width: none;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .user-upload-modal-content button+button {
+    margin-top: 8px;
+  }
+}
+
 .user-upload-premium-btn {
   background-color: #aaa;
   color: white;
@@ -299,9 +318,10 @@
 
   .user-upload-preview-filename {
     font-size: 0.85rem;
-    max-width: 150px;
+    overflow-wrap: break-word;
     word-break: break-all;
-    flex-grow: 1;
+    text-overflow: unset;
+    max-width: none;
   }
 
   .user-upload-remove-btn {
