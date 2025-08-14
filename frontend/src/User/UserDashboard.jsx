@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 
 function ImageCarousel() {
     const images = [
-        "/public/dbimg1.png",
-        "/public/dbimg2.png",
-        "/public/dbimg3.png",
-        "/public/dbimg1.png",
-        "/public/dbimg2.png",
-        "/public/dbimg3.png",
+        "/dbimg1.png",
+        "/dbimg2.png",
+        "/dbimg3.png",
+        "/dbimg4.png",
+        "/dbimg5.png",
+        "/dbimg6.png",
     ];
 
     const [current, setCurrent] = useState(0);
