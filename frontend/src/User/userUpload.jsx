@@ -527,19 +527,13 @@ export default function UserUpload() {
             {isCountLoading ? t("counting") || "Counting..." : t("count") || "Count"}
           </button>
           
-          {isPremium ? (
+          {isPremium && (
             <button className="user-upload-premium-btn" disabled={isCountLoading || isDiseaseLoading} onClick={handleDisease}>
               {isDiseaseLoading ? t("checking") || "Checking..." : t("checkDisease") || "Check Disease"}
             </button>
-          ) : (
-            <button 
-              className="user-upload-upgrade-btn" 
-              onClick={() => navigate('/subscription')}
-            >
-              {t("upgradeToPremium") || "Upgrade to Premium"}
-            </button>
           )}
         </div>
+
         {!isPremium && (
           <div style={{ color: "#e53935", marginTop: 8, fontSize: 14 }}>
             {t("premiumFeatureAlert") || "Premium feature - upgrade to access disease detection"}
