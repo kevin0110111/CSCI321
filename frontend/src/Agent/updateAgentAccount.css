@@ -267,3 +267,25 @@
   border: none;
   border-radius: 4px;
 }
+
+.agentdob-input-wrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.agentdate-picker-input {
+  width: 235% !important; 
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  height: 35px !important;
+  box-sizing: border-box;
+}
+
+.agentdate-picker-input:read-only {
+  background-color: #f5f5f5;
+  color: #666;
+}
