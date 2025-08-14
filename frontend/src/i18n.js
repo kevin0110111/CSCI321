@@ -35,7 +35,7 @@ const resources = {
       reset: 'Reset',
       count: 'Count',
       counting: 'Counting...',
-      checkDisease: 'Check Disease',
+      checkDisease: 'Check Disease (Premium)',
       checking: 'Checking...',
       premiumFeatureAlert: 'Only premium users can upload ZIP/multiple images and use disease detection.',
       notMaizeConfirm: 'This seems like not a maize, are you sure you want to continue?',
@@ -147,17 +147,6 @@ const resources = {
       processingTime: 'Processing Time',
       imageSize: 'Image Size',
       back: 'Back',
-      Date: 'Date',
-      type: 'Detect Type',
-      searchResults: 'Search Results',
-      number: 'Number',
-      note: 'Note',
-      date: 'Date',
-      imageId: 'Image ID',
-      id: 'Num',
-      maizeCount: 'Maize Count',
-      noResults: 'No results found',
-     
 
       //user/dashboard
       weatherInSingapore: 'Weather in Singapore',
@@ -252,7 +241,7 @@ const resources = {
       cancel: '取消',
       faqHelp: '常见问题 / 帮助',
       reportBug: '报告错误',
-      resultHistory: '历史结果',
+      resultHistory: '结果历史',
 
       //user/upload
       uploadMaizeImages: '上传玉米图片',
@@ -263,7 +252,7 @@ const resources = {
       reset: '重置',
       count: '计数',
       counting: '正在计数...',
-      checkDisease: '检查病害',
+      checkDisease: '检查病害 (高级用户)',
       checking: '正在检查...',
       premiumFeatureAlert: '只有高级用户可以上传ZIP文件/多张图片并使用病害检测功能。',
       notMaizeConfirm: '这似乎不是玉米，您确定要继续吗？',
@@ -377,18 +366,6 @@ const resources = {
       processingTime: '处理时间',
       imageSize: '图片大小',
       back: '返回',
-      Date: '日期',
-      type: '检测类型',
-      searchResults: '搜索结果或者备注',
-      number: '序号',
-      note: '备注',
-      date: '日期',
-      imageId: '图片ID',
-      id: '序号',
-      maizeCount: '玉米计数',
-      noResults: '未找到历史结果',
-    
-      
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',

@@ -1,7 +1,7 @@
 .comment-form {
   max-width: 600px;
   margin: 2rem auto;
-  margin-top: 120px; /* Reduced for mobile */
+  margin-top: 200px;
   background: #fff;
   padding: 2rem;
   border-radius: 10px;
@@ -46,7 +46,6 @@
   border-radius: 6px;
   background-color: #ddd;
   cursor: pointer;
-  min-width: 120px; /* Ensure buttons have a reasonable width */
 }
 
 .comment-actions button:hover {
@@ -58,131 +57,4 @@
   text-align: center;
   font-weight: bold;
   color: green;
-}
-
-/* Rating stars */
-.rating-container {
-  margin-bottom: 1.5rem;
-}
-
-.rating-title {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  text-align: left;
-}
-
-.rating-stars {
-  display: flex;
-  gap: 0.5rem;
-  font-size: 2rem;
-}
-
-.star {
-  cursor: pointer;
-  color: #ccc;
-}
-
-.star.selected {
-  color: #FFD700;
-}
-
-/* Tablet responsive styles */
-@media (max-width: 768px) {
-  .comment-form {
-    margin: 1.5rem auto;
-    margin-top: 100px;
-    padding: 1.5rem;
-    max-width: 90%;
-  }
-
-  .comment-title {
-    font-size: 1.3rem;
-  }
-
-  .comment-form textarea {
-    padding: 0.7rem;
-    font-size: 0.95rem;
-  }
-
-  .rating-stars {
-    font-size: 1.8rem;
-  }
-}
-
-/* Mobile responsive styles */
-@media (max-width: 480px) {
-  .comment-form {
-    margin: 1rem auto;
-    margin-top: 80px;
-    padding: 1rem;
-    max-width: 95%;
-    border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-  }
-
-  .comment-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .comment-form textarea {
-    min-height: 100px;
-    padding: 0.6rem;
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .char-count {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-  }
-
-  .rating-container {
-    margin-bottom: 1rem;
-  }
-
-  .rating-title {
-    font-size: 0.9rem;
-  }
-
-  .rating-stars {
-    font-size: 1.6rem;
-    justify-content: center;
-  }
-
-  .comment-actions {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .comment-actions button {
-    width: 100%;
-    padding: 0.7rem 0;
-    font-size: 0.95rem;
-  }
-
-  .thank-you {
-    margin-top: 1rem;
-    font-size: 0.95rem;
-  }
-}
-
-/* Touch device optimization */
-@media (hover: none) {
-  .comment-actions button {
-    transition: none;
-  }
-
-  .comment-actions button:active {
-    background-color: #bbb;
-  }
-
-  .star {
-    padding: 0 5px; /* Larger touch target */
-  }
-
-  .comment-form textarea:focus {
-    border-color: #4f46e5;
-    outline: none;
-  }
 }

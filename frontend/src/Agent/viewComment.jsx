@@ -210,15 +210,16 @@ export default function ViewComment() {
                   className="reply-box"
                 />
               </div>
+
+              <div className="action-buttons">
+                <button className="reply-button" onClick={handleReplySubmit}>Reply</button>
+              </div>
             </>
           )}
 
-          <div className="agentAction-buttons">
-            {!comment.reply_content && (
-              <button className="agentReply-button" onClick={handleReplySubmit}>Reply</button>
-            )}
-            <button className="agentDelete-button" onClick={handleDeleteClick}>Delete</button>
-            <button className="agentBack-button" onClick={handleBack}>Back</button>
+          <div className="action-buttons">
+            <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
+            <button className="back-button" onClick={handleBack}>Back</button>
           </div>
 
           {showDeleteConfirm && (

@@ -27,8 +27,6 @@ export default function UserUpload() {
   const [savingResultIndex, setSavingResultIndex] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [isCountLoading, setIsCountLoading] = useState(false);
-  const [isDiseaseLoading, setIsDiseaseLoading] = useState(false);
 
   useEffect(() => {
     document.title = t("uploadImage")
@@ -176,7 +174,7 @@ export default function UserUpload() {
       alert(t("uploadImageFirstAlert") || "Please upload an image first")
       return
     }
-    setIsCountLoading(true)  
+    setLoading(true)
     setResults([]) // Clear old results
 
     const newPendingTasks = []
@@ -205,7 +203,7 @@ export default function UserUpload() {
       setPendingTasks(newPendingTasks.slice(1));
       setShowMaizeConfirm(true);
     } else {
-      setIsCountLoading(false);  // 使用Count特定的加载状态
+      setLoading(false);
     }
   };
 
@@ -262,7 +260,7 @@ export default function UserUpload() {
 
   const doDisease = async () => {
     setShowDiseaseTip(false)
-    setIsDiseaseLoading(true)  
+    setLoading(true)
     setResults([]) // Clear old results
     for (const file of files) {
       try {
@@ -278,7 +276,7 @@ export default function UserUpload() {
         ])
       }
     }
-    setIsDiseaseLoading(false)  
+    setLoading(false)
   }
 
   const handleSaveResult = (resultIndex) => {
@@ -388,7 +386,7 @@ export default function UserUpload() {
       });
       
       if (!resultResponse.ok) {
-        console.warn("Failed to save result to database:");
+        console.warn("结果保存到数据库失败，但图片已上传");
         throw new Error("Failed to save result to database");
       }
       
@@ -523,17 +521,13 @@ export default function UserUpload() {
           <button className="user-upload-reset-btn" onClick={handleReset}>
             {t("reset") || "Reset"}
           </button>
-          <button className="user-upload-submit-btn" onClick={handleCount} disabled={isCountLoading || isDiseaseLoading}>
-            {isCountLoading ? t("counting") || "Counting..." : t("count") || "Count"}
+          <button className="user-upload-submit-btn" onClick={handleCount} disabled={loading}>
+            {loading ? t("counting") || "Counting..." : t("count") || "Count"}
           </button>
-          
-          {isPremium && (
-            <button className="user-upload-premium-btn" disabled={isCountLoading || isDiseaseLoading} onClick={handleDisease}>
-              {isDiseaseLoading ? t("checking") || "Checking..." : t("checkDisease") || "Check Disease"}
-            </button>
-          )}
+          <button className="user-upload-premium-btn" disabled={!isPremium || loading} onClick={handleDisease}>
+            {loading ? t("checking") || "Checking..." : t("checkDisease") || "Check Disease (Premium)"}
+          </button>
         </div>
-
         {!isPremium && (
           <div style={{ color: "#e53935", marginTop: 8, fontSize: 14 }}>
             {t("premiumFeatureAlert") || "Premium feature - upgrade to access disease detection"}
