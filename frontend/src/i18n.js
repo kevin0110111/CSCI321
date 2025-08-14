@@ -147,6 +147,17 @@ const resources = {
       processingTime: 'Processing Time',
       imageSize: 'Image Size',
       back: 'Back',
+      Date: 'Date', 
+      type: 'Type',
+      all: 'All',
+      searchResults: 'Search Results',
+      number: 'Number',
+      note: 'Note',
+      maizeCount: 'Tassel Count',
+      imageId: 'Image ID',
+      id: 'ID',
+      close: 'Close',
+      
 
       //user/dashboard
       weatherInSingapore: 'Weather in Singapore',
@@ -366,6 +377,16 @@ const resources = {
       processingTime: '处理时间',
       imageSize: '图片大小',
       back: '返回',
+      Date: '日期', // Added translation for Date
+      type: '类型',
+      all: '全部',
+      searchResults: '搜索结果',
+      number: '序号',
+      note: '备注',
+      maizeCount: '玉米穗计数',
+      imageId: '图片ID',
+      id: '编号',
+      close: '关闭',
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',
@@ -386,7 +407,7 @@ const resources = {
       missingAccountOrProfileID: '账户或个人资料ID缺失。请重新登录。',
       fetchDataError: '获取数据失败：{{message}}。请检查网络或认证。',
       fetchDataFailedMessage: '获取数据时发生错误！',
-      accountIdNotAvailable: '账户ID不可用，请重新登录！',
+      accountIdNotAvailable: '账户ID不可用,请重新登录!',
       enterCurrentPassword: '请输入您当前的密码以进行更改。',
       newPasswordRequirements: '新密码不满足所有要求！',
       passwordChangeFailed: '更改密码失败：{{detail}}',

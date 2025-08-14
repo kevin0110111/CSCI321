@@ -223,7 +223,7 @@ export default function UserResult() {
               <th>{t('type') || 'TYPE'}</th>
               <th>{t('result') || 'RESULT'}</th>
               <th>{t('note') || 'NOTE'}</th>
-              <th>{t('date') || 'DATE'}</th>
+              <th>{t('Date') || 'DATE'}</th>
               <th>{t(' ') || ''}</th> 
             </tr>
           </thead>
@@ -299,7 +299,7 @@ export default function UserResult() {
                   : selectedResult.result_data
                 }</p>
                 <p><strong>{t('imageId') || 'Image ID'}:</strong> {selectedResult.image_id}</p>
-                <p><strong>{t('date') || 'Date'}:</strong> {format(new Date(selectedResult.created_at), 'yyyy-MM-dd')}</p>
+                <p><strong>{t('Date') || 'Date'}:</strong> {format(new Date(selectedResult.created_at), 'yyyy-MM-dd')}</p>
                 <p><strong>{t('note') || 'Note'}:</strong> {selectedResult.note || '-'}</p>
               </div>
               
