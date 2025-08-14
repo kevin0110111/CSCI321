@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import calendar from '../assets/calendar.svg';
 
 export default function UpdateUserAccount() {
   const navigate = useNavigate();
@@ -31,21 +34,7 @@ export default function UpdateUserAccount() {
   const [fetchError, setFetchError] = useState(null); 
   const [responseBox, setResponseBox] = useState({ show: false, message: '' }); 
 
-
-  const formatDob = (dob) => {
-    if (!dob) return '';
-    try {
-      const date = new Date(dob);
-      if (isNaN(date.getTime())) return ''; 
-      return date.toLocaleDateString('en-GB').split('/').join('-');
-    } catch (error) {
-      console.error('DOB format error:', error);
-      return '';
-    }
-  };
-
   useEffect(() => {
-
     const storedAccountId = localStorage.getItem('accountId');
     const storedAccountString = localStorage.getItem('account');
 
@@ -69,7 +58,7 @@ export default function UpdateUserAccount() {
             username: storedAccount.username || '',
             email: storedAccount.email || '',
             name: storedAccount.profile.name || '',
-            dob: formatDob(storedAccount.profile.dob) || '',
+            dob: storedAccount.profile.dob || '',
           }));
         } else {
           console.warn('Stored account missing profile or profile_id');
@@ -119,7 +108,7 @@ export default function UpdateUserAccount() {
           username: accountData.username || '',
           email: accountData.email || '',
           name: profileData.name || '',
-          dob: formatDob(profileData.dob) || '',
+          dob: profileData.dob ? profileData.dob : '',
         }));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -153,7 +142,6 @@ export default function UpdateUserAccount() {
       setResponseBox({ show: true, message: t('accountIdNotAvailable') });
       return;
     }
-
 
     if (formData.newPassword) {
       if (!formData.currentPassword) {
@@ -202,21 +190,14 @@ export default function UpdateUserAccount() {
       }
     }
 
-
     const accountUpdatePayload = {
       username: formData.username,
       email: formData.email,
     };
 
-    let formattedDob = '';
-    if (formData.dob) {
-      const [day, month, year] = formData.dob.split('-').map(Number);
-      formattedDob = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    }
-
     const profileUpdatePayload = {
       name: formData.name,
-      dob: formattedDob || null, 
+      dob: formData.dob,
     };
 
     try {
@@ -245,7 +226,7 @@ export default function UpdateUserAccount() {
         updatedAccount.username = formData.username;
         updatedAccount.email = formData.email;
         updatedAccount.profile.name = formData.name;
-        updatedAccount.profile.dob = formattedDob;
+        updatedAccount.profile.dob = formData.dob;
         localStorage.setItem('account', JSON.stringify(updatedAccount));
       } else {
         const accountError = await accountResponse.json();
@@ -306,7 +287,32 @@ export default function UpdateUserAccount() {
 
               <div className="form-field">
                 <label>{t('dobLabel')}</label>
-                <input type="text" name="dob" placeholder="DD-MM-YYYY" value={formData.dob} onChange={handleInputChange} readOnly={!isEditing} />
+                <div className="agentdob-input-wrapper">
+                  <DatePicker
+                    selected={formData.dob ? new Date(formData.dob) : null}
+                    onChange={(date) => {
+                      const isoDate = date ? date.toISOString().split('T')[0] : '';
+                      setFormData(prev => ({
+                        ...prev,
+                        dob: isoDate
+                      }));
+                    }}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Date of birth"
+                    className="agentdate-picker-input"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    id="dob-datepicker"
+                    readOnly={!isEditing}
+                  />
+                  <img
+                    src={calendar}
+                    alt="Calendar"
+                    className="calendar-icon"
+                    onClick={() => isEditing && document.getElementById('dob-datepicker')?.focus()}
+                  />
+                </div>
               </div>
 
               <div className="form-field">

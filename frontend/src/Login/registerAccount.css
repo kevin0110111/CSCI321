@@ -92,7 +92,16 @@ textarea.register-input{
 
 /* DOB datepicker + icon */
 .dob-input-wrapper{ position:relative; width:100%; }
-.date-picker-input{ padding-right: 40px; } /* space for icon */
+.date-picker-input{ 
+  width: 192% !important; 
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 10px !important;
+  font-size: 1rem !important;
+  height: 45px !important;
+  box-sizing: border-box;
+ }
+ 
 .calendar-icon{
   position:absolute;
   right:12px; top:50%;
