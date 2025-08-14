@@ -98,8 +98,9 @@
   text-align: center;  
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .faq-main {
+    margin-top: 0rem;
     padding: 20px;
     border-radius: 8px;
   }

@@ -73,7 +73,7 @@
   background-color: #b9fce2;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .comments-container {
     margin-top: 0rem;
   }

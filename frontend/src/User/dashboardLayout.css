@@ -216,7 +216,7 @@ body {
 }
 
 /* Responsive media query for mobile (screens < 768px) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .dashboard-header {
         height: 60px; /* Reduce height for mobile */
         padding: 0 10px; /* Less padding to save space */
@@ -263,6 +263,7 @@ body {
     }
 
     .dashboard-content {
+        margin-top: 10px;
         margin-left: 0 !important;
         padding: 10px;
     }
