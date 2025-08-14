@@ -270,5 +270,7 @@
 @media (max-width: 968px) {
   .subscription-container {
     margin-top: 0rem;
+    padding-left: 2rem;
+    padding-top: 0.5rem;
   }
 }

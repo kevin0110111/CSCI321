@@ -1,6 +1,7 @@
 .comments-container {
   max-width: 700px;
   margin: 2rem auto;
+  padding: 1rem;
   text-align: left;
 }
 
@@ -76,5 +77,6 @@
 @media (max-width: 768px) {
   .comments-container {
     margin-top: 0rem;
+    padding: 10px;
   }
 }

@@ -1,7 +1,6 @@
 .user-result-container {
   padding: 20px;
   max-width: 100%;
-
 }
 
 .user-result-container h2 {
@@ -347,7 +346,7 @@
 /* Enhanced mobile responsiveness */
 @media (max-width: 768px) {
   .user-result-container {
-    padding: 15px;
+    padding: 10px;
   }
   
   .user-result-filters {
