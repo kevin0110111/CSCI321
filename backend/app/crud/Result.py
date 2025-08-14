@@ -38,7 +38,7 @@ def create_result(db: Session, result: ResultCreate):
         user_id=result.user_id,
         result_type=result.result_type,
         result_data=result.result_data,
-        is_saved=result.is_saved,
+        is_saved=result.is_saved if result.is_saved is not None else True,
         note=result.note
     )
     db.add(db_result)

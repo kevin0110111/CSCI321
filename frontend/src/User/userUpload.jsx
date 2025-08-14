@@ -22,6 +22,11 @@ export default function UserUpload() {
   const [modalImageUrl, setModalImageUrl] = useState(null)
   const [pendingTasks, setPendingTasks] = useState([]);
   const { t } = useTranslation()
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [currentNote, setCurrentNote] = useState('');
+  const [savingResultIndex, setSavingResultIndex] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     document.title = t("uploadImage")
@@ -260,10 +265,145 @@ export default function UserUpload() {
   }
 
   const handleSaveResult = (resultIndex) => {
-    // Implementation for saving result
-    console.log("Saving result:", results[resultIndex])
-    // You can add your save logic here
-  }
+    // 打开note modal并设置当前要保存的结果索引
+    setSavingResultIndex(resultIndex);
+    setCurrentNote(''); // 清空之前的note
+    setShowNoteModal(true);
+  };
+
+  const saveResultWithNote = async () => {
+    // 关闭modal
+    setShowNoteModal(false);
+    
+    // 获取要保存的结果
+    const resultIndex = savingResultIndex;
+    const result = results[resultIndex];
+    
+    // 显示保存中状态
+    const saveBtn = document.querySelector(`[data-idx="${resultIndex}"].user-upload-save-btn`);
+    const originalText = saveBtn.textContent;
+    saveBtn.disabled = true;
+    saveBtn.textContent = t("saving") || "Saving...";
+    
+    try {
+      const accountId = localStorage.getItem("accountId");
+      
+      if (!accountId) {
+        alert(t("loginRequired") || "Please login to save results");
+        return;
+      }
+      
+      let imageFile, formData = new FormData();
+      
+      // 根据不同任务类型处理不同的图像数据
+      if (result.taskType === "count" && result.image_base64) {
+        // 计数任务 - 保存带标注的结果图像
+        const base64Data = result.image_base64;
+        const byteCharacters = atob(base64Data);
+        const byteArrays = [];
+        
+        for (let i = 0; i < byteCharacters.length; i += 512) {
+          const slice = byteCharacters.slice(i, i + 512);
+          const byteNumbers = new Array(slice.length);
+          for (let j = 0; j < slice.length; j++) {
+            byteNumbers[j] = slice.charCodeAt(j);
+          }
+          byteArrays.push(new Uint8Array(byteNumbers));
+        }
+        
+        const blob = new Blob(byteArrays, { type: "image/jpeg" });
+        const fileName = `maize_count_result_${Date.now()}.jpg`;
+        imageFile = new File([blob], fileName, { type: "image/jpeg" });
+        
+      } else if (result.taskType === "disease") {
+        // 疾病检测任务 - 保存原始图像
+        try {
+          const response = await fetch(result.previewUrl);
+          const blob = await response.blob();
+          const fileName = `maize_disease_original_${Date.now()}.jpg`;
+          imageFile = new File([blob], fileName, { type: blob.type });
+        } catch (error) {
+          console.error("Error fetching image from URL:", error);
+          throw new Error("Failed to prepare image for upload");
+        }
+      } else {
+        alert(t("noImageToSave") || "No image data to save.");
+        return;
+      }
+      
+      // 创建并提交FormData保存图像
+      formData.append("user_id", accountId);
+      formData.append("file", imageFile);
+      formData.append("result_type", result.taskType);
+      if (result.result) {
+        formData.append("result_value", result.result.toString());
+      }
+      
+      // 调用API保存图像
+      const response = await fetch(`${BASE_API_URL}/images/`, {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // 2. 保存结果到results表
+      const resultData = {
+        user_id: parseInt(accountId),
+        image_id: data.image_id,
+        result_type: result.taskType,
+        result_data: result.result ? result.result.toString() : "",
+        is_saved: true,
+        note: currentNote // 添加用户输入的note
+      };
+      
+      // 调用API保存结果
+      const resultResponse = await fetch(`${BASE_API_URL}/results/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resultData),
+      });
+      
+      if (!resultResponse.ok) {
+        console.warn("结果保存到数据库失败，但图片已上传");
+        throw new Error("Failed to save result to database");
+      }
+      
+      // 显示成功消息
+      setSuccessMessage(t("imageSavedSuccess") || "Image saved successfully!");
+      setShowSuccessModal(true);
+      
+      // 记录到结果中，以防止重复保存
+      result.savedToDatabase = true;
+      result.savedImageId = data.image_id;
+      
+      // 更新results数组中的对象
+      const updatedResults = [...results];
+      updatedResults[resultIndex] = { ...result };
+      setResults(updatedResults);
+      
+    } catch (error) {
+      console.error("Error saving image:", error);
+      setSuccessMessage(t("saveImageError") || "Error saving image. Please try again.");
+      setShowSuccessModal(true); // 或创建单独的错误Modal
+    } finally {
+      // 恢复按钮状态
+      const saveBtn = document.querySelector(`[data-idx="${resultIndex}"].user-upload-save-btn`);
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+      }
+      
+      // 清除保存状态
+      setSavingResultIndex(null);
+    }
+  };
 
   const handleDeleteResult = (resultIndex) => {
     const updatedResults = results.filter((_, index) => index !== resultIndex)
@@ -484,6 +624,82 @@ export default function UserUpload() {
         </div>
       )}
 
+      {/* Note Modal */}
+      {showNoteModal && (
+        <div className="user-upload-modal">
+          <div className="user-upload-modal-content">
+            <h3>{t("AddNote") || "Add Note"}</h3>
+            <p>{t("Add Description for your image.") || "Add a description or note for this result:"}</p>
+            
+            <textarea
+              value={currentNote}
+              onChange={(e) => setCurrentNote(e.target.value)}
+              placeholder={t("Enter your note.") || "Enter your notes here..."}
+              style={{
+                width: "100%",
+                height: "100px",
+                marginTop: "10px",
+                marginBottom: "15px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                resize: "vertical"
+              }}
+            />
+            
+            <div style={{
+              display: "flex",
+              gap: "10px",
+              justifyContent: "center",
+              marginTop: "15px"
+            }}>
+              <button 
+                className="user-upload-submit-btn"
+                onClick={() => saveResultWithNote()}
+              >
+                {t("save") || "Save"}
+              </button>
+              <button
+                className="user-upload-reset-btn"
+                onClick={() => {
+                  setShowNoteModal(false);
+                  setCurrentNote('');
+                  setSavingResultIndex(null);
+                }}
+              >
+                {t("cancel") || "Cancel"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="user-upload-modal">
+          <div className="user-upload-modal-content">
+            <div style={{ textAlign: "center", marginBottom: "15px" }}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <p style={{ textAlign: "center", fontSize: "1.2rem" }}>{successMessage}</p>
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px"
+            }}>
+              <button 
+                className="user-upload-submit-btn"
+                onClick={() => setShowSuccessModal(false)}
+              >
+                {t("ok") || "OK"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {results.length > 0 && (
         <div className="user-upload-results-container">
           <h3>{t("results") || "Results"}</h3>
@@ -546,10 +762,20 @@ export default function UserUpload() {
               <div className="user-upload-result-box user-upload-green-box">
                 <h4>{t("actions") || "Actions"}</h4>
                 <div className="user-upload-action-buttons">
-                  <button className="user-upload-save-btn" onClick={() => handleSaveResult(idx)}>
-                    {t("save") || "Save"}
+                  <button 
+                    className="user-upload-save-btn" 
+                    data-idx={idx} 
+                    onClick={() => handleSaveResult(idx)}
+                    disabled={res.savedToDatabase}
+                  >
+                    {res.savedToDatabase 
+                      ? (t("Saved") || "Saved") 
+                      : (t("save") || "Save")}
                   </button>
-                  <button className="user-upload-delete-btn" onClick={() => handleDeleteResult(idx)}>
+                  <button 
+                    className="user-upload-delete-btn" 
+                    onClick={() => handleDeleteResult(idx)}
+                  >
                     {t("delete") || "Delete"}
                   </button>
                 </div>
