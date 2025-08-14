@@ -38,18 +38,6 @@ export default function UserResult() {
   // For recording selected result items
   const [selectedRows, setSelectedRows] = useState([]);
   
-  // Responsive state
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 480);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
   // Get account ID
   const accountId = localStorage.getItem("accountId");
   const BASE_API_URL = "https://fyp-backend-a0i8.onrender.com/api";
@@ -261,7 +249,7 @@ export default function UserResult() {
                         className="user-result-view-btn"
                         onClick={() => handleViewResult(result)}
                       >
-                        {isMobile ? t("view") : t("viewImage")}
+                        {t('view') || 'View'}
                       </button>
                     </td>
                   </tr>

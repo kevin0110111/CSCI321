@@ -156,7 +156,6 @@ const resources = {
       imageId: 'Image ID',
       id: 'Num',
       maizeCount: 'Maize Count',
-      noResults: 'No results found',
      
 
       //user/dashboard
@@ -386,7 +385,6 @@ const resources = {
       imageId: '图片ID',
       id: '序号',
       maizeCount: '玉米计数',
-      noResults: '未找到历史结果',
     
       
 
