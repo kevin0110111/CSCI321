@@ -2,14 +2,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import calendar from '../assets/calendar.svg';
 
 export default function UpdateUserAccount() {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
   const { t } = useTranslation();
+  const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -30,16 +28,16 @@ export default function UpdateUserAccount() {
 
   const [currentAccountId, setCurrentAccountId] = useState(null);
   const [currentProfileId, setCurrentProfileId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
-  const [fetchError, setFetchError] = useState(null); 
-  const [responseBox, setResponseBox] = useState({ show: false, message: '' }); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+  const [responseBox, setResponseBox] = useState({ show: false, message: '' });
 
   useEffect(() => {
     const storedAccountId = localStorage.getItem('accountId');
     const storedAccountString = localStorage.getItem('account');
 
-    console.log('Stored accountId:', storedAccountId); 
-    console.log('Stored account string:', storedAccountString); 
+    console.log('Stored accountId:', storedAccountId);
+    console.log('Stored account string:', storedAccountString);
 
     if (storedAccountId) {
       setCurrentAccountId(parseInt(storedAccountId, 10));
@@ -49,7 +47,7 @@ export default function UpdateUserAccount() {
     if (storedAccountString) {
       try {
         storedAccount = JSON.parse(storedAccountString);
-        console.log('Parsed storedAccount:', storedAccount); 
+        console.log('Parsed storedAccount:', storedAccount);
         if (storedAccount && storedAccount.profile && storedAccount.profile.profile_id) {
           setCurrentProfileId(storedAccount.profile.profile_id);
 
@@ -69,7 +67,7 @@ export default function UpdateUserAccount() {
       }
     }
     setIsLoading(false);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const fetchAccountAndProfile = async () => {
@@ -82,10 +80,10 @@ export default function UpdateUserAccount() {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
         const headers = {
           'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}), 
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         };
 
         const accountResponse = await fetch(`https://fyp-backend-a0i8.onrender.com/api/accounts/${currentAccountId}`, { headers });
@@ -100,8 +98,8 @@ export default function UpdateUserAccount() {
         }
         const profileData = await profileResponse.json();
 
-        console.log('Fetched accountData:', accountData); 
-        console.log('Fetched profileData:', profileData); 
+        console.log('Fetched accountData:', accountData);
+        console.log('Fetched profileData:', profileData);
 
         setFormData(prev => ({
           ...prev,
@@ -288,29 +286,13 @@ export default function UpdateUserAccount() {
               <div className="form-field">
                 <label>{t('dobLabel')}</label>
                 <div className="agentdob-input-wrapper">
-                  <DatePicker
-                    selected={formData.dob ? new Date(formData.dob) : null}
-                    onChange={(date) => {
-                      const isoDate = date ? date.toISOString().split('T')[0] : '';
-                      setFormData(prev => ({
-                        ...prev,
-                        dob: isoDate
-                      }));
-                    }}
-                    dateFormat="yyyy-MM-dd"
-                    placeholderText="Date of birth"
+                  <input
+                    type="date"
+                    name="dob"
+                    value={formData.dob}
+                    onChange={handleInputChange}
                     className="agentdate-picker-input"
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    id="dob-datepicker"
-                    readOnly={!isEditing}
-                  />
-                  <img
-                    src={calendar}
-                    alt="Calendar"
-                    className="calendar-icon"
-                    onClick={() => isEditing && document.getElementById('dob-datepicker')?.focus()}
+                    disabled={!isEditing}
                   />
                 </div>
               </div>
