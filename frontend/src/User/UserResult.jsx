@@ -285,7 +285,7 @@ export default function UserResult() {
             <div className="user-result-modal-header">
               <h3>
                 {selectedResult.result_type === 'count'
-                  ? `${t('maizeCount') || 'Tassel Count'}: ${selectedResult.result_data}`
+                  ? `${t('maizeCount') || 'Maize Count'}: ${selectedResult.result_data}`
                   : `${t('diseaseDetection') || 'Disease Detection'}: ${t(`diseaseNames.${selectedResult.result_data}`) || selectedResult.result_data}`}
               </h3>
               <button className="user-result-close-btn" onClick={() => setShowModal(false)}>
