@@ -26,8 +26,7 @@ import UserComments from './User/UserComments';
 import UserDashboardlayout from './User/dashboardLayout';
 import CommentReply from './User/CommentReply';
 import FAQHelp from './User/FAQHelp';
-import DiseaseReport from './User/DiseaseReport';
-import DeleteAccount from './User/DeleteAccount';
+
 
 
 import AdminDashBoard from './Admin/AdminDashBoard';
