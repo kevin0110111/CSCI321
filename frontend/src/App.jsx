@@ -132,8 +132,6 @@ export default function App() {
           <Route path="switchLanguage" element={<SwitchLanguage />} />
           <Route path="comments" element={<UserComments />} />
           <Route path="faq" element={<FAQHelp />} />
-          <Route path="diseasereport" element={<DiseaseReport />} />
-          <Route path="deleteAccount" element={<DeleteAccount />} />
         </Route>
 
         {/* Admin routes - protected for 'admin' role */}
