@@ -269,6 +269,8 @@
   font-size: 14px;
   transition: background-color 0.2s;
   min-width: 80px;
+  margin: 5px 15px;
+  font-size: 1.5rem;
 }
 
 .user-result-primary-btn:hover {
