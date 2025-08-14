@@ -2,7 +2,6 @@
   max-width: 700px;
   margin: 2rem auto;
   text-align: left;
-  padding: 0 15px; /* Prevent content from touching edges */
 }
 
 .comment-reply-container h2 {
@@ -15,8 +14,6 @@
   align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
 }
 
 .comment-avatar {
@@ -25,23 +22,15 @@
   object-fit: cover;
   border-radius: 50%;
   background-color: #ddd;
-  flex-shrink: 0; /* Prevent avatar from shrinking on narrow screens */
-}
-
-.comment-content {
-  width: 100%; /* Allow content to take remaining space */
 }
 
 .comment-content p {
   margin: 0.25rem 0;
-  word-wrap: break-word; /* Prevent text from overflowing */
 }
 
 .comment-time {
   font-size: 0.85rem;
   color: #555;
-  display: block; /* Ensure it's on its own line */
-  margin-top: 0.5rem;
 }
 
 .reply-item {
@@ -49,26 +38,20 @@
   padding: 1rem;
   background-color: #f9f9f9;
   border-radius: 6px;
-  border-left: 3px solid #5eac9b; /* Visual cue that this is a reply */
 }
 
 .reply-item h3 {
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: #333;
+  margin-bottom: 0.15rem;
 }
 
 .reply-item p {
   margin: 0.25rem 0;
-  line-height: 1.5;
-  word-wrap: break-word; /* Prevent text from overflowing */
 }
 
 .reply-time {
   font-size: 0.85rem;
   color: #555;
-  display: block;
-  margin-top: 0.75rem;
 }
 
 .backToComment-button {
@@ -76,130 +59,13 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #5eac9b;
-  color: white;
-  font-weight: bold;
   cursor: pointer;
   margin-top: 1.5rem;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  min-width: 150px;
-  transition: background-color 0.2s;
 }
 
-.backToComment-button:hover {
+.back-button button:hover {
   background-color: #4c8b7e;
-}
-
-/* Tablet Responsive Styles */
-@media (max-width: 768px) {
-  .comment-reply-container {
-    margin: 1.5rem auto;
-  }
-
-  .comment-reply-container h2 {
-    font-size: 1.5rem;
-    text-align: center;
-  }
-
-  .comment-item {
-    margin-bottom: 1.2rem;
-  }
-
-  .reply-item {
-    padding: 0.8rem;
-  }
-
-  .reply-item h3 {
-    font-size: 1.2rem;
-  }
-
-  .backToComment-button {
-    margin-top: 1.2rem;
-  }
-}
-
-/* Mobile Responsive Styles */
-@media (max-width: 480px) {
-  .comment-reply-container {
-    margin: 1rem auto;
-  }
-
-  .comment-reply-container h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .comment-item {
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.8rem;
-  }
-
-  .comment-avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .comment-content p {
-    font-size: 0.95rem;
-  }
-
-  .comment-time {
-    font-size: 0.75rem;
-  }
-
-  .reply-item {
-    margin-top: 1rem;
-    padding: 0.8rem;
-  }
-
-  .reply-item h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .reply-item p {
-    font-size: 0.95rem;
-  }
-
-  .reply-time {
-    font-size: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .backToComment-button {
-    width: 100%;
-    padding: 0.7rem 1rem;
-    font-size: 0.95rem;
-    margin-top: 1rem;
-  }
-}
-
-/* Small Mobile Screens */
-@media (max-width: 360px) {
-  .comment-reply-container h2 {
-    font-size: 1.2rem;
-  }
-
-  .comment-avatar {
-    width: 35px;
-    height: 35px;
-  }
-
-  .comment-content p,
-  .reply-item p {
-    font-size: 0.9rem;
-  }
-}
-
-/* Touch Device Optimizations */
-@media (hover: none) {
-  .backToComment-button {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .backToComment-button:active {
-    background-color: #4c8b7e;
-  }
 }

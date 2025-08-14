@@ -17,6 +17,7 @@ import UserUpload from './User/userUpload';
 import UserDashboard from './User/UserDashboard';
 import UpdateUserAccount from './User/UpdateUserAccount';
 import UserResult from './User/UserResult';
+import DetectionResultView from './User/DetectionResultView';
 import UserSubscription from './User/UserSubscription';
 import ReportBug from './User/ReportBug';
 import LeaveComment from './User/LeaveComment';
@@ -123,6 +124,7 @@ export default function App() {
           <Route path="upload" element={<UserUpload />} />
           <Route path="updateUserAccount" element={<UpdateUserAccount />} />
           <Route path="result" element={<UserResult />} />
+          <Route path="resultview" element={<DetectionResultView />} />
           <Route path="subscription" element={<UserSubscription />} />
           <Route path="ReportBug" element={<ReportBug />} />
           <Route path="leaveComment" element={<LeaveComment />} />
