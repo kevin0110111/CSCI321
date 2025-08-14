@@ -23,7 +23,9 @@
 }
 
 .faq-search {
-  width: calc(100% - 20px);  
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   padding: 14px;  
   font-size: 16px;  
   border: 1px solid #ccc;
@@ -99,8 +101,6 @@
 @media (max-width: 768px) {
   .faq-main {
     padding: 20px;
-    max-width: 100%;
-    margin: 0 10px;
     border-radius: 8px;
   }
 
@@ -111,7 +111,6 @@
   }
 
   .faq-search {
-    width: 100%;
     padding: 10px;
     font-size: 14px;
     margin-bottom: 16px;

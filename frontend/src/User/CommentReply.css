@@ -4,6 +4,12 @@
   text-align: left;
 }
 
+@media (max-width: 768px) {
+  .comment-reply-container {
+    margin-top: 0rem;
+  }
+}
+
 .comment-reply-container h2 {
   font-size: 1.75rem;
   margin-bottom: 1rem;

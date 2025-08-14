@@ -265,3 +265,10 @@
 .payment-content .close-modal:hover {
   background-color: #e0e0e0;
 }
+
+
+@media (max-width: 768px) {
+  .subscription-container {
+    padding: 0.5rem 1rem;
+  }
+}

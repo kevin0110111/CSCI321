@@ -89,8 +89,7 @@
 
 @media (max-width: 768px) {
   .bug-form {
-    margin: 0.5rem auto;
-    margin-top: 20px;
+    margin-top: 0rem;
     padding: 1rem;
   }
   
