@@ -159,14 +159,14 @@ opacity: 0.8;
   border-color: #1d4ed8;
 }
 
-.action-buttons {
+.agentAction-buttons {
   display: flex;
   gap: 1rem;
 }
 
-.reply-button,
-.delete-button,
-.back-button {
+.agentReply-button,
+.agentDelete-button,
+.agentBack-button {
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
@@ -174,33 +174,33 @@ opacity: 0.8;
   font-weight: 500;
 }
 
-.reply-button {
+.agentReply-button {
   background-color: #1d4ed8;
   color: white;
   border: none;
 }
 
-.reply-button:hover {
+.agentReply-button:hover {
   background-color: #1e40af;
 }
 
-.delete-button {
+.agentDelete-button {
   background-color: #dc2626;
   color: white;
   border: none;
 }
 
-.delete-button:hover {
+.agentDelete-button:hover {
   background-color: #b91c1c;
 }
 
-.back-button {
+.agentBack-button {
   background-color: #f4f6f8;
   color: #333;
   border: 1px solid #ccc;
 }
 
-.back-button:hover {
+.agentBack-button:hover {
   background-color: #e0e0e0;
 }
 
