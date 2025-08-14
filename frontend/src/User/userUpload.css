@@ -559,8 +559,8 @@
     grid-template-areas:
       "blue"
       "grey"
-      "green"
-      "yellow";
+      "yellow"
+      "green";
     gap: 1rem;
     padding: 1rem;
     max-width: 100%;
@@ -578,6 +578,7 @@
   }
 
   .user-upload-action-buttons {
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
     gap: 0.5rem;
