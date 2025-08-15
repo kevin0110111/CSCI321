@@ -160,6 +160,7 @@ const resources = {
       id: 'ID',
       close: 'Close',
       savOrin: 'Save original image',
+      noResults: 'No results found for your search.',
       
 
       //user/dashboard
@@ -392,6 +393,7 @@ const resources = {
       id: '编号',
       close: '关闭',
       savOrin: '保存原图',
+      noResults: '未找到与您的搜索匹配的结果',
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',
