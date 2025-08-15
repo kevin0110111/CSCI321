@@ -263,33 +263,14 @@ export default function UpdateAgentAccount() {
 
             <div className="form-field">
               <label>Date of birth</label>
-              <div className="agentdob-input-wrapper">
-                <DatePicker
-                  selected={formData.dob ? new Date(formData.dob) : null}
-                  onChange={(date) => {
-                    const isoDate = date ? date.toISOString().split('T')[0] : '';
-                    setFormData(prev => ({
-                      ...prev,
-                      dob: isoDate
-                    }));
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="Date of birth"
-                  className="agentdate-picker-input"
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  id="dob-datepicker"
-                  readOnly={!isEditing}
-                />
-                <img
-                  src={calendar}
-                  alt="Calendar"
-                  className="calendar-icon"
-                  onClick={() => isEditing && document.getElementById('dob-datepicker')?.focus()}
-                />
-              </div>
-            </div>
+              <input
+                type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+              />
+            </div>  
 
             <div className="form-field">
               <label>Email</label>
