@@ -419,3 +419,26 @@
     font-size: 13px;
   }
 }
+
+
+.user-result-delete-btn {
+  background-color: #e53935; 
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.5rem; 
+  transition: background-color 0.2s;
+  min-width: 80px; 
+  margin: 5px 15px; 
+}
+
+.user-result-delete-btn:hover {
+  background-color: #c62828; 
+}
+
+.user-result-delete-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.4); 
+}

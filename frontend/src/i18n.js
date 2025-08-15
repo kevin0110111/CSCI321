@@ -161,6 +161,7 @@ const resources = {
       close: 'Close',
       savOrin: 'Save original image',
       noResults: 'No results found for your search.',
+      confirmDelete: 'Are you sure you want to delete this result?',
       
 
       //user/dashboard
@@ -399,6 +400,7 @@ const resources = {
       close: '关闭',
       savOrin: '保存原图',
       noResults: '未找到与您的搜索匹配的结果',
+      confirmDelete: '您确定要删除此结果吗？',
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',

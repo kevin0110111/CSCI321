@@ -138,7 +138,6 @@ export default function UserResult() {
     }
   };
 
-
   const handleSaveImage = async () => {
       if (!imageUrl) return;
       try {
@@ -185,6 +184,64 @@ export default function UserResult() {
       setSelectedRows([]);
     } else {
       setSelectedRows(filteredResults.map(result => result.result_id));
+    }
+  };
+
+  const handleDeleteResult = async (resultIndex) => {
+    const result = results[resultIndex];
+    
+    
+    if (result.savedToDatabase && result.result_id) {
+      try {
+        const response = await fetch(`${BASE_API_URL}/results/${result.result_id}`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to delete result');
+        }
+        
+        console.log('Result deleted successfully from database');
+      } catch (error) {
+        console.error('Error deleting result:', error);
+        alert(t('deleteError') || 'Error deleting result');
+        return;
+      }
+    }
+    
+    
+    const updatedResults = results.filter((_, index) => index !== resultIndex);
+    setResults(updatedResults);
+  };
+
+  const handleDeleteModalResult = async () => {
+    if (!selectedResult) return;
+    
+    
+    if (!window.confirm(t('confirmDelete') || 'Are you sure you want to delete this result?')) {
+      return;
+    }
+    
+    try {
+      const response = await fetch(`${BASE_API_URL}/results/${selectedResult.result_id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete result');
+      }
+      
+      
+      setResults(prev => prev.filter(item => item.result_id !== selectedResult.result_id));
+      
+      
+      setShowModal(false);
+      
+      
+      alert(t('deleteSuccess') || 'Result deleted successfully');
+    } catch (error) {
+      console.error('Error deleting result:', error);
+      alert(t('deleteError') || 'Error deleting result');
     }
   };
   
@@ -353,6 +410,13 @@ export default function UserResult() {
                 onClick={handleSaveImage}
                 disabled={!imageUrl || saving}>
               {saving ? (t('saving') || 'Saving...') : (t('savOrin') || 'Save')}
+              </button>
+
+              <button 
+                className="user-result-delete-btn"
+                onClick={() => handleDeleteModalResult()}
+              >
+                {t('delete') || 'Delete'}
               </button>
 
               <button 
