@@ -27,6 +27,12 @@ export default function UpdateAgentAccount() {
     specialChar: false,
     lowercase: false
   });
+  const [emailValid, setEmailValid] = useState(true);
+  const [formErrors, setFormErrors] = useState({
+    username: false,
+    name: false,
+    dob: false
+  });
   const navigate = useNavigate();
 
   const [currentAccountId, setCurrentAccountId] = useState(null);
@@ -69,11 +75,12 @@ export default function UpdateAgentAccount() {
         if (accountResponse.ok && profileResponse.ok) {
           setFormData(prev => ({
             ...prev,
-            username: accountData.username,
-            email: accountData.email,
-            name: profileData.name,
+            username: accountData.username || '',
+            email: accountData.email || '',
+            name: profileData.name || '',
             dob: profileData.dob ? profileData.dob : '',
           }));
+          setEmailValid(validateEmail(accountData.email || ''));
         } else {
           console.error('Failed to fetch account or profile data.');
           setResponseBox({ show: true, message: 'Failed to load account or profile data!' });
@@ -87,13 +94,9 @@ export default function UpdateAgentAccount() {
     fetchAccountAndProfile();
   }, [currentAccountId, currentProfileId]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    if (name === 'newPassword') {
-      validatePassword(value);
-    }
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const validatePassword = (password) => {
@@ -106,10 +109,56 @@ export default function UpdateAgentAccount() {
     });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'email') {
+      setEmailValid(validateEmail(value));
+    }
+
+    if (name === 'username') {
+      setFormErrors(prev => ({ ...prev, username: value.trim() === '' }));
+    }
+
+    if (name === 'name') {
+      setFormErrors(prev => ({ ...prev, name: value.trim() === '' }));
+    }
+
+    if (name === 'dob') {
+      setFormErrors(prev => ({ ...prev, dob: value.trim() === '' }));
+    }
+
+    if (name === 'newPassword') {
+      validatePassword(value);
+    }
+  };
+
   const handleSave = async () => {
     if (!currentAccountId || !currentProfileId) {
-        setResponseBox({ show: true, message: 'Account ID not available, please login again!' });
-        return;
+      setResponseBox({ show: true, message: 'Account ID not available, please login again!' });
+      return;
+    }
+
+    // Check for empty fields
+    const isUsernameEmpty = formData.username.trim() === '';
+    const isNameEmpty = formData.name.trim() === '';
+    const isDobEmpty = formData.dob.trim() === '';
+
+    setFormErrors({
+      username: isUsernameEmpty,
+      name: isNameEmpty,
+      dob: isDobEmpty
+    });
+
+    if (isUsernameEmpty || isNameEmpty || isDobEmpty) {
+      setResponseBox({ show: true, message: 'Please fill in all required fields!' });
+      return;
+    }
+
+    if (!emailValid) {
+      setResponseBox({ show: true, message: 'Please enter a valid email address!' });
+      return;
     }
 
     if (formData.newPassword) {
@@ -145,8 +194,8 @@ export default function UpdateAgentAccount() {
           });
           return;
         } else {
-            setResponseBox({ show: true, message: 'Password changed successfully!' });
-            setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '' }));
+          setResponseBox({ show: true, message: 'Password changed successfully!' });
+          setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '' }));
         }
       } catch (error) {
         console.error('Error changing password:', error);
@@ -209,7 +258,7 @@ export default function UpdateAgentAccount() {
   const AgentLogout = () => {
     localStorage.clear();
     navigate('/login');
-  }
+  };
 
   return (
     <div className="dashboard-container">
@@ -247,7 +296,11 @@ export default function UpdateAgentAccount() {
                 value={formData.username}
                 onChange={handleInputChange}
                 readOnly={!isEditing}
+                style={{ borderColor: formErrors.username ? 'red' : '' }}
               />
+              {formErrors.username && isEditing && (
+                <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>Username is required</p>
+              )}
             </div>
 
             <div className="form-field">
@@ -258,7 +311,11 @@ export default function UpdateAgentAccount() {
                 value={formData.name}
                 onChange={handleInputChange}
                 readOnly={!isEditing}
+                style={{ borderColor: formErrors.name ? 'red' : '' }}
               />
+              {formErrors.name && isEditing && (
+                <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>Name is required</p>
+              )}
             </div>
 
             <div className="form-field">
@@ -269,7 +326,11 @@ export default function UpdateAgentAccount() {
                 value={formData.dob}
                 onChange={handleInputChange}
                 disabled={!isEditing}
+                style={{ borderColor: formErrors.dob ? 'red' : '' }}
               />
+              {formErrors.dob && isEditing && (
+                <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>Date of birth is required</p>
+              )}
             </div>  
 
             <div className="form-field">
@@ -280,7 +341,11 @@ export default function UpdateAgentAccount() {
                 value={formData.email}
                 onChange={handleInputChange}
                 readOnly={!isEditing}
+                style={{ borderColor: emailValid ? '' : 'red' }}
               />
+              {!emailValid && isEditing && (
+                <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>Please enter a valid email address</p>
+              )}
             </div>
 
             <div className="form-field">

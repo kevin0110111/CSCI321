@@ -211,6 +211,10 @@ const resources = {
       saved: 'Saved',
       saving: 'Saving...',
       invalidEmail: 'Invalid Email',
+      usernameRequired: 'Username is required',
+      nameRequired: 'Name is required',
+      dobRequired: 'Date of birth is required',
+      requiredFieldsEmpty: 'Please fill in all required fields',
 
       diseaseSuggestions: {
         Blight: [
@@ -444,6 +448,10 @@ const resources = {
       saved: '已保存',
       saving: '正在保存...',
       invalidEmail: '邮箱错误',
+      usernameRequired: '请填写用户名',
+      nameRequired: '请填写姓名',
+      dobRequired: '请选择出生日期',
+      requiredFieldsEmpty: '更新错误，请填写空格',
       
       diseaseSuggestions: {
         Blight: [

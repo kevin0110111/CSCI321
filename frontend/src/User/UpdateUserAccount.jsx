@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import calendar from '../assets/calendar.svg';
 
 export default function UpdateUserAccount() {
   const navigate = useNavigate();
@@ -27,6 +26,11 @@ export default function UpdateUserAccount() {
   });
 
   const [emailValid, setEmailValid] = useState(true);
+  const [formErrors, setFormErrors] = useState({
+    username: false,
+    name: false,
+    dob: false
+  });
 
   const [currentAccountId, setCurrentAccountId] = useState(null);
   const [currentProfileId, setCurrentProfileId] = useState(null);
@@ -135,6 +139,18 @@ export default function UpdateUserAccount() {
       setEmailValid(validateEmail(value));
     }
 
+    if (name === 'username') {
+      setFormErrors(prev => ({ ...prev, username: value.trim() === '' }));
+    }
+
+    if (name === 'name') {
+      setFormErrors(prev => ({ ...prev, name: value.trim() === '' }));
+    }
+
+    if (name === 'dob') {
+      setFormErrors(prev => ({ ...prev, dob: value.trim() === '' }));
+    }
+
     if (name === 'newPassword') {
       setPasswordValidations({
         length: value.length >= 8,
@@ -149,6 +165,22 @@ export default function UpdateUserAccount() {
   const handleSave = async () => {
     if (!currentAccountId || !currentProfileId) {
       setResponseBox({ show: true, message: t('accountIdNotAvailable') });
+      return;
+    }
+
+    // Check for empty fields
+    const isUsernameEmpty = formData.username.trim() === '';
+    const isNameEmpty = formData.name.trim() === '';
+    const isDobEmpty = formData.dob.trim() === '';
+
+    setFormErrors({
+      username: isUsernameEmpty,
+      name: isNameEmpty,
+      dob: isDobEmpty
+    });
+
+    if (isUsernameEmpty || isNameEmpty || isDobEmpty) {
+      setResponseBox({ show: true, message: t('requiredFieldsEmpty') });
       return;
     }
 
@@ -291,12 +323,32 @@ export default function UpdateUserAccount() {
               {fetchError && <p style={{ color: 'red', marginBottom: '1rem' }}>{fetchError}</p>}
               <div className="form-field">
                 <label>{t('usernameLabel')}</label>
-                <input type="text" name="username" value={formData.username} onChange={handleInputChange} readOnly={!isEditing} />
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  readOnly={!isEditing}
+                  style={{ borderColor: formErrors.username ? 'red' : '' }}
+                />
+                {formErrors.username && isEditing && (
+                  <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>{t('usernameRequired')}</p>
+                )}
               </div>
 
               <div className="form-field">
                 <label>{t('nameLabel')}</label>
-                <input type="text" name="name" value={formData.name} onChange={handleInputChange} readOnly={!isEditing} />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  readOnly={!isEditing}
+                  style={{ borderColor: formErrors.name ? 'red' : '' }}
+                />
+                {formErrors.name && isEditing && (
+                  <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>{t('nameRequired')}</p>
+                )}
               </div>
 
               <div className="form-field">
@@ -309,8 +361,12 @@ export default function UpdateUserAccount() {
                     onChange={handleInputChange}
                     className="agentdate-picker-input"
                     disabled={!isEditing}
+                    style={{ borderColor: formErrors.dob ? 'red' : '' }}
                   />
                 </div>
+                {formErrors.dob && isEditing && (
+                  <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>{t('dobRequired')}</p>
+                )}
               </div>
 
               <div className="form-field">
