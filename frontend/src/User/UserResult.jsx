@@ -23,6 +23,7 @@ export default function UserResult() {
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
   
   // Filter condition states
   const [startDate, setStartDate] = useState('');
@@ -136,6 +137,36 @@ export default function UserResult() {
       console.error("Fail to fetch image:", err);
     }
   };
+
+
+  const handleSaveImage = async () => {
+      if (!imageUrl) return;
+      try {
+          setSaving(true);
+            const res = await fetch(imageUrl);
+          if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+          const blob = await res.blob();
+            const extGuess = (blob.type && blob.type.split('/')[1]) || 'jpg';
+          const dateStr = selectedResult
+              ? format(new Date(selectedResult.created_at), 'yyyyMMdd')
+            : format(new Date(), 'yyyyMMdd');
+          const filename = `result_${selectedResult?.result_data || 'image'}_${dateStr}.${extGuess}`;
+    
+          const objectUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = objectUrl;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(objectUrl);
+        } catch (e) {
+            console.error('Save image failed:', e);
+              window.open(imageUrl, '_blank');
+          } finally {
+          setSaving(false);
+        }
+    };
   
   // Select row
   const handleSelectRow = (resultId) => {
@@ -317,6 +348,13 @@ export default function UserResult() {
             </div>
             
             <div className="user-result-modal-footer">
+              <button
+                className="user-result-primary-btn"
+                onClick={handleSaveImage}
+                disabled={!imageUrl || saving}>
+              {saving ? (t('saving') || 'Saving...') : (t('savOrin') || 'Save')}
+              </button>
+
               <button 
                 className="user-result-primary-btn"
                 onClick={() => setShowModal(false)}

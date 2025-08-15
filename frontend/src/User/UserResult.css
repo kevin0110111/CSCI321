@@ -1,7 +1,6 @@
 .user-result-container {
   padding: 20px;
   max-width: 100%;
-
 }
 
 .user-result-container h2 {
@@ -270,6 +269,8 @@
   font-size: 14px;
   transition: background-color 0.2s;
   min-width: 80px;
+  margin: 5px 15px;
+  font-size: 1.5rem;
 }
 
 .user-result-primary-btn:hover {
@@ -347,7 +348,7 @@
 /* Enhanced mobile responsiveness */
 @media (max-width: 768px) {
   .user-result-container {
-    padding: 15px;
+    padding: 10px;
   }
   
   .user-result-filters {

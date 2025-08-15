@@ -43,3 +43,9 @@
   border-radius: 6px;
   display: inline-block;
 }
+
+@media (max-width: 768px) {
+  .language-container {
+      padding: 10px;
+    }
+  }

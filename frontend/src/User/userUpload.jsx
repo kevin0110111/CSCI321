@@ -551,17 +551,21 @@ export default function UserUpload() {
           <div className="user-upload-modal-content">
             <p>{t("notMaizeConfirm") || "This does not appear to be a maize image. Continue anyway?"}</p>
 
-            <div style={{ fontSize: "0.85rem", color: "#666", margin: "6px 0 8px" }}>
+            <div style={{ fontSize: "1rem", color: "#e74e4eff", margin: "6px 0 8px" }}>
               {(t("remainingImages") || "Remaining")} : {pendingTasks.length + 1} {t("images") || "images"}
             </div>
 
             {/* show cannot count img*/}
             <img
+              className="not-sure-img"
               src={pendingCountFile.previewUrl || "/placeholder.svg"}
-              alt={pendingCountFile.name}
-              style={{ maxWidth: "100%", maxHeight: "100%", margin: "10px 0", borderRadius: "8px" }}
-            />
-            <div style={{ fontSize: "0.9em", color: "#666" }}>
+              alt={pendingCountFile.name}/>
+            <div style={{ 
+              fontSize: "1.3rem", 
+              color: "#000000ff", 
+              whitespace: "normal",
+              wordWrap: "break-word",
+              overflowWrap: "break-word" }}>
               {pendingCountFile.name}
             </div>
 

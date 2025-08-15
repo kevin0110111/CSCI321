@@ -111,6 +111,13 @@ export default function DashboardLayout() {
                     <Outlet />
                 </div>
 
+                {/* Footer */}
+                <footer className="dashboard-footer">
+                    <p>
+                        © {new Date().getFullYear()} Tassel AI. All rights reserved.
+                    </p>
+                </footer>
+
                 {/* Logout Confirmation Modal */}
                 {showLogoutModal && (
                     <div className="logout-modal">

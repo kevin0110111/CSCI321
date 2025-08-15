@@ -140,6 +140,7 @@ const resources = {
       EnterNote: 'Enter your notes here...',
       imageSavedSuccess: 'Image saved successfully!',
       saveImageError: 'Error saving image: {{error}}',
+      
 
       //user/viewResult
       detectionResultTitle: 'Detection Result',
@@ -158,6 +159,7 @@ const resources = {
       imageId: 'Image ID',
       id: 'ID',
       close: 'Close',
+      savOrin: 'Save original image',
       
 
       //user/dashboard
@@ -389,6 +391,7 @@ const resources = {
       imageId: '图片ID',
       id: '编号',
       close: '关闭',
+      savOrin: '保存原图',
 
       //user/dashboard
       weatherInSingapore: '新加坡天气',
