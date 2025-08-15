@@ -26,6 +26,8 @@ export default function UpdateUserAccount() {
     lowercase: false
   });
 
+  const [emailValid, setEmailValid] = useState(true);
+
   const [currentAccountId, setCurrentAccountId] = useState(null);
   const [currentProfileId, setCurrentProfileId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -120,9 +122,18 @@ export default function UpdateUserAccount() {
     fetchAccountAndProfile();
   }, [currentAccountId, currentProfileId, t]);
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'email') {
+      setEmailValid(validateEmail(value));
+    }
 
     if (name === 'newPassword') {
       setPasswordValidations({
@@ -138,6 +149,11 @@ export default function UpdateUserAccount() {
   const handleSave = async () => {
     if (!currentAccountId || !currentProfileId) {
       setResponseBox({ show: true, message: t('accountIdNotAvailable') });
+      return;
+    }
+
+    if (!emailValid) {
+      setResponseBox({ show: true, message: t('invalidEmail') });
       return;
     }
 
@@ -299,7 +315,17 @@ export default function UpdateUserAccount() {
 
               <div className="form-field">
                 <label>{t('emailLabel')}</label>
-                <input type="email" name="email" value={formData.email} onChange={handleInputChange} readOnly={!isEditing} />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  readOnly={!isEditing}
+                  style={{ borderColor: emailValid ? '' : 'red' }}
+                />
+                {!emailValid && isEditing && (
+                  <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '0.5rem' }}>{t('invalidEmail')}</p>
+                )}
               </div>
 
               <div className="form-field">

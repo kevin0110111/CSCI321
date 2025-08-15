@@ -210,6 +210,7 @@ const resources = {
       ok: 'OK',
       saved: 'Saved',
       saving: 'Saving...',
+      invalidEmail: 'Invalid Email',
 
       diseaseSuggestions: {
         Blight: [
@@ -442,7 +443,7 @@ const resources = {
       ok: '确定',
       saved: '已保存',
       saving: '正在保存...',
-
+      invalidEmail: '邮箱错误',
       
       diseaseSuggestions: {
         Blight: [
